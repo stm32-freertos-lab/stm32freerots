@@ -1,0 +1,74 @@
+{
+  "Core/Src/main.c": {
+    "before_sha256": "9572bd986084b8fb9a6ea65b5a0cadd068ebe7b5558dd6bbf863bfb0273c3c8d",
+    "after_sha256": "9df7df16083a061084513621a7c1f6253f19cfdc10973f4c47d2287eede9487f"
+  },
+  "MDK-ARM/.eide/eide.yml": {
+    "before_sha256": "1d122eb600ad64149481baa8c2a3fc628e3d402ed0c96f53e0d3ab9735e61202",
+    "after_sha256": "e4c25eca9d017d5c9da07f29035409859e13d5de523088567c492fe6348fe561"
+  },
+  "MDK-ARM/NWatch-DShanMCU-F103.uvprojx": {
+    "before_sha256": "12f46f1a2a1ceee321b9b572ef012fe0097f78f3478520727a48b18e599bfce1",
+    "after_sha256": "d7852094366a86b0d3c670d2f938be4e6914d7c05ce5766df91a56e7ff11a0f3"
+  },
+  "NWatch/appconfig.c": {
+    "before_sha256": "dce170ce4a21f37f0eb769f4f1461ef4f15ef1b7b5e7c5665a2f663cecd1c71b",
+    "after_sha256": "da0c784595b8b70f062f381c1d97853b03f37165fb92b62fe0ab9c9ba15d4ba5"
+  },
+  "NWatch/buttons.c": {
+    "before_sha256": "3c48249f8174e87f61478fb802a0d6dfe792d82a11e6c142609644f8c7bf0859",
+    "after_sha256": "3d986b41e297547dc17bbde1e077f7e1fc44ce3c9cf75a524da1fce56198e1b6"
+  },
+  "NWatch/config.h": {
+    "before_sha256": "6086bfb198e2ad7697dced0dd8e1e9171e51201d29c8164f8eb20a28a55dd85c",
+    "after_sha256": "fac53ceda16ad3bcaa81d11a9abe872bdd827b906123c48925416289ca44cb68"
+  },
+  "NWatch/global.c": {
+    "before_sha256": "b7b1309aa5ec218aa340029210bae22ce49177643d6f51e7aab58e1c613b553a",
+    "after_sha256": "27de550db5c74f039ccb540843cbde53b67962555f033aacf1b783e7f2ff9f96"
+  },
+  "NWatch/m_display.c": {
+    "before_sha256": "3273d253f9fd71909d30c31c70b47eef6f5aeb839a64d5594f98d7a7ef2ab51f",
+    "after_sha256": "bcee9f14a399a90011ae7e36224962a83dc938d072b1c21171e9a4759bcfb423"
+  },
+  "NWatch/m_main.c": {
+    "before_sha256": "df4ecbea0845152bb26ed5ed81c679ab3b474bd2b0304aa5d0e3976412a3dc87",
+    "after_sha256": "4ed2b133a121acb4ba54c1cc5daf46ebbec44557f29b0aaec11e1be33e6ef254"
+  },
+  "NWatch/m_main.h": {
+    "before_sha256": "aed826c8c04f9cca12a0b86291053686f68b2a52533934bc07d5aa073072f2d4",
+    "after_sha256": "1ccb20e1ea07e771a5a01c7bea088966a24213d8f14718e027f4918578a1861b"
+  },
+  "NWatch/menu.c": {
+    "before_sha256": "6b28cd3d84d1f78483f402913e39a734aaaad53693de3ff24fa335d69ee522d6",
+    "after_sha256": "987009e14d8f12894070cbff2c061b203f8211546bcd2ce4e3ab258f080c5202"
+  },
+  "NWatch/normal.c": {
+    "before_sha256": "d41e0bd220ae5d45c604b88f05c6b8c7bc833017be18aa87af13f8d3599f3afc",
+    "after_sha256": "85d98cdb95648b9b6069b81bd0e33ddfe4d16fbd878d99e0667008f2fd97c8a8"
+  },
+  "NWatch/pwrmgr.c": {
+    "before_sha256": "3bcfea20f2b56455cb3b38ffea44adcb2c2e8a5db46c7817b77de8c2612ca7de",
+    "after_sha256": "aa6bc0d7c77cd08aede8d9543a893a699baff552ac8d0946f0f5770567d4fa0e"
+  },
+  "NWatch/resources.c": {
+    "before_sha256": "aa86090423e6d8f6fecf1db2906b87f664c98f05cce9aadf65e3bd08174e480b",
+    "after_sha256": "f02554fbd6b3471ebc58a123071ef53b2f2d8e3ab897f9d230293761b7f9989f"
+  },
+  "NWatch/time.c": {
+    "before_sha256": "af5932083ad671f293970b7f07fff2b83051059cbfc4774d780c43e5a301a450",
+    "after_sha256": "e550985ec0b6760881e1b48d0e5e50e07309e797b1808de8dc30f53065bc783a"
+  },
+  "NWatch/tunemaker.c": {
+    "before_sha256": "139467506ec56f6b83df6a414c6d986f4a3c7962be3bd367fb8cb57e90c246f5",
+    "after_sha256": "f5ff4eb1c123285771fc804522d36e0dce10958730c51e7a0feb3974288688a8"
+  },
+  "NWatch/watchface.c": {
+    "before_sha256": "367e57a99003605ccf8540bd4abfbd4cc8b006ef7b14e1ead231d051e864618e",
+    "after_sha256": "eae973030c689f9e0293a97be54c00e65b12b9e46d412ee47e691ba4d0a98077"
+  },
+  "NWatch/watchface.h": {
+    "before_sha256": "836059581c7ed5f4164c45a253f1a07082020e4030da9af975a9879b72cf1544",
+    "after_sha256": "74b0ecd149d57fa8eff1419aa5be48c76649a11d601433a919382f3801d53444"
+  }
+}

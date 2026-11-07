@@ -1,0 +1,35 @@
+--- before/RTOS/rtos_app.c
++++ RTOS/rtos_app.c
+@@ -11,6 +11,8 @@
+ 
+ static void updateDiagnostics(void)
+ {
++    /* 与其他诊断同频采样，调试器无需调用内核函数。 */
++    g_nwatchRtos.schedulerState = (uint32_t)xTaskGetSchedulerState();
+     g_nwatchRtos.kernelTickCount = xTaskGetTickCount();
+     g_nwatchRtos.taskCount = uxTaskGetNumberOfTasks();
+     g_nwatchRtos.guiStackHighWaterWords = uxTaskGetStackHighWaterMark(guiHandle);
+@@ -45,8 +47,10 @@
+     g_nwatchRtos.idleStackWords = configMINIMAL_STACK_SIZE;
+     g_nwatchRtos.heapTotalBytes = configTOTAL_HEAP_SIZE;
+     /* GUI 和内核 Idle 的栈/TCB 都从 heap_4 分配，不另建重复栈数组。 */
+-    if(xTaskCreate(guiTask, "NWatchGUI", NWATCH_GUI_STACK_WORDS,
+-                   NULL, NWATCH_GUI_PRIORITY, &guiHandle) != pdPASS)
++    /* 保留实际创建返回值，便于 ST-Link 区分未启动和创建失败。 */
++    g_nwatchRtos.taskCreateResult = xTaskCreate(guiTask, "NWatchGUI", NWATCH_GUI_STACK_WORDS,
++                                              NULL, NWATCH_GUI_PRIORITY, &guiHandle);
++    if(g_nwatchRtos.taskCreateResult != pdPASS)
+         NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE, __FILE__, __LINE__);
+ 
+     g_nwatchRtos.freeHeapBytes = xPortGetFreeHeapSize();
+--- before/RTOS/rtos_app.h
++++ RTOS/rtos_app.h
+@@ -49,6 +49,8 @@
+     uint32_t basepri;
+     uint32_t systickReload;
+     uint32_t systickControl;
++    uint32_t schedulerState;     /* 2=taskSCHEDULER_RUNNING，每秒更新。 */
++    int32_t taskCreateResult;     /* 1=pdPASS；失败时由故障钩子记录。 */
+ } NWatchRtosDiagnostics;
+ 
+ typedef struct {

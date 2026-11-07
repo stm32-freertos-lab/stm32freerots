@@ -1,0 +1,51 @@
+{
+  "compiler": "ARM Compiler 5.06 update 5 (build 528)",
+  "baseline": {
+    "ro": 57624,
+    "ram": 11528,
+    "flash": 61308
+  },
+  "phase1": {
+    "ro": 29992,
+    "ram": 4816,
+    "flash": 30228
+  },
+  "saved_flash": 31080,
+  "saved_ram": 6712,
+  "free_flash": 35308,
+  "free_ram": 15664,
+  "warnings": 10,
+  "compiled_sources": 40,
+  "excluded_sources": 26,
+  "cube_table_address": "0x080062f4",
+  "cube_sha256": "2ce020155668a266a2e44dcee7511827595a5b8950fc3bcf0a8d79beb703aaec",
+  "changed_files": [
+    "Core/Src/main.c",
+    "MDK-ARM/.eide/eide.yml",
+    "MDK-ARM/NWatch-DShanMCU-F103.uvprojx",
+    "NWatch/appconfig.c",
+    "NWatch/buttons.c",
+    "NWatch/config.h",
+    "NWatch/global.c",
+    "NWatch/m_display.c",
+    "NWatch/m_main.c",
+    "NWatch/m_main.h",
+    "NWatch/menu.c",
+    "NWatch/normal.c",
+    "NWatch/pwrmgr.c",
+    "NWatch/resources.c",
+    "NWatch/time.c",
+    "NWatch/tunemaker.c",
+    "NWatch/watchface.c",
+    "NWatch/watchface.h"
+  ],
+  "checks": [
+    "AC5/O3 and 64KB/20KB limits",
+    "EIDE/uVision source parity",
+    "excluded modules absent from link map",
+    "HEX checksums/address span",
+    "one Flash cube table with unchanged 180 frames",
+    "original resource array definitions unchanged"
+  ],
+  "hardware_tested": false
+}

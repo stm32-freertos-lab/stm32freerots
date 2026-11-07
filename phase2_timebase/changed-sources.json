@@ -1,0 +1,54 @@
+{
+  "Core/Inc/stm32f1xx_hal_conf.h": {
+    "before_sha256": "75615db17a99f271dfb9d0086c377d9d8221ecf555f22016ceb578fc3b81e290",
+    "after_sha256": "09616317256cb1563d2476b8cccbe37df17d78d5371ebfc6197f2da4915feb63"
+  },
+  "Core/Inc/stm32f1xx_it.h": {
+    "before_sha256": "25e4f1842d0607f0642d537da05a47fdcb3bd4d769446f86d51e25c244bf5cde",
+    "after_sha256": "d57f074f5d6302977153ff2dfd4a4344f813fc3874513f04c8af4679b96dc6a1"
+  },
+  "Core/Src/main.c": {
+    "before_sha256": "9df7df16083a061084513621a7c1f6253f19cfdc10973f4c47d2287eede9487f",
+    "after_sha256": "0575de03010848ac7007ee8bc9eefc329bc8b5e30f13e650018c5dbb7421ae54"
+  },
+  "Core/Src/stm32f1xx_it.c": {
+    "before_sha256": "4883cc4b6ff3b05040beb2454e9c8e214b1884f686957b25a58d7e4ff4c60465",
+    "after_sha256": "a8cf41d1c147a1130a7848af6e914fd3a9ef1f03fcd2529fed66cd9d07933802"
+  },
+  "Drivers/DShanMCU-F103/driver_ir_receiver.c": {
+    "before_sha256": "81a6c27ca31fddff5b6c79cc1c12544950666dacf6ea19e0fc129e16dbbb80e1",
+    "after_sha256": "1aadfd13afef08224eeb60612c51e693651ac338613ea587508494c6d7deb609"
+  },
+  "Drivers/DShanMCU-F103/driver_systick.c": {
+    "before_sha256": "7a9433632105928574147ccad9f32d80bec53fb19f585116da7b0bdd65048d75",
+    "after_sha256": "553577bfec67218c42ee0a98529327a8c4559dea643bbf6ababe7486ed90ab15"
+  },
+  "Drivers/DShanMCU-F103/driver_systick.h": {
+    "before_sha256": "7310952c336b9a2215132fbba48380614c02ad16ee8902b1cd709ab0d93aeccc",
+    "after_sha256": "abd764eb2586b7af84de7d5f85e95b89415b01f8f742d699a90ed1fc3d18a6f7"
+  },
+  "Drivers/DShanMCU-F103/driver_timer.c": {
+    "before_sha256": "14b6464bb3519b2660443a5ba2bf3c7df11950804f8540d2e4450c7ea895d657",
+    "after_sha256": "cbe1c99fc9ad14220b5639f9f98d2a7ac676f2baebb2e1918f5bed776d76fb86"
+  },
+  "Drivers/DShanMCU-F103/driver_timer.h": {
+    "before_sha256": "8e89dd23082b602cab0c80830a5fca4c490b930bc4edb7ce5ebff5002b3d67b6",
+    "after_sha256": "e59cb41d74e6acfcde40de0ca0e2b1905d99f05b3e46e6dad62c745172041726"
+  },
+  "MDK-ARM/.eide/eide.yml": {
+    "before_sha256": "6ba5d6bc810dda23d44b4567c8535e7494e8e474d6136918fa45483a5aa7255f",
+    "after_sha256": "9a6aaedd2fea83061d8b1bd9f2570309394f23f31ba7900a642ae4a1e3c9a347"
+  },
+  "MDK-ARM/NWatch-DShanMCU-F103.uvprojx": {
+    "before_sha256": "d7852094366a86b0d3c670d2f938be4e6914d7c05ce5766df91a56e7ff11a0f3",
+    "after_sha256": "4f57535642b34442b93d578e993ab428c47b0c9653eb3cb12239643b2271ae57"
+  },
+  "NWatch/time.c": {
+    "before_sha256": "e550985ec0b6760881e1b48d0e5e50e07309e797b1808de8dc30f53065bc783a",
+    "after_sha256": "e14f54b43bcc3cc2885dd265e7942ec4ed6baa724df21c0122f8fa64a4c39551"
+  },
+  "NWatch/time.h": {
+    "before_sha256": "8130f73681063d681d49ab7cda26657dc734d9560622f527eef537495dbb8b9c",
+    "after_sha256": "0c487326ee943bdcffc07866a8de5add5b41cd9bf794ae59ce77651a5a937a65"
+  }
+}

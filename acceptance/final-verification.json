@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-05",
+  "timezone": "Asia/Shanghai",
+  "result": "单 GUI 应用版本的基本 FreeRTOS 移植验收通过",
+  "boundary": "已验证 GUI/Idle 基本上下文切换、GUI 延时和唤醒；未充分验证多个应用任务之间的抢占、时间片、同步和负载竞争。",
+  "firmware_matches_axf": true,
+  "flash_load_bytes": 35676,
+  "ram_static_bytes": 11256,
+  "heap_total_bytes": 6144,
+  "heap_free_bytes": 2384,
+  "heap_min_ever_free_bytes": 2384,
+  "gui_stack_config_words": 768,
+  "gui_stack_config_bytes": 3072,
+  "stack_word_bytes": 4,
+  "gui_stack_minimum_observed_words": 686,
+  "gui_stack_minimum_observed_bytes": 2744,
+  "gui_stack_post_reset_sample_words": 688,
+  "idle_stack_minimum_observed_words": 110,
+  "idle_stack_minimum_observed_bytes": 440,
+  "scheduler_state": 2,
+  "task_create_result": 1,
+  "task_count": 2,
+  "gui_iterations_in_samples": [
+    4,
+    803,
+    1578
+  ],
+  "kernel_ticks_in_samples": [
+    178,
+    3180,
+    6181
+  ],
+  "gui_iterations_increasing": true,
+  "tick_increasing": true,
+  "fault_reason_observed": 0,
+  "cfsr": 0,
+  "hfsr": 0,
+  "controlled_reset_count_this_followup": 1,
+  "firmware_written_by_agent": false,
+  "final_target_state": "unknown",
+  "physical_ui_and_ir": {
+    "status": "通过",
+    "evidence": "用户反馈：均正常，连续操作无卡死；不是自动视觉或红外测试。"
+  },
+  "live_read_limitation": "本机运行态大块 SWD 读回不一致，未用于验收；Flash 和运行值采用暂停快照。",
+  "deltas": [
+    {
+      "guiIterations": 799,
+      "kernelTickCount": 2988,
+      "tickHookCount": 3002,
+      "idleHookCount": 1564,
+      "halMilliseconds": 2989,
+      "microsecondsLow": 2988610,
+      "kernel_tick": 3002,
+      "hal_tick": 3002,
+      "micro_timer_us": 3001717,
+      "wall_seconds": 3.0309999999990396
+    },
+    {
+      "guiIterations": 775,
+      "kernelTickCount": 3042,
+      "tickHookCount": 3001,
+      "idleHookCount": 1522,
+      "halMilliseconds": 3042,
+      "microsecondsLow": 3042008,
+      "kernel_tick": 3001,
+      "hal_tick": 3002,
+      "micro_timer_us": 3001582,
+      "wall_seconds": 3.0309999999990396
+    }
+  ],
+  "evidence": [
+    "runtime-check.log",
+    "startup-check.log",
+    "runtime-observations.json",
+    "flash-read-comparison.json"
+  ],
+  "artifact_sha256": {
+    ".axf": "8b74761a51aa7a9bc293da31217cf75ac020344cdf27cd6a487db07d3a46719a",
+    ".hex": "d5c3cbde047555af1c190a08f4e7fab71976ae0f8526ad29fcc9a5c81e5a539a",
+    ".map": "626beaabe3e65b07525a69d6b7da47d5d7829933486c4d6908c06ec010a3b0bf"
+  },
+  "last_confirmed_target_state": "running",
+  "probe_present_at_final_check": false,
+  "final_check_note": "有效采样结束已恢复运行；报告收尾时 USB 枚举不再发现 ST-Link，OpenOCD 状态为 unknown，未再操作目标。"
+}

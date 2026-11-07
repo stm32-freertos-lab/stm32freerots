@@ -1,0 +1,10 @@
+{
+  "version": "V11.3.1",
+  "official_release": "https://github.com/FreeRTOS/FreeRTOS-Kernel/releases/tag/V11.3.1",
+  "url": "https://github.com/FreeRTOS/FreeRTOS-Kernel/releases/download/V11.3.1/FreeRTOS-KernelV11.3.1.zip",
+  "archive_sha256": "0ce48d03f9f45ebe3d3090731a5cf54a245083aadef5fa33ecad43a07d35193a",
+  "release_digest": null,
+  "metadata_note": "GitHub API rate limited; downloaded directly from official stable release asset. SHA256 is locally computed.",
+  "port": "portable/RVDS/ARM_CM3",
+  "modified_vendor_files": []
+}

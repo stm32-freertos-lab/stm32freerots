@@ -1,0 +1,99 @@
+{
+  "static_checks_passed": true,
+  "hardware_tested": false,
+  "hardware_reason": "本次 CubeProgrammer 枚举未发现 ST-Link，未烧录。",
+  "toolchain": "AC5 5.06u5 build 528",
+  "version": "V11.3.1",
+  "sources": 48,
+  "warnings": 9,
+  "unchanged_vendor_files": 967,
+  "tracked_files": 145,
+  "modified_files": [
+    "RTOS/rtos_app.c",
+    "RTOS/rtos_app.h"
+  ],
+  "flash_load_bytes": 35676,
+  "flash_free_bytes": 29860,
+  "ram_rw_zi_bytes": 11256,
+  "ram_free_bytes": 9224,
+  "freertos_heap_bytes": 6144,
+  "gui_stack_words": 768,
+  "gui_stack_bytes": 3072,
+  "idle_stack_words": 128,
+  "stack_word_bytes": 4,
+  "tcb_bytes": 64,
+  "heap_free_estimate_NOT_MEASURED": 2384,
+  "runtime": {
+    "taskCreateResult": null,
+    "schedulerState": null,
+    "freeHeapBytes": null,
+    "minEverFreeHeapBytes": null,
+    "guiStackHighWaterWords": null,
+    "guiIterationsIncreasing": null,
+    "tickIncreasing": null,
+    "fault": null
+  },
+  "handlers": {
+    "SVC_Handler": {
+      "address": 134218197,
+      "size": 32,
+      "object": "port.o(.emb_text)",
+      "kind": "Thumb Code"
+    },
+    "PendSV_Handler": {
+      "address": 134218265,
+      "size": 72,
+      "object": "port.o(.emb_text)",
+      "kind": "Thumb Code"
+    },
+    "SysTick_Handler": {
+      "address": 134227717,
+      "size": 38,
+      "object": "port.o(i.SysTick_Handler)",
+      "kind": "Thumb Code"
+    },
+    "HardFault_Handler": {
+      "address": 134218177,
+      "size": 20,
+      "object": "rtos_app.o(.emb_text)",
+      "kind": "Thumb Code"
+    },
+    "TIM3_IRQHandler": {
+      "address": 134227851,
+      "size": 4,
+      "object": "stm32f1xx_it.o(i.TIM3_IRQHandler)",
+      "kind": "Thumb Code"
+    },
+    "TIM4_IRQHandler": {
+      "address": 134227855,
+      "size": 4,
+      "object": "stm32f1xx_it.o(i.TIM4_IRQHandler)",
+      "kind": "Thumb Code"
+    },
+    "EXTI15_10_IRQHandler": {
+      "address": 134220495,
+      "size": 8,
+      "object": "stm32f1xx_it.o(i.EXTI15_10_IRQHandler)",
+      "kind": "Thumb Code"
+    }
+  },
+  "diagnostic_symbols": {
+    "g_nwatchRtos": {
+      "address": 536874088,
+      "size": 96,
+      "object": "rtos_app.o(.bss)",
+      "kind": "Data"
+    },
+    "g_nwatchFault": {
+      "address": 536874184,
+      "size": 68,
+      "object": "rtos_app.o(.bss)",
+      "kind": "Data"
+    }
+  },
+  "artifact_sha256": {
+    ".axf": "8b74761a51aa7a9bc293da31217cf75ac020344cdf27cd6a487db07d3a46719a",
+    ".hex": "d5c3cbde047555af1c190a08f4e7fab71976ae0f8526ad29fcc9a5c81e5a539a",
+    ".map": "626beaabe3e65b07525a69d6b7da47d5d7829933486c4d6908c06ec010a3b0bf"
+  }
+}

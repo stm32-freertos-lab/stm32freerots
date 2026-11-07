@@ -1,0 +1,105 @@
+{
+  "bytes": 35676,
+  "expected_bytes": 35676,
+  "different_bytes": 7959,
+  "first_differences": [
+    {
+      "address": "0x8000014",
+      "actual": 2,
+      "expected": 161
+    },
+    {
+      "address": "0x8000015",
+      "actual": 32,
+      "expected": 10
+    },
+    {
+      "address": "0x8000016",
+      "actual": 252,
+      "expected": 0
+    },
+    {
+      "address": "0x8000017",
+      "actual": 247,
+      "expected": 8
+    },
+    {
+      "address": "0x8000018",
+      "actual": 217,
+      "expected": 61
+    },
+    {
+      "address": "0x8000019",
+      "actual": 31,
+      "expected": 40
+    },
+    {
+      "address": "0x8000020",
+      "actual": 61,
+      "expected": 0
+    },
+    {
+      "address": "0x8000021",
+      "actual": 40,
+      "expected": 0
+    },
+    {
+      "address": "0x8000023",
+      "actual": 8,
+      "expected": 0
+    },
+    {
+      "address": "0x8000024",
+      "actual": 2,
+      "expected": 0
+    },
+    {
+      "address": "0x8000025",
+      "actual": 32,
+      "expected": 0
+    },
+    {
+      "address": "0x8000026",
+      "actual": 252,
+      "expected": 0
+    },
+    {
+      "address": "0x8000027",
+      "actual": 247,
+      "expected": 0
+    },
+    {
+      "address": "0x800005c",
+      "actual": 2,
+      "expected": 135
+    },
+    {
+      "address": "0x800005d",
+      "actual": 32,
+      "expected": 2
+    },
+    {
+      "address": "0x800005e",
+      "actual": 252,
+      "expected": 0
+    }
+  ],
+  "actual_sha256": "3bdabe4f05c4490f6e7d94bc6b3a41d7b1f0cb3fbfbc276f165a0442d6e8305e",
+  "expected_sha256": "380737346fb606ee08ae313be7ed43a5fb002f43440fc4062093d283981639d1",
+  "program_header": [
+    1,
+    52,
+    134217728,
+    134217728,
+    35676,
+    46896,
+    2147483655,
+    8
+  ],
+  "first_words": [
+    536882168,
+    134218349,
+    134226161,
+    134218177
+  ]
+}

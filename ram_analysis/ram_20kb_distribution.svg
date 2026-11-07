@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="1000" viewBox="0 0 1240 1000" role="img" aria-labelledby="ramTitle ramDesc">
+  <title id="ramTitle">STM32F103C8T6 20KB SRAM 内存分布</title>
+  <desc id="ramDesc">按链接地址显示的 20KB SRAM 分布：静态 RAM 11,256 字节，FreeRTOS Heap 6,144 字节，未分配 9,224 字节；下半部分给出占用明细与 Heap 内部结构。</desc>
+  <style>
+    text { font-family: system-ui, -apple-system, "Segoe UI", "Microsoft YaHei", "Noto Sans SC", sans-serif; }
+    .title { font-size: 24px; font-weight: 650; fill: #0b0b0b; }
+    .sub { font-size: 12px; fill: #52514e; }
+    .h2 { font-size: 15px; font-weight: 600; fill: #0b0b0b; }
+    .tile-label { font-size: 11px; fill: #52514e; }
+    .tile-value { font-size: 22px; font-weight: 600; fill: #0b0b0b; }
+    .tile-sub { font-size: 11px; fill: #898781; }
+    .seg-label { font-size: 12px; font-weight: 500; }
+    .lbl { font-size: 13px; fill: #52514e; }
+    .val { font-size: 12px; fill: #0b0b0b; font-variant-numeric: tabular-nums; }
+    .tick { font-size: 10px; fill: #898781; font-variant-numeric: tabular-nums; }
+    .leg { font-size: 12px; fill: #52514e; }
+    .note { font-size: 11px; fill: #898781; }
+    .grid { stroke: #e1e0d9; stroke-width: 1; }
+    .baseline { stroke: #c3c2b7; stroke-width: 1; }
+  </style>
+
+  <rect width="1240" height="1000" fill="#fcfcfb"/>
+
+  <text class="title" x="40" y="52">STM32F103C8T6 · 20 KB SRAM 内存分布</text>
+  <text class="sub" x="40" y="76">AC5 链接产物 · 0x20000000–0x20004FFF · 构建 2026-11-05 16:13</text>
+
+  <!-- Stat tiles -->
+  <g>
+    <rect x="40" y="94" width="370" height="64" rx="8" fill="#f9f9f7" stroke="rgba(11,11,11,0.10)" stroke-width="1"/>
+    <text class="tile-label" x="56" y="114">链接器静态占用（RW + ZI）</text>
+    <text class="tile-value" x="56" y="143">11,256 B</text>
+    <text class="tile-sub" x="394" y="142" text-anchor="end">54.96%</text>
+  </g>
+  <g>
+    <rect x="430" y="94" width="370" height="64" rx="8" fill="#f9f9f7" stroke="rgba(11,11,11,0.10)" stroke-width="1"/>
+    <text class="tile-label" x="446" y="114">链接器未分配 RAM</text>
+    <text class="tile-value" x="446" y="143">9,224 B</text>
+    <text class="tile-sub" x="784" y="142" text-anchor="end">45.04%</text>
+  </g>
+  <g>
+    <rect x="820" y="94" width="380" height="64" rx="8" fill="#f9f9f7" stroke="rgba(11,11,11,0.10)" stroke-width="1"/>
+    <text class="tile-label" x="836" y="114">RTOS Heap 空闲 / 预留总量</text>
+    <text class="tile-value" x="836" y="143">2,384 B</text>
+    <text class="tile-sub" x="1184" y="142" text-anchor="end">38.8% of 6,144</text>
+  </g>
+
+  <!-- Section 1: address space -->
+  <text class="h2" x="40" y="196">1 · 20 KB 地址空间（按链接顺序，比例尺一致）</text>
+  <g>
+    <rect x="40" y="208" width="10" height="10" rx="2" fill="#2a78d6"/>
+    <text class="leg" x="58" y="217">静态 RAM（RW + ZI，不含 RTOS Heap）</text>
+    <rect x="330" y="208" width="10" height="10" rx="2" fill="#eb6834"/>
+    <text class="leg" x="348" y="217">FreeRTOS Heap 6,144 B</text>
+    <rect x="520" y="208" width="10" height="10" rx="2" fill="#e1e0d9"/>
+    <text class="leg" x="538" y="217">未分配 9,224 B</text>
+  </g>
+
+  <g>
+    <rect x="40" y="230" width="187.2" height="34" rx="3" fill="#2a78d6"/>
+    <rect x="229.2" y="230" width="346.0" height="34" rx="3" fill="#eb6834"/>
+    <rect x="577.2" y="230" width="5.9" height="34" rx="2" fill="#2a78d6"/>
+    <rect x="585.1" y="230" width="3.4" height="34" rx="1.5" fill="#2a78d6"/>
+    <rect x="590.5" y="230" width="27.0" height="34" rx="3" fill="#2a78d6"/>
+    <rect x="619.5" y="230" width="56.1" height="34" rx="3" fill="#2a78d6"/>
+    <rect x="677.6" y="230" width="522.4" height="34" rx="3" fill="#e1e0d9"/>
+  </g>
+  <text class="seg-label" x="50" y="252" fill="#ffffff">RW + BSS 3,340 B</text>
+  <text class="seg-label" x="239" y="252" fill="#ffffff">FreeRTOS Heap 6,144 B · 30.0%</text>
+  <text class="seg-label" x="690" y="252" fill="#0b0b0b">未分配 9,224 B · 45.0%</text>
+
+  <text class="tick" x="40" y="284">0x20000000</text>
+  <text class="tick" x="229.2" y="284" text-anchor="middle">0x20000D0C</text>
+  <text class="tick" x="577.1" y="284" text-anchor="middle">0x2000250C</text>
+  <text class="tick" x="677.5" y="284" text-anchor="middle">0x20002BF8</text>
+  <text class="tick" x="1200" y="284" text-anchor="end">0x20005000</text>
+
+  <path d="M577.1,292 V298 H677.5 V292" fill="none" stroke="#c3c2b7" stroke-width="1"/>
+  <text class="note" x="577.1" y="314">内核 BSS 140 · libspace 96 · C 堆 512 · MSP 1,024（共 1,772 B）</text>
+
+  <!-- Section 2: ranked breakdown -->
+  <text class="h2" x="40" y="352">2 · 占用明细（Heap 按容器计一次，可加总 = 11,256 B）</text>
+
+  <line class="grid" x1="469.3" y1="368" x2="469.3" y2="710"/>
+  <line class="grid" x1="638.5" y1="368" x2="638.5" y2="710"/>
+  <line class="grid" x1="807.8" y1="368" x2="807.8" y2="710"/>
+  <line class="baseline" x1="300" y1="366" x2="300" y2="710"/>
+
+  <g>
+    <text class="lbl" x="40" y="390">FreeRTOS Heap（容器）</text>
+    <path d="M300,378 H816 Q820,378 820,382 V390 Q820,394 816,394 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="828" y="390">6,144 B</text>
+
+    <text class="lbl" x="40" y="418">主异常栈 MSP</text>
+    <path d="M300,406 H382.7 Q386.7,406 386.7,410 V418 Q386.7,422 382.7,422 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="394.7" y="418">1,024 B</text>
+
+    <text class="lbl" x="40" y="446">OLED 帧缓冲</text>
+    <path d="M300,434 H382.7 Q386.7,434 386.7,438 V446 Q386.7,450 382.7,450 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="394.7" y="446">1,024 B</text>
+
+    <text class="lbl" x="40" y="474">Cube 画布 × 2</text>
+    <path d="M300,462 H382.7 Q386.7,462 386.7,466 V474 Q386.7,478 382.7,478 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="394.7" y="474">1,024 B</text>
+
+    <text class="lbl" x="40" y="502">C 库堆（malloc）</text>
+    <path d="M300,490 H339.3 Q343.3,490 343.3,494 V502 Q343.3,506 339.3,506 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="351.3" y="502">512 B</text>
+
+    <text class="lbl" x="40" y="530">红外驱动</text>
+    <path d="M300,518 H331.9 Q335.9,518 335.9,522 V530 Q335.9,534 331.9,534 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="343.9" y="530">424 B</text>
+
+    <text class="lbl" x="40" y="558">NWatch UI / OLED 状态</text>
+    <path d="M300,546 H324.1 Q328.1,546 328.1,550 V558 Q328.1,562 324.1,562 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="336.1" y="558">332 B</text>
+
+    <text class="lbl" x="40" y="586">HAL / 定时器句柄</text>
+    <path d="M300,574 H317.3 Q321.3,574 321.3,578 V586 Q321.3,590 317.3,590 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="329.3" y="586">252 B</text>
+
+    <text class="lbl" x="40" y="614">FreeRTOS 内核静态</text>
+    <path d="M300,602 H317.0 Q321.0,602 321.0,606 V614 Q321.0,618 317.0,618 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="329.0" y="614">248 B</text>
+
+    <text class="lbl" x="40" y="642">RTOS 诊断结构</text>
+    <path d="M300,630 H309.9 Q313.9,630 313.9,634 V642 Q313.9,646 309.9,646 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="321.9" y="642">164 B</text>
+
+    <text class="lbl" x="40" y="670">AC5 libspace</text>
+    <path d="M300,658 H304.1 Q308.1,658 308.1,662 V670 Q308.1,674 304.1,674 H300 Z" fill="#2a78d6"/>
+    <text class="val" x="316.1" y="670">96 B</text>
+
+    <text class="lbl" x="40" y="698">链接填充</text>
+    <rect x="300" y="686" width="2" height="16" rx="1" fill="#2a78d6"/>
+    <text class="val" x="309.0" y="698">12 B</text>
+  </g>
+
+  <text class="tick" x="300" y="728" text-anchor="middle">0</text>
+  <text class="tick" x="469.3" y="728" text-anchor="middle">2,000</text>
+  <text class="tick" x="638.5" y="728" text-anchor="middle">4,000</text>
+  <text class="tick" x="807.8" y="728" text-anchor="middle">6,000 B</text>
+
+  <!-- Section 3: heap internals -->
+  <text class="h2" x="40" y="772">3 · FreeRTOS Heap 内部结构（6,144 B）</text>
+  <g>
+    <rect x="40" y="798" width="308.0" height="30" rx="3" fill="#184f95"/>
+    <rect x="350.0" y="798" width="10.9" height="30" rx="2" fill="#5598e7"/>
+    <rect x="362.9" y="798" width="49.7" height="30" rx="3" fill="#86b6ef"/>
+    <rect x="414.6" y="798" width="2.8" height="30" rx="1.4" fill="#9ec5f4"/>
+    <rect x="419.4" y="798" width="240.6" height="30" rx="3" fill="#e1e0d9"/>
+  </g>
+  <text class="seg-label" x="50" y="818" fill="#ffffff">GUI_Task 栈 3,072 B</text>
+  <text class="seg-label" x="429" y="818" fill="#0b0b0b">空闲 2,384 B</text>
+
+  <g>
+    <rect x="40" y="844" width="10" height="10" rx="2" fill="#184f95"/>
+    <text class="leg" x="56" y="853">GUI 栈 3,072 B</text>
+    <rect x="220" y="844" width="10" height="10" rx="2" fill="#5598e7"/>
+    <text class="leg" x="236" y="853">TCB × 2 128 B</text>
+    <rect x="380" y="844" width="10" height="10" rx="2" fill="#86b6ef"/>
+    <text class="leg" x="396" y="853">Idle 栈 512 B</text>
+    <rect x="540" y="844" width="10" height="10" rx="2" fill="#9ec5f4"/>
+    <text class="leg" x="556" y="853">块头 / 对齐 48 B</text>
+    <rect x="730" y="844" width="10" height="10" rx="2" fill="#e1e0d9"/>
+    <text class="leg" x="746" y="853">空闲 2,384 B</text>
+  </g>
+
+  <text class="note" x="40" y="880">实测 xPortGetFreeHeapSize() = xPortGetMinimumEverFreeHeapSize() = 2,384 B；可请求的最大单块约 2,376 B（空闲块头 8 B）。</text>
+  <text class="note" x="40" y="900">任务栈历史最低剩余：GUI 686 字 = 2,744 B（峰值占用 328 B）；Idle 110 字 = 440 B（峰值占用 72 B）。1 字 = 4 B。</text>
+
+  <!-- Footnote -->
+  <line class="grid" x1="40" y1="922" x2="1200" y2="922"/>
+  <text class="note" x="40" y="944">数据源：build/NWatch-DShanMCU-F103/NWatch-DShanMCU-F103.map（AC5 5.06u5，armlink，2026-11-05 16:13）。</text>
+  <text class="note" x="40" y="962">运行值：acceptance/runtime-observations.json（2026-11-05 19:41 暂停快照，目标固件 SHA256 380737…39d1）；GUI/Idle 栈与 TCB 在 Heap 段只计一次。</text>
+  <text class="note" x="40" y="980">“未分配”为链接器 RW_IRAM1 剩余 0x20002BF8–0x20004FFF，不是 RTOS 可用堆；RTOS 可用空闲仅 2,384 B。</text>
+</svg>

@@ -1,0 +1,3943 @@
+--- before/Core\Inc\stm32f1xx_hal_conf.h
++++ after/Core\Inc\stm32f1xx_hal_conf.h
+@@ -1,391 +1,393 @@
+-/* USER CODE BEGIN Header */
+-/**
+-  ******************************************************************************
+-  * @file    stm32f1xx_hal_conf.h
+-  * @brief   HAL configuration file.
+-  ******************************************************************************
+-  * @attention
+-  *
+-  * Copyright (c) 2017 STMicroelectronics.
+-  * All rights reserved.
+-  *
+-  * This software is licensed under terms that can be found in the LICENSE file
+-  * in the root directory of this software component.
+-  * If no LICENSE file comes with this software, it is provided AS-IS.
+-  *
+-  ******************************************************************************
+-  */
+-/* USER CODE END Header */
+-
+-/* Define to prevent recursive inclusion -------------------------------------*/
+-#ifndef __STM32F1xx_HAL_CONF_H
+-#define __STM32F1xx_HAL_CONF_H
+-
+-#ifdef __cplusplus
+- extern "C" {
+-#endif
+-
+-/* Exported types ------------------------------------------------------------*/
+-/* Exported constants --------------------------------------------------------*/
+-
+-/* ########################## Module Selection ############################## */
+-/**
+-  * @brief This is the list of modules to be used in the HAL driver
+-  */
+-
+-#define HAL_MODULE_ENABLED
+-  /*#define HAL_ADC_MODULE_ENABLED   */
+-/*#define HAL_CRYP_MODULE_ENABLED   */
+-/*#define HAL_CAN_MODULE_ENABLED   */
+-/*#define HAL_CAN_LEGACY_MODULE_ENABLED   */
+-/*#define HAL_CEC_MODULE_ENABLED   */
+-/*#define HAL_CORTEX_MODULE_ENABLED   */
+-/*#define HAL_CRC_MODULE_ENABLED   */
+-/*#define HAL_DAC_MODULE_ENABLED   */
+-/*#define HAL_DMA_MODULE_ENABLED   */
+-/*#define HAL_ETH_MODULE_ENABLED   */
+-/*#define HAL_FLASH_MODULE_ENABLED   */
+-#define HAL_GPIO_MODULE_ENABLED
+-#define HAL_I2C_MODULE_ENABLED
+-/*#define HAL_I2S_MODULE_ENABLED   */
+-/*#define HAL_IRDA_MODULE_ENABLED   */
+-/*#define HAL_IWDG_MODULE_ENABLED   */
+-/*#define HAL_NOR_MODULE_ENABLED   */
+-/*#define HAL_NAND_MODULE_ENABLED   */
+-/*#define HAL_PCCARD_MODULE_ENABLED   */
+-/*#define HAL_PCD_MODULE_ENABLED   */
+-/*#define HAL_HCD_MODULE_ENABLED   */
+-/*#define HAL_PWR_MODULE_ENABLED   */
+-/*#define HAL_RCC_MODULE_ENABLED   */
+-/*#define HAL_RTC_MODULE_ENABLED   */
+-/*#define HAL_SD_MODULE_ENABLED   */
+-/*#define HAL_MMC_MODULE_ENABLED   */
+-/*#define HAL_SDRAM_MODULE_ENABLED   */
+-/*#define HAL_SMARTCARD_MODULE_ENABLED   */
+-#define HAL_SPI_MODULE_ENABLED
+-/*#define HAL_SRAM_MODULE_ENABLED   */
+-#define HAL_TIM_MODULE_ENABLED
+-#define HAL_UART_MODULE_ENABLED
+-/*#define HAL_USART_MODULE_ENABLED   */
+-/*#define HAL_WWDG_MODULE_ENABLED   */
+-
+-#define HAL_CORTEX_MODULE_ENABLED
+-#define HAL_DMA_MODULE_ENABLED
+-#define HAL_FLASH_MODULE_ENABLED
+-#define HAL_EXTI_MODULE_ENABLED
+-#define HAL_GPIO_MODULE_ENABLED
+-#define HAL_PWR_MODULE_ENABLED
+-#define HAL_RCC_MODULE_ENABLED
+-
+-/* ########################## Oscillator Values adaptation ####################*/
+-/**
+-  * @brief Adjust the value of External High Speed oscillator (HSE) used in your application.
+-  *        This value is used by the RCC HAL module to compute the system frequency
+-  *        (when HSE is used as system clock source, directly or through the PLL).
+-  */
+-#if !defined  (HSE_VALUE)
+-  #define HSE_VALUE    8000000U /*!< Value of the External oscillator in Hz */
+-#endif /* HSE_VALUE */
+-
+-#if !defined  (HSE_STARTUP_TIMEOUT)
+-  #define HSE_STARTUP_TIMEOUT    100U   /*!< Time out for HSE start up, in ms */
+-#endif /* HSE_STARTUP_TIMEOUT */
+-
+-/**
+-  * @brief Internal High Speed oscillator (HSI) value.
+-  *        This value is used by the RCC HAL module to compute the system frequency
+-  *        (when HSI is used as system clock source, directly or through the PLL).
+-  */
+-#if !defined  (HSI_VALUE)
+-  #define HSI_VALUE    8000000U /*!< Value of the Internal oscillator in Hz*/
+-#endif /* HSI_VALUE */
+-
+-/**
+-  * @brief Internal Low Speed oscillator (LSI) value.
+-  */
+-#if !defined  (LSI_VALUE)
+- #define LSI_VALUE               40000U    /*!< LSI Typical Value in Hz */
+-#endif /* LSI_VALUE */                     /*!< Value of the Internal Low Speed oscillator in Hz
+-                                                The real value may vary depending on the variations
+-                                                in voltage and temperature. */
+-
+-/**
+-  * @brief External Low Speed oscillator (LSE) value.
+-  *        This value is used by the UART, RTC HAL module to compute the system frequency
+-  */
+-#if !defined  (LSE_VALUE)
+-  #define LSE_VALUE    32768U /*!< Value of the External oscillator in Hz*/
+-#endif /* LSE_VALUE */
+-
+-#if !defined  (LSE_STARTUP_TIMEOUT)
+-  #define LSE_STARTUP_TIMEOUT    5000U   /*!< Time out for LSE start up, in ms */
+-#endif /* LSE_STARTUP_TIMEOUT */
+-
+-/* Tip: To avoid modifying this file each time you need to use different HSE,
+-   ===  you can define the HSE value in your toolchain compiler preprocessor. */
+-
+-/* ########################### System Configuration ######################### */
+-/**
+-  * @brief This is the HAL system configuration section
+-  */
+-#define  VDD_VALUE                    3300U /*!< Value of VDD in mv */
+-#define  TICK_INT_PRIORITY            15U    /*!< tick interrupt priority (lowest by default)  */
+-#define  USE_RTOS                     0U
+-#define  PREFETCH_ENABLE              1U
+-
+-#define  USE_HAL_ADC_REGISTER_CALLBACKS         0U /* ADC register callback disabled       */
+-#define  USE_HAL_CAN_REGISTER_CALLBACKS         0U /* CAN register callback disabled       */
+-#define  USE_HAL_CEC_REGISTER_CALLBACKS         0U /* CEC register callback disabled       */
+-#define  USE_HAL_DAC_REGISTER_CALLBACKS         0U /* DAC register callback disabled       */
+-#define  USE_HAL_ETH_REGISTER_CALLBACKS         0U /* ETH register callback disabled       */
+-#define  USE_HAL_HCD_REGISTER_CALLBACKS         0U /* HCD register callback disabled       */
+-#define  USE_HAL_I2C_REGISTER_CALLBACKS         0U /* I2C register callback disabled       */
+-#define  USE_HAL_I2S_REGISTER_CALLBACKS         0U /* I2S register callback disabled       */
+-#define  USE_HAL_MMC_REGISTER_CALLBACKS         0U /* MMC register callback disabled       */
+-#define  USE_HAL_NAND_REGISTER_CALLBACKS        0U /* NAND register callback disabled      */
+-#define  USE_HAL_NOR_REGISTER_CALLBACKS         0U /* NOR register callback disabled       */
+-#define  USE_HAL_PCCARD_REGISTER_CALLBACKS      0U /* PCCARD register callback disabled    */
+-#define  USE_HAL_PCD_REGISTER_CALLBACKS         0U /* PCD register callback disabled       */
+-#define  USE_HAL_RTC_REGISTER_CALLBACKS         0U /* RTC register callback disabled       */
+-#define  USE_HAL_SD_REGISTER_CALLBACKS          0U /* SD register callback disabled        */
+-#define  USE_HAL_SMARTCARD_REGISTER_CALLBACKS   0U /* SMARTCARD register callback disabled */
+-#define  USE_HAL_IRDA_REGISTER_CALLBACKS        0U /* IRDA register callback disabled      */
+-#define  USE_HAL_SRAM_REGISTER_CALLBACKS        0U /* SRAM register callback disabled      */
+-#define  USE_HAL_SPI_REGISTER_CALLBACKS         0U /* SPI register callback disabled       */
+-#define  USE_HAL_TIM_REGISTER_CALLBACKS         0U /* TIM register callback disabled       */
+-#define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
+-#define  USE_HAL_USART_REGISTER_CALLBACKS       0U /* USART register callback disabled     */
+-#define  USE_HAL_WWDG_REGISTER_CALLBACKS        0U /* WWDG register callback disabled      */
+-
+-/* ########################## Assert Selection ############################## */
+-/**
+-  * @brief Uncomment the line below to expanse the "assert_param" macro in the
+-  *        HAL drivers code
+-  */
+-/* #define USE_FULL_ASSERT    1U */
+-
+-/* ################## Ethernet peripheral configuration ##################### */
+-
+-/* Section 1 : Ethernet peripheral configuration */
+-
+-/* MAC ADDRESS: MAC_ADDR0:MAC_ADDR1:MAC_ADDR2:MAC_ADDR3:MAC_ADDR4:MAC_ADDR5 */
+-#define MAC_ADDR0   2U
+-#define MAC_ADDR1   0U
+-#define MAC_ADDR2   0U
+-#define MAC_ADDR3   0U
+-#define MAC_ADDR4   0U
+-#define MAC_ADDR5   0U
+-
+-/* Definition of the Ethernet driver buffers size and count */
+-#define ETH_RX_BUF_SIZE                ETH_MAX_PACKET_SIZE /* buffer size for receive               */
+-#define ETH_TX_BUF_SIZE                ETH_MAX_PACKET_SIZE /* buffer size for transmit              */
+-#define ETH_RXBUFNB                    8U       /* 4 Rx buffers of size ETH_RX_BUF_SIZE  */
+-#define ETH_TXBUFNB                    4U       /* 4 Tx buffers of size ETH_TX_BUF_SIZE  */
+-
+-/* Section 2: PHY configuration section */
+-
+-/* DP83848_PHY_ADDRESS Address*/
+-#define DP83848_PHY_ADDRESS           0x01U
+-/* PHY Reset delay these values are based on a 1 ms Systick interrupt*/
+-#define PHY_RESET_DELAY                 0x000000FFU
+-/* PHY Configuration delay */
+-#define PHY_CONFIG_DELAY                0x00000FFFU
+-
+-#define PHY_READ_TO                     0x0000FFFFU
+-#define PHY_WRITE_TO                    0x0000FFFFU
+-
+-/* Section 3: Common PHY Registers */
+-
+-#define PHY_BCR                         ((uint16_t)0x00)    /*!< Transceiver Basic Control Register   */
+-#define PHY_BSR                         ((uint16_t)0x01)    /*!< Transceiver Basic Status Register    */
+-
+-#define PHY_RESET                       ((uint16_t)0x8000)  /*!< PHY Reset */
+-#define PHY_LOOPBACK                    ((uint16_t)0x4000)  /*!< Select loop-back mode */
+-#define PHY_FULLDUPLEX_100M             ((uint16_t)0x2100)  /*!< Set the full-duplex mode at 100 Mb/s */
+-#define PHY_HALFDUPLEX_100M             ((uint16_t)0x2000)  /*!< Set the half-duplex mode at 100 Mb/s */
+-#define PHY_FULLDUPLEX_10M              ((uint16_t)0x0100)  /*!< Set the full-duplex mode at 10 Mb/s  */
+-#define PHY_HALFDUPLEX_10M              ((uint16_t)0x0000)  /*!< Set the half-duplex mode at 10 Mb/s  */
+-#define PHY_AUTONEGOTIATION             ((uint16_t)0x1000)  /*!< Enable auto-negotiation function     */
+-#define PHY_RESTART_AUTONEGOTIATION     ((uint16_t)0x0200)  /*!< Restart auto-negotiation function    */
+-#define PHY_POWERDOWN                   ((uint16_t)0x0800)  /*!< Select the power down mode           */
+-#define PHY_ISOLATE                     ((uint16_t)0x0400)  /*!< Isolate PHY from MII                 */
+-
+-#define PHY_AUTONEGO_COMPLETE           ((uint16_t)0x0020)  /*!< Auto-Negotiation process completed   */
+-#define PHY_LINKED_STATUS               ((uint16_t)0x0004)  /*!< Valid link established               */
+-#define PHY_JABBER_DETECTION            ((uint16_t)0x0002)  /*!< Jabber condition detected            */
+-
+-/* Section 4: Extended PHY Registers */
+-#define PHY_SR                          ((uint16_t)0x10U)    /*!< PHY status register Offset                      */
+-
+-#define PHY_SPEED_STATUS                ((uint16_t)0x0002U)  /*!< PHY Speed mask                                  */
+-#define PHY_DUPLEX_STATUS               ((uint16_t)0x0004U)  /*!< PHY Duplex mask                                 */
+-
+-/* ################## SPI peripheral configuration ########################## */
+-
+-/* CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
+-* Activated: CRC code is present inside driver
+-* Deactivated: CRC code cleaned from driver
+-*/
+-
+-#define USE_SPI_CRC                     0U
+-
+-/* Includes ------------------------------------------------------------------*/
+-/**
+-  * @brief Include module's header file
+-  */
+-
+-#ifdef HAL_RCC_MODULE_ENABLED
+-#include "stm32f1xx_hal_rcc.h"
+-#endif /* HAL_RCC_MODULE_ENABLED */
+-
+-#ifdef HAL_GPIO_MODULE_ENABLED
+-#include "stm32f1xx_hal_gpio.h"
+-#endif /* HAL_GPIO_MODULE_ENABLED */
+-
+-#ifdef HAL_EXTI_MODULE_ENABLED
+-#include "stm32f1xx_hal_exti.h"
+-#endif /* HAL_EXTI_MODULE_ENABLED */
+-
+-#ifdef HAL_DMA_MODULE_ENABLED
+-#include "stm32f1xx_hal_dma.h"
+-#endif /* HAL_DMA_MODULE_ENABLED */
+-
+-#ifdef HAL_ETH_MODULE_ENABLED
+-#include "stm32f1xx_hal_eth.h"
+-#endif /* HAL_ETH_MODULE_ENABLED */
+-
+-#ifdef HAL_CAN_MODULE_ENABLED
+-#include "stm32f1xx_hal_can.h"
+-#endif /* HAL_CAN_MODULE_ENABLED */
+-
+-#ifdef HAL_CAN_LEGACY_MODULE_ENABLED
+-  #include "Legacy/stm32f1xx_hal_can_legacy.h"
+-#endif /* HAL_CAN_LEGACY_MODULE_ENABLED */
+-
+-#ifdef HAL_CEC_MODULE_ENABLED
+-#include "stm32f1xx_hal_cec.h"
+-#endif /* HAL_CEC_MODULE_ENABLED */
+-
+-#ifdef HAL_CORTEX_MODULE_ENABLED
+-#include "stm32f1xx_hal_cortex.h"
+-#endif /* HAL_CORTEX_MODULE_ENABLED */
+-
+-#ifdef HAL_ADC_MODULE_ENABLED
+-#include "stm32f1xx_hal_adc.h"
+-#endif /* HAL_ADC_MODULE_ENABLED */
+-
+-#ifdef HAL_CRC_MODULE_ENABLED
+-#include "stm32f1xx_hal_crc.h"
+-#endif /* HAL_CRC_MODULE_ENABLED */
+-
+-#ifdef HAL_DAC_MODULE_ENABLED
+-#include "stm32f1xx_hal_dac.h"
+-#endif /* HAL_DAC_MODULE_ENABLED */
+-
+-#ifdef HAL_FLASH_MODULE_ENABLED
+-#include "stm32f1xx_hal_flash.h"
+-#endif /* HAL_FLASH_MODULE_ENABLED */
+-
+-#ifdef HAL_SRAM_MODULE_ENABLED
+-#include "stm32f1xx_hal_sram.h"
+-#endif /* HAL_SRAM_MODULE_ENABLED */
+-
+-#ifdef HAL_NOR_MODULE_ENABLED
+-#include "stm32f1xx_hal_nor.h"
+-#endif /* HAL_NOR_MODULE_ENABLED */
+-
+-#ifdef HAL_I2C_MODULE_ENABLED
+-#include "stm32f1xx_hal_i2c.h"
+-#endif /* HAL_I2C_MODULE_ENABLED */
+-
+-#ifdef HAL_I2S_MODULE_ENABLED
+-#include "stm32f1xx_hal_i2s.h"
+-#endif /* HAL_I2S_MODULE_ENABLED */
+-
+-#ifdef HAL_IWDG_MODULE_ENABLED
+-#include "stm32f1xx_hal_iwdg.h"
+-#endif /* HAL_IWDG_MODULE_ENABLED */
+-
+-#ifdef HAL_PWR_MODULE_ENABLED
+-#include "stm32f1xx_hal_pwr.h"
+-#endif /* HAL_PWR_MODULE_ENABLED */
+-
+-#ifdef HAL_RTC_MODULE_ENABLED
+-#include "stm32f1xx_hal_rtc.h"
+-#endif /* HAL_RTC_MODULE_ENABLED */
+-
+-#ifdef HAL_PCCARD_MODULE_ENABLED
+-#include "stm32f1xx_hal_pccard.h"
+-#endif /* HAL_PCCARD_MODULE_ENABLED */
+-
+-#ifdef HAL_SD_MODULE_ENABLED
+-#include "stm32f1xx_hal_sd.h"
+-#endif /* HAL_SD_MODULE_ENABLED */
+-
+-#ifdef HAL_NAND_MODULE_ENABLED
+-#include "stm32f1xx_hal_nand.h"
+-#endif /* HAL_NAND_MODULE_ENABLED */
+-
+-#ifdef HAL_SPI_MODULE_ENABLED
+-#include "stm32f1xx_hal_spi.h"
+-#endif /* HAL_SPI_MODULE_ENABLED */
+-
+-#ifdef HAL_TIM_MODULE_ENABLED
+-#include "stm32f1xx_hal_tim.h"
+-#endif /* HAL_TIM_MODULE_ENABLED */
+-
+-#ifdef HAL_UART_MODULE_ENABLED
+-#include "stm32f1xx_hal_uart.h"
+-#endif /* HAL_UART_MODULE_ENABLED */
+-
+-#ifdef HAL_USART_MODULE_ENABLED
+-#include "stm32f1xx_hal_usart.h"
+-#endif /* HAL_USART_MODULE_ENABLED */
+-
+-#ifdef HAL_IRDA_MODULE_ENABLED
+-#include "stm32f1xx_hal_irda.h"
+-#endif /* HAL_IRDA_MODULE_ENABLED */
+-
+-#ifdef HAL_SMARTCARD_MODULE_ENABLED
+-#include "stm32f1xx_hal_smartcard.h"
+-#endif /* HAL_SMARTCARD_MODULE_ENABLED */
+-
+-#ifdef HAL_WWDG_MODULE_ENABLED
+-#include "stm32f1xx_hal_wwdg.h"
+-#endif /* HAL_WWDG_MODULE_ENABLED */
+-
+-#ifdef HAL_PCD_MODULE_ENABLED
+-#include "stm32f1xx_hal_pcd.h"
+-#endif /* HAL_PCD_MODULE_ENABLED */
+-
+-#ifdef HAL_HCD_MODULE_ENABLED
+-#include "stm32f1xx_hal_hcd.h"
+-#endif /* HAL_HCD_MODULE_ENABLED */
+-
+-#ifdef HAL_MMC_MODULE_ENABLED
+-#include "stm32f1xx_hal_mmc.h"
+-#endif /* HAL_MMC_MODULE_ENABLED */
+-
+-/* Exported macro ------------------------------------------------------------*/
+-#ifdef  USE_FULL_ASSERT
+-/**
+-  * @brief  The assert_param macro is used for function's parameters check.
+-  * @param  expr If expr is false, it calls assert_failed function
+-  *         which reports the name of the source file and the source
+-  *         line number of the call that failed.
+-  *         If expr is true, it returns no value.
+-  * @retval None
+-  */
+-#define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
+-/* Exported functions ------------------------------------------------------- */
+-void assert_failed(uint8_t* file, uint32_t line);
+-#else
+-#define assert_param(expr) ((void)0U)
+-#endif /* USE_FULL_ASSERT */
+-
+-#ifdef __cplusplus
+-}
+-#endif
+-
+-#endif /* __STM32F1xx_HAL_CONF_H */
+-
++/* USER CODE BEGIN Header */
++/**
++  ******************************************************************************
++  * @file    stm32f1xx_hal_conf.h
++  * @brief   HAL configuration file.
++  ******************************************************************************
++  * @attention
++  *
++  * Copyright (c) 2017 STMicroelectronics.
++  * All rights reserved.
++  *
++  * This software is licensed under terms that can be found in the LICENSE file
++  * in the root directory of this software component.
++  * If no LICENSE file comes with this software, it is provided AS-IS.
++  *
++  ******************************************************************************
++  */
++/* USER CODE END Header */
++
++/* Define to prevent recursive inclusion -------------------------------------*/
++#ifndef __STM32F1xx_HAL_CONF_H
++#define __STM32F1xx_HAL_CONF_H
++
++#ifdef __cplusplus
++ extern "C" {
++#endif
++
++/* Exported types ------------------------------------------------------------*/
++/* Exported constants --------------------------------------------------------*/
++
++/* ########################## Module Selection ############################## */
++/**
++  * @brief This is the list of modules to be used in the HAL driver
++  */
++
++#define HAL_MODULE_ENABLED
++  /*#define HAL_ADC_MODULE_ENABLED   */
++/*#define HAL_CRYP_MODULE_ENABLED   */
++/*#define HAL_CAN_MODULE_ENABLED   */
++/*#define HAL_CAN_LEGACY_MODULE_ENABLED   */
++/*#define HAL_CEC_MODULE_ENABLED   */
++/*#define HAL_CORTEX_MODULE_ENABLED   */
++/*#define HAL_CRC_MODULE_ENABLED   */
++/*#define HAL_DAC_MODULE_ENABLED   */
++/*#define HAL_DMA_MODULE_ENABLED   */
++/*#define HAL_ETH_MODULE_ENABLED   */
++/*#define HAL_FLASH_MODULE_ENABLED   */
++#define HAL_GPIO_MODULE_ENABLED
++#define HAL_I2C_MODULE_ENABLED
++/*#define HAL_I2S_MODULE_ENABLED   */
++/*#define HAL_IRDA_MODULE_ENABLED   */
++/*#define HAL_IWDG_MODULE_ENABLED   */
++/*#define HAL_NOR_MODULE_ENABLED   */
++/*#define HAL_NAND_MODULE_ENABLED   */
++/*#define HAL_PCCARD_MODULE_ENABLED   */
++/*#define HAL_PCD_MODULE_ENABLED   */
++/*#define HAL_HCD_MODULE_ENABLED   */
++/*#define HAL_PWR_MODULE_ENABLED   */
++/*#define HAL_RCC_MODULE_ENABLED   */
++/*#define HAL_RTC_MODULE_ENABLED   */
++/*#define HAL_SD_MODULE_ENABLED   */
++/*#define HAL_MMC_MODULE_ENABLED   */
++/*#define HAL_SDRAM_MODULE_ENABLED   */
++/*#define HAL_SMARTCARD_MODULE_ENABLED   */
++#define HAL_SPI_MODULE_ENABLED
++/*#define HAL_SRAM_MODULE_ENABLED   */
++#define HAL_TIM_MODULE_ENABLED
++#define HAL_UART_MODULE_ENABLED
++/*#define HAL_USART_MODULE_ENABLED   */
++/*#define HAL_WWDG_MODULE_ENABLED   */
++
++#define HAL_CORTEX_MODULE_ENABLED
++#define HAL_DMA_MODULE_ENABLED
++#define HAL_FLASH_MODULE_ENABLED
++#define HAL_EXTI_MODULE_ENABLED
++#define HAL_GPIO_MODULE_ENABLED
++#define HAL_PWR_MODULE_ENABLED
++#define HAL_RCC_MODULE_ENABLED
++
++/* ########################## Oscillator Values adaptation ####################*/
++/**
++  * @brief Adjust the value of External High Speed oscillator (HSE) used in your application.
++  *        This value is used by the RCC HAL module to compute the system frequency
++  *        (when HSE is used as system clock source, directly or through the PLL).
++  */
++#if !defined  (HSE_VALUE)
++  #define HSE_VALUE    8000000U /*!< Value of the External oscillator in Hz */
++#endif /* HSE_VALUE */
++
++#if !defined  (HSE_STARTUP_TIMEOUT)
++  #define HSE_STARTUP_TIMEOUT    100U   /*!< Time out for HSE start up, in ms */
++#endif /* HSE_STARTUP_TIMEOUT */
++
++/**
++  * @brief Internal High Speed oscillator (HSI) value.
++  *        This value is used by the RCC HAL module to compute the system frequency
++  *        (when HSI is used as system clock source, directly or through the PLL).
++  */
++#if !defined  (HSI_VALUE)
++  #define HSI_VALUE    8000000U /*!< Value of the Internal oscillator in Hz*/
++#endif /* HSI_VALUE */
++
++/**
++  * @brief Internal Low Speed oscillator (LSI) value.
++  */
++#if !defined  (LSI_VALUE)
++ #define LSI_VALUE               40000U    /*!< LSI Typical Value in Hz */
++#endif /* LSI_VALUE */                     /*!< Value of the Internal Low Speed oscillator in Hz
++                                                The real value may vary depending on the variations
++                                                in voltage and temperature. */
++
++/**
++  * @brief External Low Speed oscillator (LSE) value.
++  *        This value is used by the UART, RTC HAL module to compute the system frequency
++  */
++#if !defined  (LSE_VALUE)
++  #define LSE_VALUE    32768U /*!< Value of the External oscillator in Hz*/
++#endif /* LSE_VALUE */
++
++#if !defined  (LSE_STARTUP_TIMEOUT)
++  #define LSE_STARTUP_TIMEOUT    5000U   /*!< Time out for LSE start up, in ms */
++#endif /* LSE_STARTUP_TIMEOUT */
++
++/* Tip: To avoid modifying this file each time you need to use different HSE,
++   ===  you can define the HSE value in your toolchain compiler preprocessor. */
++
++/* ########################### System Configuration ######################### */
++/**
++  * @brief This is the HAL system configuration section
++  */
++#define  VDD_VALUE                    3300U /*!< Value of VDD in mv */
++/* TIM4 高于红外 EXTI 的优�+�级 5；ISR 不调用 RTOS API。 */
++#define  TICK_INT_PRIORITY            4U
++#define  USE_RTOS                     0U
++#define  PREFETCH_ENABLE              1U
++
++#define  USE_HAL_ADC_REGISTER_CALLBACKS         0U /* ADC register callback disabled       */
++#define  USE_HAL_CAN_REGISTER_CALLBACKS         0U /* CAN register callback disabled       */
++#define  USE_HAL_CEC_REGISTER_CALLBACKS         0U /* CEC register callback disabled       */
++#define  USE_HAL_DAC_REGISTER_CALLBACKS         0U /* DAC register callback disabled       */
++#define  USE_HAL_ETH_REGISTER_CALLBACKS         0U /* ETH register callback disabled       */
++#define  USE_HAL_HCD_REGISTER_CALLBACKS         0U /* HCD register callback disabled       */
++#define  USE_HAL_I2C_REGISTER_CALLBACKS         0U /* I2C register callback disabled       */
++#define  USE_HAL_I2S_REGISTER_CALLBACKS         0U /* I2S register callback disabled       */
++#define  USE_HAL_MMC_REGISTER_CALLBACKS         0U /* MMC register callback disabled       */
++#define  USE_HAL_NAND_REGISTER_CALLBACKS        0U /* NAND register callback disabled      */
++#define  USE_HAL_NOR_REGISTER_CALLBACKS         0U /* NOR register callback disabled       */
++#define  USE_HAL_PCCARD_REGISTER_CALLBACKS      0U /* PCCARD register callback disabled    */
++#define  USE_HAL_PCD_REGISTER_CALLBACKS         0U /* PCD register callback disabled       */
++#define  USE_HAL_RTC_REGISTER_CALLBACKS         0U /* RTC register callback disabled       */
++#define  USE_HAL_SD_REGISTER_CALLBACKS          0U /* SD register callback disabled        */
++#define  USE_HAL_SMARTCARD_REGISTER_CALLBACKS   0U /* SMARTCARD register callback disabled */
++#define  USE_HAL_IRDA_REGISTER_CALLBACKS        0U /* IRDA register callback disabled      */
++#define  USE_HAL_SRAM_REGISTER_CALLBACKS        0U /* SRAM register callback disabled      */
++#define  USE_HAL_SPI_REGISTER_CALLBACKS         0U /* SPI register callback disabled       */
++#define  USE_HAL_TIM_REGISTER_CALLBACKS         0U /* TIM register callback disabled       */
++#define  USE_HAL_UART_REGISTER_CALLBACKS        0U /* UART register callback disabled      */
++#define  USE_HAL_USART_REGISTER_CALLBACKS       0U /* USART register callback disabled     */
++#define  USE_HAL_WWDG_REGISTER_CALLBACKS        0U /* WWDG register callback disabled      */
++
++/* ########################## Assert Selection ############################## */
++/**
++  * @brief Uncomment the line below to expanse the "assert_param" macro in the
++  *        HAL drivers code
++  */
++/* #define USE_FULL_ASSERT    1U */
++
++/* ################## Ethernet peripheral configuration ##################### */
++
++/* Section 1 : Ethernet peripheral configuration */
++
++/* MAC ADDRESS: MAC_ADDR0:MAC_ADDR1:MAC_ADDR2:MAC_ADDR3:MAC_ADDR4:MAC_ADDR5 */
++#define MAC_ADDR0   2U
++#define MAC_ADDR1   0U
++#define MAC_ADDR2   0U
++#define MAC_ADDR3   0U
++#define MAC_ADDR4   0U
++#define MAC_ADDR5   0U
++
++/* Definition of the Ethernet driver buffers size and count */
++#define ETH_RX_BUF_SIZE                ETH_MAX_PACKET_SIZE /* buffer size for receive               */
++#define ETH_TX_BUF_SIZE                ETH_MAX_PACKET_SIZE /* buffer size for transmit              */
++#define ETH_RXBUFNB                    8U       /* 4 Rx buffers of size ETH_RX_BUF_SIZE  */
++#define ETH_TXBUFNB                    4U       /* 4 Tx buffers of size ETH_TX_BUF_SIZE  */
++
++/* Section 2: PHY configuration section */
++
++/* DP83848_PHY_ADDRESS Address*/
++#define DP83848_PHY_ADDRESS           0x01U
++/* PHY Reset delay these values are based on a 1 ms Systick interrupt*/
++#define PHY_RESET_DELAY                 0x000000FFU
++/* PHY Configuration delay */
++#define PHY_CONFIG_DELAY                0x00000FFFU
++
++#define PHY_READ_TO                     0x0000FFFFU
++#define PHY_WRITE_TO                    0x0000FFFFU
++
++/* Section 3: Common PHY Registers */
++
++#define PHY_BCR                         ((uint16_t)0x00)    /*!< Transceiver Basic Control Register   */
++#define PHY_BSR                         ((uint16_t)0x01)    /*!< Transceiver Basic Status Register    */
++
++#define PHY_RESET                       ((uint16_t)0x8000)  /*!< PHY Reset */
++#define PHY_LOOPBACK                    ((uint16_t)0x4000)  /*!< Select loop-back mode */
++#define PHY_FULLDUPLEX_100M             ((uint16_t)0x2100)  /*!< Set the full-duplex mode at 100 Mb/s */
++#define PHY_HALFDUPLEX_100M             ((uint16_t)0x2000)  /*!< Set the half-duplex mode at 100 Mb/s */
++#define PHY_FULLDUPLEX_10M              ((uint16_t)0x0100)  /*!< Set the full-duplex mode at 10 Mb/s  */
++#define PHY_HALFDUPLEX_10M              ((uint16_t)0x0000)  /*!< Set the half-duplex mode at 10 Mb/s  */
++#define PHY_AUTONEGOTIATION             ((uint16_t)0x1000)  /*!< Enable auto-negotiation function     */
++#define PHY_RESTART_AUTONEGOTIATION     ((uint16_t)0x0200)  /*!< Restart auto-negotiation function    */
++#define PHY_POWERDOWN                   ((uint16_t)0x0800)  /*!< Select the power down mode           */
++#define PHY_ISOLATE                     ((uint16_t)0x0400)  /*!< Isolate PHY from MII                 */
++
++#define PHY_AUTONEGO_COMPLETE           ((uint16_t)0x0020)  /*!< Auto-Negotiation process completed   */
++#define PHY_LINKED_STATUS               ((uint16_t)0x0004)  /*!< Valid link established               */
++#define PHY_JABBER_DETECTION            ((uint16_t)0x0002)  /*!< Jabber condition detected            */
++
++/* Section 4: Extended PHY Registers */
++#define PHY_SR                          ((uint16_t)0x10U)    /*!< PHY status register Offset                      */
++
++#define PHY_SPEED_STATUS                ((uint16_t)0x0002U)  /*!< PHY Speed mask                                  */
++#define PHY_DUPLEX_STATUS               ((uint16_t)0x0004U)  /*!< PHY Duplex mask                                 */
++
++/* ################## SPI peripheral configuration ########################## */
++
++/* CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
++* Activated: CRC code is present inside driver
++* Deactivated: CRC code cleaned from driver
++*/
++
++#define USE_SPI_CRC                     0U
++
++/* Includes ------------------------------------------------------------------*/
++/**
++  * @brief Include module's header file
++  */
++
++#ifdef HAL_RCC_MODULE_ENABLED
++#include "stm32f1xx_hal_rcc.h"
++#endif /* HAL_RCC_MODULE_ENABLED */
++
++#ifdef HAL_GPIO_MODULE_ENABLED
++#include "stm32f1xx_hal_gpio.h"
++#endif /* HAL_GPIO_MODULE_ENABLED */
++
++#ifdef HAL_EXTI_MODULE_ENABLED
++#include "stm32f1xx_hal_exti.h"
++#endif /* HAL_EXTI_MODULE_ENABLED */
++
++#ifdef HAL_DMA_MODULE_ENABLED
++#include "stm32f1xx_hal_dma.h"
++#endif /* HAL_DMA_MODULE_ENABLED */
++
++#ifdef HAL_ETH_MODULE_ENABLED
++#include "stm32f1xx_hal_eth.h"
++#endif /* HAL_ETH_MODULE_ENABLED */
++
++#ifdef HAL_CAN_MODULE_ENABLED
++#include "stm32f1xx_hal_can.h"
++#endif /* HAL_CAN_MODULE_ENABLED */
++
++#ifdef HAL_CAN_LEGACY_MODULE_ENABLED
++  #include "Legacy/stm32f1xx_hal_can_legacy.h"
++#endif /* HAL_CAN_LEGACY_MODULE_ENABLED */
++
++#ifdef HAL_CEC_MODULE_ENABLED
++#include "stm32f1xx_hal_cec.h"
++#endif /* HAL_CEC_MODULE_ENABLED */
++
++#ifdef HAL_CORTEX_MODULE_ENABLED
++#include "stm32f1xx_hal_cortex.h"
++#endif /* HAL_CORTEX_MODULE_ENABLED */
++
++#ifdef HAL_ADC_MODULE_ENABLED
++#include "stm32f1xx_hal_adc.h"
++#endif /* HAL_ADC_MODULE_ENABLED */
++
++#ifdef HAL_CRC_MODULE_ENABLED
++#include "stm32f1xx_hal_crc.h"
++#endif /* HAL_CRC_MODULE_ENABLED */
++
++#ifdef HAL_DAC_MODULE_ENABLED
++#include "stm32f1xx_hal_dac.h"
++#endif /* HAL_DAC_MODULE_ENABLED */
++
++#ifdef HAL_FLASH_MODULE_ENABLED
++#include "stm32f1xx_hal_flash.h"
++#endif /* HAL_FLASH_MODULE_ENABLED */
++
++#ifdef HAL_SRAM_MODULE_ENABLED
++#include "stm32f1xx_hal_sram.h"
++#endif /* HAL_SRAM_MODULE_ENABLED */
++
++#ifdef HAL_NOR_MODULE_ENABLED
++#include "stm32f1xx_hal_nor.h"
++#endif /* HAL_NOR_MODULE_ENABLED */
++
++#ifdef HAL_I2C_MODULE_ENABLED
++#include "stm32f1xx_hal_i2c.h"
++#endif /* HAL_I2C_MODULE_ENABLED */
++
++#ifdef HAL_I2S_MODULE_ENABLED
++#include "stm32f1xx_hal_i2s.h"
++#endif /* HAL_I2S_MODULE_ENABLED */
++
++#ifdef HAL_IWDG_MODULE_ENABLED
++#include "stm32f1xx_hal_iwdg.h"
++#endif /* HAL_IWDG_MODULE_ENABLED */
++
++#ifdef HAL_PWR_MODULE_ENABLED
++#include "stm32f1xx_hal_pwr.h"
++#endif /* HAL_PWR_MODULE_ENABLED */
++
++#ifdef HAL_RTC_MODULE_ENABLED
++#include "stm32f1xx_hal_rtc.h"
++#endif /* HAL_RTC_MODULE_ENABLED */
++
++#ifdef HAL_PCCARD_MODULE_ENABLED
++#include "stm32f1xx_hal_pccard.h"
++#endif /* HAL_PCCARD_MODULE_ENABLED */
++
++#ifdef HAL_SD_MODULE_ENABLED
++#include "stm32f1xx_hal_sd.h"
++#endif /* HAL_SD_MODULE_ENABLED */
++
++#ifdef HAL_NAND_MODULE_ENABLED
++#include "stm32f1xx_hal_nand.h"
++#endif /* HAL_NAND_MODULE_ENABLED */
++
++#ifdef HAL_SPI_MODULE_ENABLED
++#include "stm32f1xx_hal_spi.h"
++#endif /* HAL_SPI_MODULE_ENABLED */
++
++#ifdef HAL_TIM_MODULE_ENABLED
++#include "stm32f1xx_hal_tim.h"
++#endif /* HAL_TIM_MODULE_ENABLED */
++
++#ifdef HAL_UART_MODULE_ENABLED
++#include "stm32f1xx_hal_uart.h"
++#endif /* HAL_UART_MODULE_ENABLED */
++
++#ifdef HAL_USART_MODULE_ENABLED
++#include "stm32f1xx_hal_usart.h"
++#endif /* HAL_USART_MODULE_ENABLED */
++
++#ifdef HAL_IRDA_MODULE_ENABLED
++#include "stm32f1xx_hal_irda.h"
++#endif /* HAL_IRDA_MODULE_ENABLED */
++
++#ifdef HAL_SMARTCARD_MODULE_ENABLED
++#include "stm32f1xx_hal_smartcard.h"
++#endif /* HAL_SMARTCARD_MODULE_ENABLED */
++
++#ifdef HAL_WWDG_MODULE_ENABLED
++#include "stm32f1xx_hal_wwdg.h"
++#endif /* HAL_WWDG_MODULE_ENABLED */
++
++#ifdef HAL_PCD_MODULE_ENABLED
++#include "stm32f1xx_hal_pcd.h"
++#endif /* HAL_PCD_MODULE_ENABLED */
++
++#ifdef HAL_HCD_MODULE_ENABLED
++#include "stm32f1xx_hal_hcd.h"
++#endif /* HAL_HCD_MODULE_ENABLED */
++
++#ifdef HAL_MMC_MODULE_ENABLED
++#include "stm32f1xx_hal_mmc.h"
++#endif /* HAL_MMC_MODULE_ENABLED */
++
++/* Exported macro ------------------------------------------------------------*/
++#ifdef  USE_FULL_ASSERT
++/**
++  * @brief  The assert_param macro is used for function's parameters check.
++  * @param  expr If expr is false, it calls assert_failed function
++  *         which reports the name of the source file and the source
++  *         line number of the call that failed.
++  *         If expr is true, it returns no value.
++  * @retval None
++  */
++#define assert_param(expr) ((expr) ? (void)0U : assert_failed((uint8_t *)__FILE__, __LINE__))
++/* Exported functions ------------------------------------------------------- */
++void assert_failed(uint8_t* file, uint32_t line);
++#else
++#define assert_param(expr) ((void)0U)
++#endif /* USE_FULL_ASSERT */
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif /* __STM32F1xx_HAL_CONF_H */
++
+--- before/Core\Inc\stm32f1xx_it.h
++++ after/Core\Inc\stm32f1xx_it.h
+@@ -1,67 +1,69 @@
+-/* USER CODE BEGIN Header */
+-/**
+-  ******************************************************************************
+-  * @file    stm32f1xx_it.h
+-  * @brief   This file contains the headers of the interrupt handlers.
+-  ******************************************************************************
+-  * @attention
+-  *
+-  * Copyright (c) 2023 STMicroelectronics.
+-  * All rights reserved.
+-  *
+-  * This software is licensed under terms that can be found in the LICENSE file
+-  * in the root directory of this software component.
+-  * If no LICENSE file comes with this software, it is provided AS-IS.
+-  *
+- ******************************************************************************
+-  */
+-/* USER CODE END Header */
+-
+-/* Define to prevent recursive inclusion -------------------------------------*/
+-#ifndef __STM32F1xx_IT_H
+-#define __STM32F1xx_IT_H
+-
+-#ifdef __cplusplus
+- extern "C" {
+-#endif
+-
+-/* Private includes ----------------------------------------------------------*/
+-/* USER CODE BEGIN Includes */
+-
+-/* USER CODE END Includes */
+-
+-/* Exported types ------------------------------------------------------------*/
+-/* USER CODE BEGIN ET */
+-
+-/* USER CODE END ET */
+-
+-/* Exported constants --------------------------------------------------------*/
+-/* USER CODE BEGIN EC */
+-
+-/* USER CODE END EC */
+-
+-/* Exported macro ------------------------------------------------------------*/
+-/* USER CODE BEGIN EM */
+-
+-/* USER CODE END EM */
+-
+-/* Exported functions prototypes ---------------------------------------------*/
+-void NMI_Handler(void);
+-void HardFault_Handler(void);
+-void MemManage_Handler(void);
+-void BusFault_Handler(void);
+-void UsageFault_Handler(void);
+-void SVC_Handler(void);
+-void DebugMon_Handler(void);
+-void PendSV_Handler(void);
+-void SysTick_Handler(void);
+-void EXTI15_10_IRQHandler(void);
+-/* USER CODE BEGIN EFP */
+-
+-/* USER CODE END EFP */
+-
+-#ifdef __cplusplus
+-}
+-#endif
+-
+-#endif /* __STM32F1xx_IT_H */
++/* USER CODE BEGIN Header */
++/**
++  ******************************************************************************
++  * @file    stm32f1xx_it.h
++  * @brief   This file contains the headers of the interrupt handlers.
++  ******************************************************************************
++  * @attention
++  *
++  * Copyright (c) 2023 STMicroelectronics.
++  * All rights reserved.
++  *
++  * This software is licensed under terms that can be found in the LICENSE file
++  * in the root directory of this software component.
++  * If no LICENSE file comes with this software, it is provided AS-IS.
++  *
++ ******************************************************************************
++  */
++/* USER CODE END Header */
++
++/* Define to prevent recursive inclusion -------------------------------------*/
++#ifndef __STM32F1xx_IT_H
++#define __STM32F1xx_IT_H
++
++#ifdef __cplusplus
++ extern "C" {
++#endif
++
++/* Private includes ----------------------------------------------------------*/
++/* USER CODE BEGIN Includes */
++
++/* USER CODE END Includes */
++
++/* Exported types ------------------------------------------------------------*/
++/* USER CODE BEGIN ET */
++
++/* USER CODE END ET */
++
++/* Exported constants --------------------------------------------------------*/
++/* USER CODE BEGIN EC */
++
++/* USER CODE END EC */
++
++/* Exported macro ------------------------------------------------------------*/
++/* USER CODE BEGIN EM */
++
++/* USER CODE END EM */
++
++/* Exported functions prototypes ---------------------------------------------*/
++void NMI_Handler(void);
++void HardFault_Handler(void);
++void MemManage_Handler(void);
++void BusFault_Handler(void);
++void UsageFault_Handler(void);
++void SVC_Handler(void);
++void DebugMon_Handler(void);
++void PendSV_Handler(void);
++void SysTick_Handler(void);
++void EXTI15_10_IRQHandler(void);
++/* USER CODE BEGIN EFP */
++void TIM3_IRQHandler(void);
++void TIM4_IRQHandler(void);
++
++/* USER CODE END EFP */
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif /* __STM32F1xx_IT_H */
+--- before/Core\Src\main.c
++++ after/Core\Src\main.c
+@@ -59,6 +59,7 @@
+ 
+ /* Private includes ----------------------------------------------------------*/
+ /* USER CODE BEGIN Includes */
++#include "driver_timer.h"
+ 
+ /* USER CODE END Includes */
+ 
+@@ -124,7 +125,7 @@
+ 
+   /* MCU Configuration--------------------------------------------------------*/
+ 
+-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
++  /* Reset peripherals and initialize the HAL TIM4 millisecond time base. */
+   HAL_Init();
+ 
+   /* USER CODE BEGIN Init */
+@@ -135,6 +136,11 @@
+   SystemClock_Config();
+ 
+   /* USER CODE BEGIN SysInit */
++  /* TIM3 在最终 72MHz 时钟下启动，�+�于红外 EXTI 和 OLED 初始化。 */
++  if(MicroTimer_Init() != HAL_OK)
++    Error_Handler();
++
+ 
+   /* USER CODE END SysInit */
+ 
+--- before/Core\Src\stm32f1xx_it.c
++++ after/Core\Src\stm32f1xx_it.c
+@@ -1,228 +1,223 @@
+-/* USER CODE BEGIN Header */
+-/**
+-  ******************************************************************************
+-  * @file    stm32f1xx_it.c
+-  * @brief   Interrupt Service Routines.
+-  ******************************************************************************
+-  * @attention
+-  *
+-  * Copyright (c) 2023 STMicroelectronics.
+-  * All rights reserved.
+-  *
+-  * This software is licensed under terms that can be found in the LICENSE file
+-  * in the root directory of this software component.
+-  * If no LICENSE file comes with this software, it is provided AS-IS.
+-  *
+-  ******************************************************************************
+-  */
+-/* USER CODE END Header */
+-
+-/* Includes ------------------------------------------------------------------*/
+-#include "main.h"
+-#include "stm32f1xx_it.h"
+-/* Private includes ----------------------------------------------------------*/
+-/* USER CODE BEGIN Includes */
+-/* USER CODE END Includes */
+-
+-/* Private typedef -----------------------------------------------------------*/
+-/* USER CODE BEGIN TD */
+-
+-/* USER CODE END TD */
+-
+-/* Private define ------------------------------------------------------------*/
+-/* USER CODE BEGIN PD */
+-
+-/* USER CODE END PD */
+-
+-/* Private macro -------------------------------------------------------------*/
+-/* USER CODE BEGIN PM */
+-
+-/* USER CODE END PM */
+-
+-/* Private variables ---------------------------------------------------------*/
+-/* USER CODE BEGIN PV */
+-
+-/* USER CODE END PV */
+-
+-/* Private function prototypes -----------------------------------------------*/
+-/* USER CODE BEGIN PFP */
+-
+-/* USER CODE END PFP */
+-
+-/* Private user code ---------------------------------------------------------*/
+-/* USER CODE BEGIN 0 */
+-
+-/* USER CODE END 0 */
+-
+-/* External variables --------------------------------------------------------*/
+-
+-/* USER CODE BEGIN EV */
+-
+-/* USER CODE END EV */
+-
+-/******************************************************************************/
+-/*           Cortex-M3 Processor Interruption and Exception Handlers          */
+-/******************************************************************************/
+-/**
+-  * @brief This function handles Non maskable interrupt.
+-  */
+-void NMI_Handler(void)
+-{
+-  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
+-
+-  /* USER CODE END NonMaskableInt_IRQn 0 */
+-  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
+-  while (1)
+-  {
+-  }
+-  /* USER CODE END NonMaskableInt_IRQn 1 */
+-}
+-
+-/**
+-  * @brief This function handles Hard fault interrupt.
+-  */
+-void HardFault_Handler(void)
+-{
+-  /* USER CODE BEGIN HardFault_IRQn 0 */
+-
+-  /* USER CODE END HardFault_IRQn 0 */
+-  while (1)
+-  {
+-    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
+-    /* USER CODE END W1_HardFault_IRQn 0 */
+-  }
+-}
+-
+-/**
+-  * @brief This function handles Memory management fault.
+-  */
+-void MemManage_Handler(void)
+-{
+-  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
+-
+-  /* USER CODE END MemoryManagement_IRQn 0 */
+-  while (1)
+-  {
+-    /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
+-    /* USER CODE END W1_MemoryManagement_IRQn 0 */
+-  }
+-}
+-
+-/**
+-  * @brief This function handles Prefetch fault, memory access fault.
+-  */
+-void BusFault_Handler(void)
+-{
+-  /* USER CODE BEGIN BusFault_IRQn 0 */
+-
+-  /* USER CODE END BusFault_IRQn 0 */
+-  while (1)
+-  {
+-    /* USER CODE BEGIN W1_BusFault_IRQn 0 */
+-    /* USER CODE END W1_BusFault_IRQn 0 */
+-  }
+-}
+-
+-/**
+-  * @brief This function handles Undefined instruction or illegal state.
+-  */
+-void UsageFault_Handler(void)
+-{
+-  /* USER CODE BEGIN UsageFault_IRQn 0 */
+-
+-  /* USER CODE END UsageFault_IRQn 0 */
+-  while (1)
+-  {
+-    /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
+-    /* USER CODE END W1_UsageFault_IRQn 0 */
+-  }
+-}
+-
+-/**
+-  * @brief This function handles System service call via SWI instruction.
+-  */
+-void SVC_Handler(void)
+-{
+-  /* USER CODE BEGIN SVCall_IRQn 0 */
+-
+-  /* USER CODE END SVCall_IRQn 0 */
+-  /* USER CODE BEGIN SVCall_IRQn 1 */
+-
+-  /* USER CODE END SVCall_IRQn 1 */
+-}
+-
+-/**
+-  * @brief This function handles Debug monitor.
+-  */
+-void DebugMon_Handler(void)
+-{
+-  /* USER CODE BEGIN DebugMonitor_IRQn 0 */
+-
+-  /* USER CODE END DebugMonitor_IRQn 0 */
+-  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
+-
+-  /* USER CODE END DebugMonitor_IRQn 1 */
+-}
+-
+-/**
+-  * @brief This function handles Pendable request for system service.
+-  */
+-void PendSV_Handler(void)
+-{
+-  /* USER CODE BEGIN PendSV_IRQn 0 */
+-
+-  /* USER CODE END PendSV_IRQn 0 */
+-  /* USER CODE BEGIN PendSV_IRQn 1 */
+-
+-  /* USER CODE END PendSV_IRQn 1 */
+-}
+-
+-/**
+-  * @brief This function handles System tick timer.
+-  */
+-void SysTick_Handler(void)
+-{
+-  /* USER CODE BEGIN SysTick_IRQn 0 */
+-
+-  /* USER CODE END SysTick_IRQn 0 */
+-  HAL_IncTick();
+-  /* USER CODE BEGIN SysTick_IRQn 1 */
+-	
+-	systick_t++;
+-	update = true;
+-	
+-	if((systick_t % 1000) == 0)
+-	{
+-#ifndef RTC_SRC
+-		++timeDate.time.secs;   //ÿ���ӱ�־λ+1;
+-#endif
+-		//LED1=!LED1;	
+-	}
+-
+-  /* USER CODE END SysTick_IRQn 1 */
+-}
+-
+-/******************************************************************************/
+-/* STM32F1xx Peripheral Interrupt Handlers                                    */
+-/* Add here the Interrupt Handlers for the used peripherals.                  */
+-/* For the available peripheral interrupt handler names,                      */
+-/* please refer to the startup file (startup_stm32f1xx.s).                    */
+-/******************************************************************************/
+-
+-/**
+-  * @brief This function handles EXTI line[15:10] interrupts.
+-  */
+-void EXTI15_10_IRQHandler(void)
+-{
+-  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
+-
+-  /* USER CODE END EXTI15_10_IRQn 0 */
+-  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
+-  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
+-
+-  /* USER CODE END EXTI15_10_IRQn 1 */
+-}
+-
+-/* USER CODE BEGIN 1 */
+-
+-/* USER CODE END 1 */
++/* USER CODE BEGIN Header */
++/**
++  ******************************************************************************
++  * @file    stm32f1xx_it.c
++  * @brief   Interrupt Service Routines.
++  ******************************************************************************
++  * @attention
++  *
++  * Copyright (c) 2023 STMicroelectronics.
++  * All rights reserved.
++  *
++  * This software is licensed under terms that can be found in the LICENSE file
++  * in the root directory of this software component.
++  * If no LICENSE file comes with this software, it is provided AS-IS.
++  *
++  ******************************************************************************
++  */
++/* USER CODE END Header */
++
++/* Includes ------------------------------------------------------------------*/
++#include "main.h"
++#include "stm32f1xx_it.h"
++/* Private includes ----------------------------------------------------------*/
++/* USER CODE BEGIN Includes */
++#include "driver_timer.h"
++/* USER CODE END Includes */
++
++/* Private typedef -----------------------------------------------------------*/
++/* USER CODE BEGIN TD */
++
++/* USER CODE END TD */
++
++/* Private define ------------------------------------------------------------*/
++/* USER CODE BEGIN PD */
++
++/* USER CODE END PD */
++
++/* Private macro -------------------------------------------------------------*/
++/* USER CODE BEGIN PM */
++
++/* USER CODE END PM */
++
++/* Private variables ---------------------------------------------------------*/
++/* USER CODE BEGIN PV */
++
++/* USER CODE END PV */
++
++/* Private function prototypes -----------------------------------------------*/
++/* USER CODE BEGIN PFP */
++
++/* USER CODE END PFP */
++
++/* Private user code ---------------------------------------------------------*/
++/* USER CODE BEGIN 0 */
++
++/* USER CODE END 0 */
++
++/* External variables --------------------------------------------------------*/
++
++/* USER CODE BEGIN EV */
++
++/* USER CODE END EV */
++
++/******************************************************************************/
++/*           Cortex-M3 Processor Interruption and Exception Handlers          */
++/******************************************************************************/
++/**
++  * @brief This function handles Non maskable interrupt.
++  */
++void NMI_Handler(void)
++{
++  /* USER CODE BEGIN NonMaskableInt_IRQn 0 */
++
++  /* USER CODE END NonMaskableInt_IRQn 0 */
++  /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
++  while (1)
++  {
++  }
++  /* USER CODE END NonMaskableInt_IRQn 1 */
++}
++
++/**
++  * @brief This function handles Hard fault interrupt.
++  */
++void HardFault_Handler(void)
++{
++  /* USER CODE BEGIN HardFault_IRQn 0 */
++
++  /* USER CODE END HardFault_IRQn 0 */
++  while (1)
++  {
++    /* USER CODE BEGIN W1_HardFault_IRQn 0 */
++    /* USER CODE END W1_HardFault_IRQn 0 */
++  }
++}
++
++/**
++  * @brief This function handles Memory management fault.
++  */
++void MemManage_Handler(void)
++{
++  /* USER CODE BEGIN MemoryManagement_IRQn 0 */
++
++  /* USER CODE END MemoryManagement_IRQn 0 */
++  while (1)
++  {
++    /* USER CODE BEGIN W1_MemoryManagement_IRQn 0 */
++    /* USER CODE END W1_MemoryManagement_IRQn 0 */
++  }
++}
++
++/**
++  * @brief This function handles Prefetch fault, memory access fault.
++  */
++void BusFault_Handler(void)
++{
++  /* USER CODE BEGIN BusFault_IRQn 0 */
++
++  /* USER CODE END BusFault_IRQn 0 */
++  while (1)
++  {
++    /* USER CODE BEGIN W1_BusFault_IRQn 0 */
++    /* USER CODE END W1_BusFault_IRQn 0 */
++  }
++}
++
++/**
++  * @brief This function handles Undefined instruction or illegal state.
++  */
++void UsageFault_Handler(void)
++{
++  /* USER CODE BEGIN UsageFault_IRQn 0 */
++
++  /* USER CODE END UsageFault_IRQn 0 */
++  while (1)
++  {
++    /* USER CODE BEGIN W1_UsageFault_IRQn 0 */
++    /* USER CODE END W1_UsageFault_IRQn 0 */
++  }
++}
++
++/**
++  * @brief This function handles System service call via SWI instruction.
++  */
++void SVC_Handler(void)
++{
++  /* USER CODE BEGIN SVCall_IRQn 0 */
++
++  /* USER CODE END SVCall_IRQn 0 */
++  /* USER CODE BEGIN SVCall_IRQn 1 */
++
++  /* USER CODE END SVCall_IRQn 1 */
++}
++
++/**
++  * @brief This function handles Debug monitor.
++  */
++void DebugMon_Handler(void)
++{
++  /* USER CODE BEGIN DebugMonitor_IRQn 0 */
++
++  /* USER CODE END DebugMonitor_IRQn 0 */
++  /* USER CODE BEGIN DebugMonitor_IRQn 1 */
++
++  /* USER CODE END DebugMonitor_IRQn 1 */
++}
++
++/**
++  * @brief This function handles Pendable request for system service.
++  */
++void PendSV_Handler(void)
++{
++  /* USER CODE BEGIN PendSV_IRQn 0 */
++
++  /* USER CODE END PendSV_IRQn 0 */
++  /* USER CODE BEGIN PendSV_IRQn 1 */
++
++  /* USER CODE END PendSV_IRQn 1 */
++}
++
++/**
++  * @brief This function handles System tick timer.
++  */
++void SysTick_Handler(void)
++{
++  /* 已释放给未来 FreeRTOS；当前不启用、不承担+ HAL 或 NWatch 计时。 */
++}
++
++/******************************************************************************/
++/* STM32F1xx Peripheral Interrupt Handlers                                    */
++/* Add here the Interrupt Handlers for the used peripherals.                  */
++/* For the available peripheral interrupt handler names,                      */
++/* please refer to the startup file (startup_stm32f1xx.s).                    */
++/******************************************************************************/
++
++/**
++  * @brief This function handles EXTI line[15:10] interrupts.
++  */
++void EXTI15_10_IRQHandler(void)
++{
++  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
++
++  /* USER CODE END EXTI15_10_IRQn 0 */
++  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
++  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
++
++  /* USER CODE END EXTI15_10_IRQn 1 */
++}
++
++/* USER CODE BEGIN 1 */
++void TIM3_IRQHandler(void)
++{
++  MicroTimer_OverflowIRQHandler();
++}
++
++void TIM4_IRQHandler(void)
++{
++  Timebase_TickIRQHandler();
++}
++
++
++/* USER CODE END 1 */
+--- before/Drivers\DShanMCU-F103\driver_ir_receiver.c
++++ after/Drivers\DShanMCU-F103\driver_ir_receiver.c
+@@ -1,422 +1,430 @@
+-// SPDX-License-Identifier: GPL-3.0-only
+-/*
+- * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
+- * Discourse:  https://forums.100ask.net
+- */
+- 
++// SPDX-License-Identifier: GPL-3.0-only
++/*
++ * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
++ * Discourse:  https://forums.100ask.net
++ */
++ 
+ /*  Copyright (C) 2008-2023 深圳百问网科技有限�-�司
+- *  All rights reserved
+- *
++�司
++ *  All rights reserved
++ *
+  * � �责声明: 百问网编写的文档, 仅 供学员学习使用, 可以转发或引用(请保留作者-信息),禁止用于商业用途！
++信息),禁止用于商业用途！
+  * � �责声明: 百问网编写的程序, 可以用于商业用途, 但百问网不承担-任何后果！
+- * 
+- * 文件名称：driver_color_led.c
+- * 本程序遵循GPL V3协议, 请遵循协议
+- * 百问网学习平台   : https://www.100ask.net
+- * 百问网交流社区   : https://forums.100ask.net
+- * 百问网官方B站    : https://space.bilibili.com/275908810
+- * 本程序所用开发板 : DShanMCU-F103
+- * 百问网官方淘宝   : https://100ask.taobao.com
+- * 联系我们(E-mail): weidongshan@qq.com
+- *
++任何后果！
++ * 
++ * 文件名称：driver_color_led.c
++ * 本程序遵循GPL V3协议, 请遵循协议
++ * 百问网学习平台   : https://www.100ask.net
++ * 百问网交流社区   : https://forums.100ask.net
++ * 百问网官方B站    : https://space.bilibili.com/275908810
++ * 本程序所用开发板 : DShanMCU-F103
++ * 百问网官方淘宝   : https://100ask.taobao.com
++ * 联系我们(E-mail): weidongshan@qq.com
++ *
+  *          版权所有，盗版必-究。
+- *  
++究。
++ *  
+  * 修改历史     版本号           作者         修改内-容
+- *-----------------------------------------------------
+- * 2023.08.04      v01         百问科技      创建文件
+- *-----------------------------------------------------
+- */
+-
+-
+-
+-#include "driver_ir_receiver.h"
+-#include "driver_lcd.h"
+-#include "driver_timer.h"
+-#include "stm32f1xx_hal.h"
+-#include "tim.h"
+-
+-/* 环形缓冲区: 用来保存解析出来的按键,可以防止丢失 */
+-#define BUF_LEN 128
+-static unsigned char g_KeysBuf[BUF_LEN];
+-static int g_KeysBuf_R, g_KeysBuf_W;
+-
+-static uint64_t g_IRReceiverIRQ_Timers[68];
+-static int g_IRReceiverIRQ_Cnt = 0;
+-
+-#define NEXT_POS(x) ((x+1) % BUF_LEN)
+-
++容
++ *-----------------------------------------------------
++ * 2023.08.04      v01         百问科技      创建文件
++ *-----------------------------------------------------
++ */
++
++
++
++#include "driver_ir_receiver.h"
++#include "driver_lcd.h"
++#include "driver_timer.h"
++#include "stm32f1xx_hal.h"
++#include "tim.h"
++
++/* 环形缓冲区: 用来保存解析出来的按键,可以防止丢失 */
++#define BUF_LEN 128
++static unsigned char g_KeysBuf[BUF_LEN];
++static volatile int g_KeysBuf_R, g_KeysBuf_W;
++
++/* 保存低 32 位微秒时间戳；无符号相减可跨 71.58 分钟回绕。 */
++static uint32_t g_IRReceiverIRQ_Timers[68];
++static int g_IRReceiverIRQ_Cnt = 0;
++
++#define NEXT_POS(x) ((x+1) % BUF_LEN)
++
+ /* 辅-助函数 */
+-
+-/**********************************************************************
+- * 函数名称： isKeysBufEmpty
+- * 功能描述： 环形缓冲区是否空
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 1-空, 0-非空
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-static int isKeysBufEmpty(void)
+-{
+-	return (g_KeysBuf_R == g_KeysBuf_W);
+-}
+-
+-/**********************************************************************
+- * 函数名称： isKeysBufFull
+- * 功能描述： 环形缓冲区是否满
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 1-满, 0-未满
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-static int isKeysBufFull(void)
+-{
+-	return (g_KeysBuf_R == NEXT_POS(g_KeysBuf_W));
+-}
+-
+-/**********************************************************************
+- * 函数名称： PutKeyToBuf
++助函数 */
++
++/**********************************************************************
++ * 函数名称： isKeysBufEmpty
++ * 功能描述： 环形缓冲区是否空
++ * 输�+�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 1-空, 0-非空
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++static int isKeysBufEmpty(void)
++{
++	return (g_KeysBuf_R == g_KeysBuf_W);
++}
++
++/**********************************************************************
++ * 函数名称： isKeysBufFull
++ * 功能描述： 环形缓冲区是否满
++ * 输�+�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 1-满, 0-未满
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++static int isKeysBufFull(void)
++{
++	return (g_KeysBuf_R == NEXT_POS(g_KeysBuf_W));
++}
++
++/**********************************************************************
++ * 函数名称： PutKeyToBuf
+  * 功能描述： 把按键数据写�-�环形缓冲区
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 无
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-static void PutKeyToBuf(unsigned char key)
+-{
+-	if (!isKeysBufFull())
+-	{
+-		g_KeysBuf[g_KeysBuf_W] = key;
+-		g_KeysBuf_W = NEXT_POS(g_KeysBuf_W);
+-	}
+-}
+-
+-/**********************************************************************
+- * 函数名称： GetKeyFromBuf
+- * 功能描述： 从环形缓冲区读取按键数据
+- * 输�-�参数： 无
+- * 输出参数： 无
++�环形缓冲区
++ * 输�+�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 无
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++static void PutKeyToBuf(unsigned char key)
++{
++	if (!isKeysBufFull())
++	{
++		g_KeysBuf[g_KeysBuf_W] = key;
++		g_KeysBuf_W = NEXT_POS(g_KeysBuf_W);
++	}
++}
++
++/**********************************************************************
++ * 函数名称： GetKeyFromBuf
++ * 功能描述： 从环形缓冲区读取按键数据
++ * 输�+�参数： 无
++ * 输出参数： 无
+  * 返 回 值： 0xff - 读不到数据, �-�他值-按键值(device或key)
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-static unsigned char GetKeyFromBuf(void)
+-{
+-	unsigned char key = 0xff;
+-	if (!isKeysBufEmpty())
+-	{
+-		key = g_KeysBuf[g_KeysBuf_R];
+-		g_KeysBuf_R = NEXT_POS(g_KeysBuf_R);
+-	}
+-	return key;
+-}
+-
+-/**********************************************************************
+- * 函数名称： IRReceiver_IRQTimes_Parse
++�他值-按键值(device或key)
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++static unsigned char GetKeyFromBuf(void)
++{
++	unsigned char key = 0xff;
++	if (!isKeysBufEmpty())
++	{
++		key = g_KeysBuf[g_KeysBuf_R];
++		g_KeysBuf_R = NEXT_POS(g_KeysBuf_R);
++	}
++	return key;
++}
++
++/**********************************************************************
++ * 函数名称： IRReceiver_IRQTimes_Parse
+  * 功能描述： 解析中断回调函数里记录的时间序列,得到的device和key放�-�环形缓冲区
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 0 - 成功, (-1) - 失败
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-static int IRReceiver_IRQTimes_Parse(void)
+-{
+-	uint64_t time;
+-	int i;
+-	int m, n;
+-	unsigned char datas[4];
+-	unsigned char data = 0;
+-	int bits = 0;
+-	int byte = 0;
+-
+-	/* 1. 判断前导码 : 9ms的低脉冲, 4.5ms高脉冲  */
+-	time = g_IRReceiverIRQ_Timers[1] - g_IRReceiverIRQ_Timers[0];
+-	if (time < 8000000 || time > 10000000)
+-	{
+-		return -1;
+-	}
+-
+-	time = g_IRReceiverIRQ_Timers[2] - g_IRReceiverIRQ_Timers[1];
+-	if (time < 3500000 || time > 55000000)
+-	{
+-		return -1;
+-	}
+-
+-	/* 2. 解析数据 */
+-	for (i = 0; i < 32; i++)
+-	{
+-		m = 3 + i*2;
+-		n = m+1;
+-		time = g_IRReceiverIRQ_Timers[n] - g_IRReceiverIRQ_Timers[m];
+-		data <<= 1;
+-		bits++;
+-		if (time > 1000000)
+-		{
+-			/* 得到了数据1 */
+-			data |= 1;
+-		}
+-
+-		if (bits == 8)
+-		{
+-			datas[byte] = data;
+-			byte++;
+-			data = 0;
+-			bits = 0;
+-		}
+-	}
+-
+-	/* 判断数据正误 */
+-	datas[1] = ~datas[1];
+-	datas[3] = ~datas[3];
+-	
+-	if ((datas[0] != datas[1]) || (datas[2] != datas[3]))
+-	{
+-        g_IRReceiverIRQ_Cnt = 0;
+-        return -1;
+-	}
+-
+-	PutKeyToBuf(datas[0]);
+-	PutKeyToBuf(datas[2]);
+-    return 0;
+-}
+-
+-
+-/**********************************************************************
+- * 函数名称： isRepeatedKey
+- * 功能描述： 解析中断回调函数里记录的时间序列,判断是否重复码
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 1 - 是, (0) - 不是
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-static int isRepeatedKey(void)
+-{
+-	uint64_t time;
+-
+-	/* 1. 判断重复码 : 9ms的低脉冲, 2.25ms高脉冲  */
+-	time = g_IRReceiverIRQ_Timers[1] - g_IRReceiverIRQ_Timers[0];
+-	if (time < 8000000 || time > 10000000)
+-	{
+-		return 0;
+-	}
+-
+-	time = g_IRReceiverIRQ_Timers[2] - g_IRReceiverIRQ_Timers[1];
+-	if (time < 2000000 || time > 2500000)
+-	{
+-		return 0;
+-	}	
+-
+-	return 1;
+-}
+-
+-/**********************************************************************
+- * 函数名称： IRReceiver_IRQ_Callback
+- * 功能描述： 红外接收器的中断回调函数,记录中断时刻
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 无
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-void IRReceiver_IRQ_Callback(void)
+-{
+-    uint64_t time;
+-    static uint64_t pre_time = 0;
+-
+-        
+-	/* 1. 记录中断发生的时刻 */	
+-	time = system_get_ns();
+-    
+-    /* 一次按键的最长数据 = 引导码 + 32个数据"1" = 9+4.5+2.25*32 = 85.5ms
++�环形缓冲区
++ * 输�+�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 0 - 成功, (-1) - 失败
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++static int IRReceiver_IRQTimes_Parse(void)
++{
++	uint32_t time;
++	int i;
++	int m, n;
++	unsigned char datas[4];
++	unsigned char data = 0;
++	int bits = 0;
++	int byte = 0;
++
++	/* 1. 判断前导码 : 9ms的低脉冲, 4.5ms高脉冲  */
++	time = g_IRReceiverIRQ_Timers[1] - g_IRReceiverIRQ_Timers[0];
++	if (time < 8000U || time > 10000U)
++	{
++		return -1;
++	}
++
++	time = g_IRReceiverIRQ_Timers[2] - g_IRReceiverIRQ_Timers[1];
++	if (time < 3500U || time > 5500U)
++	{
++		return -1;
++	}
++
++	/* 2. 解析数据 */
++	for (i = 0; i < 32; i++)
++	{
++		m = 3 + i*2;
++		n = m+1;
++		time = g_IRReceiverIRQ_Timers[n] - g_IRReceiverIRQ_Timers[m];
++		data <<= 1;
++		bits++;
++		if (time > 1000U)
++		{
++			/* 得到了数据1 */
++			data |= 1;
++		}
++
++		if (bits == 8)
++		{
++			datas[byte] = data;
++			byte++;
++			data = 0;
++			bits = 0;
++		}
++	}
++
++	/* 判断数据正误 */
++	datas[1] = ~datas[1];
++	datas[3] = ~datas[3];
++	
++	if ((datas[0] != datas[1]) || (datas[2] != datas[3]))
++	{
++        g_IRReceiverIRQ_Cnt = 0;
++        return -1;
++	}
++
++	PutKeyToBuf(datas[0]);
++	PutKeyToBuf(datas[2]);
++    return 0;
++}
++
++
++/**********************************************************************
++ * 函数名称： isRepeatedKey
++ * 功能描述： 解析中断回调函数里记录的时间序列,判断是否重复码
++ * 输�+�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 1 - 是, (0) - 不是
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++static int isRepeatedKey(void)
++{
++	uint32_t time;
++
++	/* 1. 判断重复码 : 9ms的低脉冲, 2.25ms高脉冲  */
++	time = g_IRReceiverIRQ_Timers[1] - g_IRReceiverIRQ_Timers[0];
++	if (time < 8000U || time > 10000U)
++	{
++		return 0;
++	}
++
++	time = g_IRReceiverIRQ_Timers[2] - g_IRReceiverIRQ_Timers[1];
++	if (time < 2000U || time > 2500U)
++	{
++		return 0;
++	}	
++
++	return 1;
++}
++
++/**********************************************************************
++ * 函数名称： IRReceiver_IRQ_Callback
++ * 功能描述： 红外接收器的中断回调函数,记录中断时刻
++ * 输�+�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 无
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++void IRReceiver_IRQ_Callback(void)
++{
++    uint32_t time;
++    uint64_t now;
++    static uint64_t pre_time = 0;
++
++        
++	/* 1. 记录中断发生的时刻 */	
++	now = system_get_us();
++    time = (uint32_t)now;
++    
++    /* 一次按键的最长数据 = 引导码 + 32个数据"1" = 9+4.5+2.25*32 = 85.5ms
+      * 如果当前中断的时刻, 举例上次中断的时刻超-过这个时间, 以前的数据就抛弃
+-     */
+-    if (time - pre_time > 100000000) 
+-    {
+-        g_IRReceiverIRQ_Cnt = 0;
+-    }
+-    pre_time = time;
+-    
+-	g_IRReceiverIRQ_Timers[g_IRReceiverIRQ_Cnt] = time;
+-
+-	/* 2. 累计中断次数 */
+-	g_IRReceiverIRQ_Cnt++;
+-
++过这个时间, 以前的数据就抛弃
++     */
++    /* 帧间空闲用完整 64 位值，长时间无按键也不会因低位回绕误判。 */
++    if (now - pre_time > 100000ULL) 
++    {
++        g_IRReceiverIRQ_Cnt = 0;
++    }
++    pre_time = now;
++
++    /* 噪声或中断恢复后也不能越过 68 项时间戳缓冲。 */
++    if(g_IRReceiverIRQ_Cnt >= 68)
++        g_IRReceiverIRQ_Cnt = 0;
++    
++	g_IRReceiverIRQ_Timers[g_IRReceiverIRQ_Cnt] = time;
++
++	/* 2. 累计中断次数 */
++	g_IRReceiverIRQ_Cnt++;
++
+ 	/* 3. 次数达标后, 解析数据, 放�-�buffer */
+-	if (g_IRReceiverIRQ_Cnt == 4)
+-	{
+-		/* 是否重复码 */
+-		if (isRepeatedKey())
+-		{
+-			/* device: 0, val: 0, 表示重复码 */
+-			PutKeyToBuf(0);
+-			PutKeyToBuf(0);
+-			g_IRReceiverIRQ_Cnt = 0;
+-		}
+-	}
+-	if (g_IRReceiverIRQ_Cnt == 68)
+-	{
+-		IRReceiver_IRQTimes_Parse();
+-		g_IRReceiverIRQ_Cnt = 0;
+-	}
+-}
+-
+-/**********************************************************************
+- * 函数名称： IRReceiver_Init
+- * 功能描述： 红外接收器的初始化函数
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 无
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-void IRReceiver_Init(void)
+-{
+-    /* PA10在MX_GPIO_Init()中已经被�-�置为双边沿触发, 并使能了中断 */
+-#if 0
+-    /*Configure GPIO pin : PB10 */
+-    GPIO_InitStruct.Pin = GPIO_PIN_10;
+-    GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING_FALLING;
+-    GPIO_InitStruct.Pull = GPIO_PULLUP;
+-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+-#endif
+-}
+-
+-/**********************************************************************
+- * 函数名称： IRReceiver_Read
+- * 功能描述： 红外接收器的读取函数
+- * 输�-�参数： 无
+- * 输出参数： pDev  - 用来保存设备ID
+- *            pData - 用来保存按键码
+- * 返 回 值： 0 - 成功, (-1) - 失败(无数据)
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-int IRReceiver_Read(uint8_t *pDev, uint8_t *pData)
+-{
+-    if (isKeysBufEmpty())
+-        return -1;
+-    
+-    *pDev  = GetKeyFromBuf();
+-    *pData = GetKeyFromBuf();
+-    return 0;
+-}
+-
+-/**********************************************************************
+- * 函数名称： IRReceiver_CodeToString
+- * 功能描述： 把接收到的按键码转换为按键名字
+- * 输�-�参数： code - 按键码
+- * 输出参数： 无
++�buffer */
++	if (g_IRReceiverIRQ_Cnt == 4)
++	{
++		/* 是否重复码 */
++		if (isRepeatedKey())
++		{
++			/* device: 0, val: 0, 表示重复码 */
++			PutKeyToBuf(0);
++			PutKeyToBuf(0);
++			g_IRReceiverIRQ_Cnt = 0;
++		}
++	}
++	if (g_IRReceiverIRQ_Cnt == 68)
++	{
++		IRReceiver_IRQTimes_Parse();
++		g_IRReceiverIRQ_Cnt = 0;
++	}
++}
++
++/**********************************************************************
++ * 函数名称： IRReceiver_Init
++ * 功能描述： 红外接收器的初始化函数
++ * 输�+�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 无
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++void IRReceiver_Init(void)
++{
++    /* PB10在MX_GPIO_Init()中已经被�+�置为双边沿触发, 并使能了中断 */
++#if 0
++    /*Configure GPIO pin : PB10 */
++    GPIO_InitStruct.Pin = GPIO_PIN_10;
++    GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING_FALLING;
++    GPIO_InitStruct.Pull = GPIO_PULLUP;
++    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
++#endif
++}
++
++/**********************************************************************
++ * 函数名称： IRReceiver_Read
++ * 功能描述： 红外接收器的读取函数
++ * 输�+�参数： 无
++ * 输出参数： pDev  - 用来保存设备ID
++ *            pData - 用来保存按键码
++ * 返 回 值： 0 - 成功, (-1) - 失败(无数据)
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++int IRReceiver_Read(uint8_t *pDev, uint8_t *pData)
++{
++    if (isKeysBufEmpty())
++        return -1;
++    
++    *pDev  = GetKeyFromBuf();
++    *pData = GetKeyFromBuf();
++    return 0;
++}
++
++/**********************************************************************
++ * 函数名称： IRReceiver_CodeToString
++ * 功能描述： 把接收到的按键码转换为按键名字
++ * 输�+�参数： code - 按键码
++ * 输出参数： 无
+  * 返 回 值： NULL - 未识别的按键码; �-�他值 - 按键名字
+- * 修改日期：      版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/04	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-const char *IRReceiver_CodeToString(uint8_t code)
+-{
+-    const uint8_t codes[]= {0xa2, 0xe2, 0x22, 0x02, 0xc2, 0xe0, 0xa8, 0x90, \
+-                            0x68, 0x98, 0xb0, 0x30, 0x18, 0x7a, 0x10, 0x38, \
+-                            0x5a, 0x42, 0x4a, 0x52, 0x00};
+-    const char *names[]= {"Power", "Menu", "Test", "+", "Return", "Left", "Play", "Right", \
+-                            "0", "-", "C", "1", "2", "3", "4", "5", \
+-                            "6", "7", "8", "9", "Repeat"};
+-    int i;
+-    
+-    for (i = 0; i < sizeof(codes)/sizeof(codes[0]); i++)
+-    {
+-        if (code == codes[i])
+-        {
+-            return names[i];
+-        }
+-    }
+-    return "Error";
+-}
+-
+-
+-/**********************************************************************
+- * 函数名称： IRReceiver_Test
+- * 功能描述： 红外接收器测试程序
+- * 输�-�参数： 无
+- * 输出参数： 无
+- *            无
+- * 返 回 值： 无
++�他值 - 按键名字
++ * 修改日期：      版本号     修改人	      修改内+容
++ * -----------------------------------------------
++ * 2023/08/04	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++const char *IRReceiver_CodeToString(uint8_t code)
++{
++    const uint8_t codes[]= {0xa2, 0xe2, 0x22, 0x02, 0xc2, 0xe0, 0xa8, 0x90, \
++                            0x68, 0x98, 0xb0, 0x30, 0x18, 0x7a, 0x10, 0x38, \
++                            0x5a, 0x42, 0x4a, 0x52, 0x00};
++    const char *names[]= {"Power", "Menu", "Test", "+", "Return", "Left", "Play", "Right", \
++                            "0", "-", "C", "1", "2", "3", "4", "5", \
++                            "6", "7", "8", "9", "Repeat"};
++    int i;
++    
++    for (i = 0; i < sizeof(codes)/sizeof(codes[0]); i++)
++    {
++        if (code == codes[i])
++        {
++            return names[i];
++        }
++    }
++    return "Error";
++}
++
++
++/**********************************************************************
++ * 函数名称： IRReceiver_Test
++ * 功能描述： 红外接收器测试程序
++ * 输�+�参数： 无
++ * 输出参数： 无
++ *            无
++ * 返 回 值： 无
+  * 修改日期        版本号     修改人        修改内-容
+- * -----------------------------------------------
+- * 2023/08/04        V1.0     韦东山       创建
+- ***********************************************************************/
+-void IRReceiver_Test(void)
+-{
+-    uint8_t dev, data;
+-    int len;
+-	
+-    IRReceiver_Init();
+-
+-    while (1)
+-    {
+-        LCD_PrintString(0, 0, "IR Receiver: ");        
+-        LCD_PrintString(0, 2, "Device  Data");
+-
+-        if (!IRReceiver_Read(&dev, &data))
+-        {
+-            LCD_PrintString(0, 4, "                ");
+-            LCD_PrintHex(0, 4, dev, 1);
+-            LCD_PrintHex(8, 4, data, 1);
+-            LCD_PrintString(0, 6, "                ");
+-            len = LCD_PrintString(0, 6, "Key name: ");
+-            LCD_PrintString(len, 6, IRReceiver_CodeToString(data));
+-        }
+-    }
+-}
+-
+-
++容
++ * -----------------------------------------------
++ * 2023/08/04        V1.0     韦东山       创建
++ ***********************************************************************/
++void IRReceiver_Test(void)
++{
++    uint8_t dev, data;
++    int len;
++	
++    IRReceiver_Init();
++
++    while (1)
++    {
++        LCD_PrintString(0, 0, "IR Receiver: ");        
++        LCD_PrintString(0, 2, "Device  Data");
++
++        if (!IRReceiver_Read(&dev, &data))
++        {
++            LCD_PrintString(0, 4, "                ");
++            LCD_PrintHex(0, 4, dev, 1);
++            LCD_PrintHex(8, 4, data, 1);
++            LCD_PrintString(0, 6, "                ");
++            len = LCD_PrintString(0, 6, "Key name: ");
++            LCD_PrintString(len, 6, IRReceiver_CodeToString(data));
++        }
++    }
++}
++
++
+--- before/Drivers\DShanMCU-F103\driver_systick.c
++++ after/Drivers\DShanMCU-F103\driver_systick.c
+@@ -1,117 +1,123 @@
+-// SPDX-License-Identifier: GPL-3.0-only
+-/*
+- * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
+- * Discourse:  https://forums.100ask.net
+- */
+- 
++// SPDX-License-Identifier: GPL-3.0-only
++/*
++ * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
++ * Discourse:  https://forums.100ask.net
++ */
++ 
+ /*  Copyright (C) 2008-2023 深圳百问网科技有限�-�司
+- *  All rights reserved
+- *
++�司
++ *  All rights reserved
++ *
+  * � �责声明: 百问网编写的文档, 仅 供学员学习使用, 可以转发或引用(请保留作者-信息),禁止用于商业用途！
++信息),禁止用于商业用途！
+  * � �责声明: 百问网编写的程序, 可以用于商业用途, 但百问网不承担-任何后果！
+- * 
+- * 文件名称：driver_color_led.c
+- * 本程序遵循GPL V3协议, 请遵循协议
+- * 百问网学习平台   : https://www.100ask.net
+- * 百问网交流社区   : https://forums.100ask.net
+- * 百问网官方B站    : https://space.bilibili.com/275908810
+- * 本程序所用开发板 : DShanMCU-F103
+- * 百问网官方淘宝   : https://100ask.taobao.com
+- * 联系我们(E-mail): weidongshan@qq.com
+- *
++任何后果！
++ * 
++ * 文件名称：driver_color_led.c
++ * 本程序遵循GPL V3协议, 请遵循协议
++ * 百问网学习平台   : https://www.100ask.net
++ * 百问网交流社区   : https://forums.100ask.net
++ * 百问网官方B站    : https://space.bilibili.com/275908810
++ * 本程序所用开发板 : DShanMCU-F103
++ * 百问网官方淘宝   : https://100ask.taobao.com
++ * 联系我们(E-mail): weidongshan@qq.com
++ *
+  *          版权所有，盗版必-究。
+- *  
++究。
++ *  
+  * 修改历史     版本号           作者         修改内-容
+- *-----------------------------------------------------
+- * 2023.08.04      v01         百问科技      创建文件
+- *-----------------------------------------------------
+- */
+-
+-
+-#include "main.h"
+-#include "driver_systick.h"
+-
+-/*
+- * �-�局变量定义
+-*/
+-
+-volatile millis_t systick_t = 0;
+-
+-/*
+- *  函数名：void SysTickInit(uint32_t cycle)
+- *  输�-�参数：cycle,设置系统滴答时钟周期
+- *  输出参数：无
+- *  返回值：无
+- *  函数作用：初始化系统滴答时钟的频率和中断优�-�级
+-*/
+-void SysTickInit(uint32_t cycle)
+-{
+-    uint32_t init_t = 0;
+-
+-    init_t = SystemCoreClock/cycle;
+-  
+-    /* 时间(单位:s)=1/频率(单位:HZ)
+-     * SystemCoreClock频率: 72MHz = 72,000,000
+-     * 即MCU 1秒会计数72,000,000次
+-     *       1ms则计数 72MHz/1000 = 72000次
+-     * 72000就是滴答时钟的初始值,它向下计数72000次,计数将变为0,就会产生一次中断
+-     * 滴答时钟初始值范围:1~16777216
+-     *
+-     * SystemCoreClock/1000:    1ms中断一次
+-     * SystemCoreClock/100000:  10us中断一次
+-     * SystemCoreClock/1000000: 1us中断一次
+-     */
+-    if(HAL_SYSTICK_Config(init_t) != HAL_OK)
+-    {
+-        Error_Handler();
+-    }
+-    
+-    // 设置滴答定时器中断优�-�级：最高
+-    HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+-    // 使能滴答定时器中断
+-    HAL_NVIC_EnableIRQ(SysTick_IRQn);
+-}
+-
+-/*
+- *  函数名：void SysTickDelay(uint16_t m)
+- *  输�-�参数：m-延时时间
+- *  输出参数：无
+- *  返回值：无
+- *  函数作用：滴答定时器实现的延时函数
+-*/
+-void SysTickDelay(uint32_t m)
+-{
+-    //systick_t = m;
+-    //while(systick_t != 0);
+-}
+-
+-
+-uint32_t SysTickGetMs(void)
+-{
+-    return systick_t;
+-}
+-
+-/*
+- *  函数名：void SysTick_Handler(void)
+- *  输�-�参数：无
+- *  输出参数：无
+- *  返回值：无
+- *  函数作用：滴答定时器的中断服务函数
+-*/
+-
+-
++容
++ *-----------------------------------------------------
++ * 2023.08.04      v01         百问科技      创建文件
++ *-----------------------------------------------------
++ */
++
++
++#include "main.h"
++#include "driver_systick.h"
++#include "driver_timer.h"
++
++static TIM_HandleTypeDef tickTimer;
++
++/* 覆盖 HAL 弱实现：启动 HSI 和切换到 PLL 后均重�+� TIM4，不占用 SysTick。 */
++HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
++{
++    uint32_t timerClock = Timer_GetAPB1ClockHz();
++    if(TickPriority >= (1UL << __NVIC_PRIO_BITS) || timerClock < 10000U || timerClock % 10000U != 0U)
++        return HAL_ERROR;
++
++    __HAL_RCC_TIM4_CLK_ENABLE();
++    tickTimer.Instance = TIM4;
++    __HAL_TIM_DISABLE_IT(&tickTimer, TIM_IT_UPDATE);
++    __HAL_TIM_DISABLE(&tickTimer);
++
++    /* 10kHz 计数；默认 ARR=9，每 1ms 更新。�+�容 HAL 的 10/100ms 频率。 */
++    tickTimer.Init.Prescaler = timerClock / 10000U - 1U;
++    tickTimer.Init.CounterMode = TIM_COUNTERMODE_UP;
++    tickTimer.Init.Period = 10U * (uint32_t)uwTickFreq - 1U;
++    tickTimer.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
++    tickTimer.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
++    if(HAL_TIM_Base_Init(&tickTimer) != HAL_OK)
++        return HAL_ERROR;
++
++    /* HAL 初始化会产生 UG，清+除 UIF 后再开中断，避�+�多计一次。 */
++    __HAL_TIM_SET_COUNTER(&tickTimer, 0U);
++    __HAL_TIM_CLEAR_FLAG(&tickTimer, TIM_FLAG_UPDATE);
++    HAL_NVIC_ClearPendingIRQ(TIM4_IRQn);
++    HAL_NVIC_SetPriority(TIM4_IRQn, TickPriority, 0U);
++    uwTickPrio = TickPriority;
++    __HAL_DBGMCU_FREEZE_TIM4();
++    HAL_NVIC_EnableIRQ(TIM4_IRQn);
++    return HAL_TIM_Base_Start_IT(&tickTimer);
++}
++
++void Timebase_TickIRQHandler(void)
++{
++    if(__HAL_TIM_GET_FLAG(&tickTimer, TIM_FLAG_UPDATE) != RESET &&
++       __HAL_TIM_GET_IT_SOURCE(&tickTimer, TIM_IT_UPDATE) != RESET)
++    {
++        __HAL_TIM_CLEAR_IT(&tickTimer, TIM_IT_UPDATE);
++        HAL_IncTick();
++    }
++}
++
++void HAL_SuspendTick(void)
++{
++    __HAL_TIM_DISABLE_IT(&tickTimer, TIM_IT_UPDATE);
++}
++
++void HAL_ResumeTick(void)
++{
++    /* 暂停期间不补计；仅+控制 TIM4，不影响微秒计数器或未来 RTOS 节拍。 */
++    __HAL_TIM_CLEAR_FLAG(&tickTimer, TIM_FLAG_UPDATE);
++    HAL_NVIC_ClearPendingIRQ(TIM4_IRQn);
++    __HAL_TIM_ENABLE_IT(&tickTimer, TIM_IT_UPDATE);
++}
++
++/* 旧接口保留�+�容；名字不变，实际+毫秒来源已是 TIM4。 */
++void SysTickInit(uint32_t cycle)
++{
++    if(cycle != CYCLE_1MS || HAL_InitTick(TICK_INT_PRIORITY) != HAL_OK)
++        Error_Handler();
++}
++
++void SysTickDelay(uint32_t m)
++{
++    HAL_Delay(m);
++}
++
++uint32_t SysTickGetMs(void)
++{
++    return HAL_GetTick();
++}
+--- before/Drivers\DShanMCU-F103\driver_systick.h
++++ after/Drivers\DShanMCU-F103\driver_systick.h
+@@ -1,78 +1,80 @@
+-// SPDX-License-Identifier: GPL-3.0-only
+-/*
+- * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
+- * Discourse:  https://forums.100ask.net
+- */
+- 
++// SPDX-License-Identifier: GPL-3.0-only
++/*
++ * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
++ * Discourse:  https://forums.100ask.net
++ */
++ 
+ /*  Copyright (C) 2008-2023 深圳百问网科技有限�-�司
+- *  All rights reserved
+- *
++�司
++ *  All rights reserved
++ *
+  * � �责声明: 百问网编写的文档, 仅 供学员学习使用, 可以转发或引用(请保留作者-信息),禁止用于商业用途！
++信息),禁止用于商业用途！
+  * � �责声明: 百问网编写的程序, 可以用于商业用途, 但百问网不承担-任何后果！
+- * 
+- * 文件名称：driver_color_led.c
+- * 本程序遵循GPL V3协议, 请遵循协议
+- * 百问网学习平台   : https://www.100ask.net
+- * 百问网交流社区   : https://forums.100ask.net
+- * 百问网官方B站    : https://space.bilibili.com/275908810
+- * 本程序所用开发板 : DShanMCU-F103
+- * 百问网官方淘宝   : https://100ask.taobao.com
+- * 联系我们(E-mail): weidongshan@qq.com
+- *
++任何后果！
++ * 
++ * 文件名称：driver_color_led.c
++ * 本程序遵循GPL V3协议, 请遵循协议
++ * 百问网学习平台   : https://www.100ask.net
++ * 百问网交流社区   : https://forums.100ask.net
++ * 百问网官方B站    : https://space.bilibili.com/275908810
++ * 本程序所用开发板 : DShanMCU-F103
++ * 百问网官方淘宝   : https://100ask.taobao.com
++ * 联系我们(E-mail): weidongshan@qq.com
++ *
+  *          版权所有，盗版必-究。
+- *  
++究。
++ *  
+  * 修改历史     版本号           作者         修改内-容
+- *-----------------------------------------------------
+- * 2023.08.04      v01         百问科技      创建文件
+- *-----------------------------------------------------
+- */
+-
+-#ifndef __DRIVER_SYSTICK_H
+-#define __DRIVER_SYSTICK_H
+-
+-#include "stm32f1xx_hal.h"
+-
+-#define CYCLE_100MS   10
+-#define CYCLE_10MS    100
+-#define CYCLE_1MS     1000 
+-#define CYCLE_100US   10000
+-#define CYCLE_10US    100000
+-#define CYCLE_1US     1000000
+-
+-/*
+- *  函数名：void SysTickInit(void)
++容
++ *-----------------------------------------------------
++ * 2023.08.04      v01         百问科技      创建文件
++ *-----------------------------------------------------
++ */
++
++#ifndef __DRIVER_SYSTICK_H
++#define __DRIVER_SYSTICK_H
++
++#include "stm32f1xx_hal.h"
++
++#define CYCLE_100MS   10
++#define CYCLE_10MS    100
++#define CYCLE_1MS     1000 
++#define CYCLE_100US   10000
++#define CYCLE_10US    100000
++#define CYCLE_1US     1000000
++
++/*
++ *  函数名：void SysTickInit(void)
+  *  输�-�参数：cycle,设置系统滴答时钟周期
+- *  输出参数：无
+- *  返回值：无
++�参数：cycle,设置系统滴答时钟周期
++ *  输出参数：无
++ *  返回值：无
+  *  函数作用：初始化系统滴答时钟的频率和中断优�-�级
+-*/
+-extern void SysTickInit(uint32_t cycle);
+-
+-/*
+- *  函数名：void SysTickDelay(uint16_t m)
++�级
++*/
++extern void SysTickInit(uint32_t cycle);
++
++/*
++ *  函数名：void SysTickDelay(uint16_t m)
+  *  输�-�参数：m-延时时间
+- *  输出参数：无
+- *  返回值：无
+- *  函数作用：滴答定时器实现的延时函数
+-*/
+-extern void SysTickDelay(uint32_t m);
+-
+-millis_t SysTickGetMs(void);
+-
+-extern volatile uint32_t systick_t;
+-
+-#endif
+-
+-
++�参数：m-延时时间
++ *  输出参数：无
++ *  返回值：无
++ *  函数作用：滴答定时器实现的延时函数
++*/
++extern void SysTickDelay(uint32_t m);
++
++uint32_t SysTickGetMs(void);
++
++/* TIM4 毫秒中断服务�+�口，供 stm32f1xx_it.c 调用。 */
++void Timebase_TickIRQHandler(void);
++
++#endif
++
++
+--- before/Drivers\DShanMCU-F103\driver_timer.c
++++ after/Drivers\DShanMCU-F103\driver_timer.c
+@@ -1,179 +1,147 @@
+-// SPDX-License-Identifier: GPL-3.0-only
+-/*
+- * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
+- * Discourse:  https://forums.100ask.net
+- */
+- 
++// SPDX-License-Identifier: GPL-3.0-only
++/*
++ * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
++ * Discourse:  https://forums.100ask.net
++ */
++ 
+ /*  Copyright (C) 2008-2023 深圳百问网科技有限�-�司
+- *  All rights reserved
+- *
++�司
++ *  All rights reserved
++ *
+  * � �责声明: 百问网编写的文档, 仅 供学员学习使用, 可以转发或引用(请保留作者-信息),禁止用于商业用途！
++信息),禁止用于商业用途！
+  * � �责声明: 百问网编写的程序, 可以用于商业用途, 但百问网不承担-任何后果！
+- * 
+- * 文件名称：driver_color_led.c
+- * 本程序遵循GPL V3协议, 请遵循协议
+- * 百问网学习平台   : https://www.100ask.net
+- * 百问网交流社区   : https://forums.100ask.net
+- * 百问网官方B站    : https://space.bilibili.com/275908810
+- * 本程序所用开发板 : DShanMCU-F103
+- * 百问网官方淘宝   : https://100ask.taobao.com
+- * 联系我们(E-mail): weidongshan@qq.com
+- *
++任何后果！
++ * 
++ * 文件名称：driver_color_led.c
++ * 本程序遵循GPL V3协议, 请遵循协议
++ * 百问网学习平台   : https://www.100ask.net
++ * 百问网交流社区   : https://forums.100ask.net
++ * 百问网官方B站    : https://space.bilibili.com/275908810
++ * 本程序所用开发板 : DShanMCU-F103
++ * 百问网官方淘宝   : https://100ask.taobao.com
++ * 联系我们(E-mail): weidongshan@qq.com
++ *
+  *          版权所有，盗版必-究。
+- *  
++究。
++ *  
+  * 修改历史     版本号           作者         修改内-容
+- *-----------------------------------------------------
+- * 2023.08.04      v01         百问科技      创建文件
+- *-----------------------------------------------------
+- */
+-
+-#include "driver_timer.h"
+-#include "stm32f1xx_hal.h"
+-
+-/**********************************************************************
+- * 函数名称： udelay
+- * 功能描述： us级别的延时函数(复制rt-thread的代码)
+- * 输�-�参数： us - 延时多少us
+- * 输出参数： 无
+- * 返 回 值： 无
+- * 修改日期        版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/03	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-void udelay(int us)
+-{
+-    uint32_t ticks;
+-    uint32_t told, tnow, tcnt = 0;
+-    uint32_t reload = SysTick->LOAD;
+-
+-    ticks = us * reload / (1000);  /* 假设reload对应1ms */
+-    told = SysTick->VAL;
+-    while (1)
+-    {
+-        tnow = SysTick->VAL;
+-        if (tnow != told)
+-        {
+-            if (tnow < told)
+-            {
+-                tcnt += told - tnow;
+-            }
+-            else
+-            {
+-                tcnt += reload - tnow + told;
+-            }
+-            told = tnow;
+-            if (tcnt >= ticks)
+-            {
+-                break;
+-            }
+-        }
+-    }
+-}
+-
+-
+-/**********************************************************************
+- * 函数名称： mdelay
+- * 功能描述： ms级别的延时函数
+- * 输�-�参数： ms - 延时多少ms
+- * 输出参数： 无
+- * 返 回 值： 无
+- * 修改日期        版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/03	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-void mdelay(int ms)
+-{
+-    for (int i = 0; i < ms; i++)
+-        udelay(1000);
+-}
+-
+-/**********************************************************************
+- * 函数名称： system_get_ns
+- * 功能描述： 获得系统时间(单位ns)
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 系统时间(单位ns)
+- * 修改日期        版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/03	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-uint64_t system_get_ns(void)
+-{
+-#if 0
+-    //extern uint32_t HAL_GetTick(void);
+-    extern TIM_HandleTypeDef        htim2;
+-    TIM_HandleTypeDef *hHalTim = &htim2;
+-    
+-    uint64_t ns = HAL_GetTick();
+-    uint64_t cnt;
+-    uint64_t reload;
+-
+-    cnt = __HAL_TIM_GET_COUNTER(hHalTim);
+-    reload = __HAL_TIM_GET_AUTORELOAD(hHalTim);
+-
+-    ns *= 1000000;
+-    ns += cnt * 1000000 / reload;
+-    return ns;
+-#else
+-    uint32_t reload = SysTick->LOAD;
+-    uint64_t ns = HAL_GetTick();
+-    uint64_t cnt;
+-
+-    cnt = SysTick->VAL;
+-
+-    ns *= 1000000;
+-    ns += (reload - cnt) * 1000000 / reload;
+-    return ns;
+-	
+-#endif
+-}
+-
+-/**********************************************************************
+- * 函数名称： system_get_ms
+- * 功能描述： 获得系统时间(单位ms)
+- * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 系统时间(单位ms)
+- * 修改日期        版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/03	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-uint32_t system_get_ms(void)
+-{
+-#if 0
+-    //extern uint32_t HAL_GetTick(void);
+-    extern TIM_HandleTypeDef        htim4;
+-    TIM_HandleTypeDef *hHalTim = &htim4;
+-    
+-    uint64_t ms = HAL_GetTick();
+-    uint64_t cnt;
+-    uint64_t reload;
+-
+-    cnt = __HAL_TIM_GET_COUNTER(hHalTim);
+-    reload = __HAL_TIM_GET_AUTORELOAD(hHalTim);
+-
+-    //ms *= 1000000;
+-    ms += cnt * 1000000 / reload;
+-    return ms;
+-#endif
+-	return 0;
+-}
+-
+-
++容
++ *-----------------------------------------------------
++ * 2023.08.04      v01         百问科技      创建文件
++ *-----------------------------------------------------
++ */
++
++#include "driver_timer.h"
++#include "stm32f1xx_hal.h"
++
++static TIM_HandleTypeDef microTimer;
++static volatile uint64_t microOverflowUs;
++
++uint32_t Timer_GetAPB1ClockHz(void)
++{
++    uint32_t clock = HAL_RCC_GetPCLK1Freq();
++    /* APB1 分频不为 1 时，定时器内+核时钟为 PCLK1 的两倍。 */
++    if((RCC->CFGR & RCC_CFGR_PPRE1) != RCC_HCLK_DIV1)
++        clock *= 2U;
++    return clock;
++}
++
++HAL_StatusTypeDef MicroTimer_Init(void)
++{
++    uint32_t clock = Timer_GetAPB1ClockHz();
++    if(clock < 1000000U || clock % 1000000U != 0U)
++        return HAL_ERROR;
++
++    /* 只在系统时钟�+�置完成后初始化一次，不映射任何 GPIO/PWM 通道。 */
++    __HAL_RCC_TIM3_CLK_ENABLE();
++    microTimer.Instance = TIM3;
++    microTimer.Init.Prescaler = clock / 1000000U - 1U;
++    microTimer.Init.CounterMode = TIM_COUNTERMODE_UP;
++    microTimer.Init.Period = 0xFFFFU;
++    microTimer.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
++    microTimer.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
++    if(HAL_TIM_Base_Init(&microTimer) != HAL_OK)
++        return HAL_ERROR;
++
++    microOverflowUs = 0U;
++    __HAL_TIM_SET_COUNTER(&microTimer, 0U);
++    __HAL_TIM_CLEAR_FLAG(&microTimer, TIM_FLAG_UPDATE);
++    HAL_NVIC_ClearPendingIRQ(TIM3_IRQn);
++    HAL_NVIC_SetPriority(TIM3_IRQn, 4U, 0U);
++    __HAL_DBGMCU_FREEZE_TIM3();
++    HAL_NVIC_EnableIRQ(TIM3_IRQn);
++    return HAL_TIM_Base_Start_IT(&microTimer);
++}
++
++void MicroTimer_OverflowIRQHandler(void)
++{
++    uint32_t primask = __get_PRIMASK();
++    /* 标志清+除和 64 位扩展一起保护，防止被时间戳读取打断。 */
++    __disable_irq();
++    if(__HAL_TIM_GET_FLAG(&microTimer, TIM_FLAG_UPDATE) != RESET &&
++       __HAL_TIM_GET_IT_SOURCE(&microTimer, TIM_IT_UPDATE) != RESET)
++    {
++        __HAL_TIM_CLEAR_IT(&microTimer, TIM_IT_UPDATE);
++        microOverflowUs += 65536ULL;
++    }
++    __set_PRIMASK(primask);
++}
++
++uint64_t system_get_us(void)
++{
++    uint32_t primask = __get_PRIMASK();
++    uint32_t counter;
++    uint64_t base;
++    /* F103 的 TIM3 为 16 位，每 65.536ms 溢出；读取必+须与扩展值一致。 */
++    __disable_irq();
++    base = microOverflowUs;
++    counter = __HAL_TIM_GET_COUNTER(&microTimer);
++    if(__HAL_TIM_GET_FLAG(&microTimer, TIM_FLAG_UPDATE) != RESET)
++    {
++        /* 已溢出但 ISR 尚未服务：补一周期并重新读取低位，不清+标志。 */
++        base += 65536ULL;
++        counter = __HAL_TIM_GET_COUNTER(&microTimer);
++    }
++    __set_PRIMASK(primask);
++    return base + counter;
++}
++
++void udelay(int us)
++{
++    uint64_t start;
++    if(us <= 0)
++        return;
++    start = system_get_us();
++    while(system_get_us() - start < (uint32_t)us)
++    {
++    }
++}
++
++void mdelay(int ms)
++{
++    if(ms > 0)
++        HAL_Delay((uint32_t)ms);
++}
++
++uint64_t system_get_ns(void)
++{
++    /* �+�容旧接口的单位，实际+分辨率为 1us，不依赖 HAL 毫秒计数。 */
++    return system_get_us() * 1000ULL;
++}
++
++uint32_t system_get_ms(void)
++{
++    return HAL_GetTick();
++}
+--- before/Drivers\DShanMCU-F103\driver_timer.h
++++ after/Drivers\DShanMCU-F103\driver_timer.h
+@@ -1,101 +1,108 @@
+-// SPDX-License-Identifier: GPL-3.0-only
+-/*
+- * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
+- * Discourse:  https://forums.100ask.net
+- */
+- 
++// SPDX-License-Identifier: GPL-3.0-only
++/*
++ * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
++ * Discourse:  https://forums.100ask.net
++ */
++ 
+ /*  Copyright (C) 2008-2023 深圳百问网科技有限�-�司
+- *  All rights reserved
+- *
++�司
++ *  All rights reserved
++ *
+  * � �责声明: 百问网编写的文档, 仅 供学员学习使用, 可以转发或引用(请保留作者-信息),禁止用于商业用途！
++信息),禁止用于商业用途！
+  * � �责声明: 百问网编写的程序, 可以用于商业用途, 但百问网不承担-任何后果！
+- * 
+- * 文件名称：driver_color_led.c
+- * 本程序遵循GPL V3协议, 请遵循协议
+- * 百问网学习平台   : https://www.100ask.net
+- * 百问网交流社区   : https://forums.100ask.net
+- * 百问网官方B站    : https://space.bilibili.com/275908810
+- * 本程序所用开发板 : DShanMCU-F103
+- * 百问网官方淘宝   : https://100ask.taobao.com
+- * 联系我们(E-mail): weidongshan@qq.com
+- *
++任何后果！
++ * 
++ * 文件名称：driver_color_led.c
++ * 本程序遵循GPL V3协议, 请遵循协议
++ * 百问网学习平台   : https://www.100ask.net
++ * 百问网交流社区   : https://forums.100ask.net
++ * 百问网官方B站    : https://space.bilibili.com/275908810
++ * 本程序所用开发板 : DShanMCU-F103
++ * 百问网官方淘宝   : https://100ask.taobao.com
++ * 联系我们(E-mail): weidongshan@qq.com
++ *
+  *          版权所有，盗版必-究。
+- *  
++究。
++ *  
+  * 修改历史     版本号           作者         修改内-容
+- *-----------------------------------------------------
+- * 2023.08.04      v01         百问科技      创建文件
+- *-----------------------------------------------------
+- */
+-
+-#ifndef _DRIVER_TIMER_H
+-#define _DRIVER_TIMER_H
+-
+-#include <stdint.h>
+-
+-/**********************************************************************
+- * 函数名称： udelay
+- * 功能描述： us级别的延时函数
++容
++ *-----------------------------------------------------
++ * 2023.08.04      v01         百问科技      创建文件
++ *-----------------------------------------------------
++ */
++
++#ifndef _DRIVER_TIMER_H
++#define _DRIVER_TIMER_H
++
++#include <stdint.h>
++#include "stm32f1xx_hal.h"
++
++/* TIM3 独立微秒计时：在 SystemClock_Config 后、启用红外中断前初始化。 */
++uint32_t Timer_GetAPB1ClockHz(void);
++HAL_StatusTypeDef MicroTimer_Init(void);
++void MicroTimer_OverflowIRQHandler(void);
++uint64_t system_get_us(void);
++
++/**********************************************************************
++ * 函数名称： udelay
++ * 功能描述： us级别的延时函数
+  * 输�-�参数： us - 延时多少us
+- * 输出参数： 无
+- * 返 回 值： 无
++�参数： us - 延时多少us
++ * 输出参数： 无
++ * 返 回 值： 无
+  * 修改日期        版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/03	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-void udelay(int us);
+-
+-/**********************************************************************
+- * 函数名称： mdelay
+- * 功能描述： ms级别的延时函数
++容
++ * -----------------------------------------------
++ * 2023/08/03	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++void udelay(int us);
++
++/**********************************************************************
++ * 函数名称： mdelay
++ * 功能描述： ms级别的延时函数
+  * 输�-�参数： ms - 延时多少ms
+- * 输出参数： 无
+- * 返 回 值： 无
++�参数： ms - 延时多少ms
++ * 输出参数： 无
++ * 返 回 值： 无
+  * 修改日期        版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/03	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-void mdelay(int ms);
+-
+-/**********************************************************************
+- * 函数名称： system_get_ns
+- * 功能描述： 获得系统时间(单位ns)
++容
++ * -----------------------------------------------
++ * 2023/08/03	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++void mdelay(int ms);
++
++/**********************************************************************
++ * 函数名称： system_get_ns
++ * 功能描述： 获得系统时间(单位ns)
+  * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 系统时间(单位ns)
++�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 系统时间(单位ns)
+  * 修改日期        版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/03	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-uint64_t system_get_ns(void);
+-
+-/**********************************************************************
+- * 函数名称： system_get_ms
+- * 功能描述： 获得系统时间(单位ms)
++容
++ * -----------------------------------------------
++ * 2023/08/03	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++uint64_t system_get_ns(void);
++
++/**********************************************************************
++ * 函数名称： system_get_ms
++ * 功能描述： 获得系统时间(单位ms)
+  * 输�-�参数： 无
+- * 输出参数： 无
+- * 返 回 值： 系统时间(单位ms)
++�参数： 无
++ * 输出参数： 无
++ * 返 回 值： 系统时间(单位ms)
+  * 修改日期        版本号     修改人	      修改内-容
+- * -----------------------------------------------
+- * 2023/08/03	     V1.0	  韦东山	      创建
+- ***********************************************************************/
+-uint32_t system_get_ms(void);
+-
+-#endif /* _DRIVER_TIMER_H */
+-
++容
++ * -----------------------------------------------
++ * 2023/08/03	     V1.0	  韦东山	      创建
++ ***********************************************************************/
++uint32_t system_get_ms(void);
++
++#endif /* _DRIVER_TIMER_H */
++
+--- before/MDK-ARM\.eide\eide.yml
++++ after/MDK-ARM\.eide\eide.yml
+@@ -1,281 +1,279 @@
+-version: "4.1"
+-name: NWatch-DShanMCU-F103
+-type: ARM
+-deviceName: null
+-packDir: null
+-srcDirs: []
+-virtualFolder:
+-  name: <virtual_root>
+-  files: []
+-  folders:
+-    - name: Application
+-      files: []
+-      folders:
+-        - name: MDK-ARM
+-          files:
+-            - path: startup_stm32f103xb.s
+-          folders: []
+-        - name: User
+-          files: []
+-          folders:
+-            - name: Core
+-              files:
+-                - path: ../Core/Src/main.c
+-                - path: ../Core/Src/stm32f1xx_it.c
+-                - path: ../Core/Src/stm32f1xx_hal_msp.c
+-              folders: []
+-    - name: Drivers
+-      files: []
+-      folders:
+-        - name: STM32F1xx_HAL_Driver
+-          files:
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
+-            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
+-          folders: []
+-        - name: CMSIS
+-          files:
+-            - path: ../Core/Src/system_stm32f1xx.c
+-          folders: []
+-        - name: DShanMCU-F103
+-          files:
+-            - path: ../Drivers/DShanMCU-F103/driver_color_led.c
+-            - path: ../Drivers/DShanMCU-F103/driver_ir_receiver.c
+-            - path: ../Drivers/DShanMCU-F103/driver_irq.c
+-            - path: ../Drivers/DShanMCU-F103/driver_lcd.c
+-            - path: ../Drivers/DShanMCU-F103/driver_oled.c
+-            - path: ../Drivers/DShanMCU-F103/driver_systick.c
+-            - path: ../Drivers/DShanMCU-F103/driver_timer.c
+-            - path: ../Drivers/DShanMCU-F103/driver_uart.c
+-            - path: ../Drivers/DShanMCU-F103/driver_passive_buzzer.c
+-            - path: ../Drivers/DShanMCU-F103/gui_log_console.c
+-            - path: ../Drivers/DShanMCU-F103/driver_dht11.c
+-            - path: ../Drivers/DShanMCU-F103/driver_spiflash_w25q64.c
+-          folders: []
+-    - name: NWatch
+-      files:
+-        - path: ../NWatch/alarm.c
+-        - path: ../NWatch/alarms.c
+-        - path: ../NWatch/animation.c
+-        - path: ../NWatch/appconfig.c
+-        - path: ../NWatch/buttons.c
+-        - path: ../NWatch/display.c
+-        - path: ../NWatch/draw.c
+-        - path: ../NWatch/game1.c
+-        - path: ../NWatch/game2.c
+-        - path: ../NWatch/game3.c
+-        - path: ../NWatch/games.c
+-        - path: ../NWatch/global.c
+-        - path: ../NWatch/m_display.c
+-        - path: ../NWatch/m_main.c
+-        - path: ../NWatch/menu.c
+-        - path: ../NWatch/millis.c
+-        - path: ../NWatch/normal.c
+-        - path: ../NWatch/pwrmgr.c
+-        - path: ../NWatch/resources.c
+-        - path: ../NWatch/settings.c
+-        - path: ../NWatch/stopwatch.c
+-        - path: ../NWatch/time.c
+-        - path: ../NWatch/timedate.c
+-        - path: ../NWatch/torch.c
+-        - path: ../NWatch/tune.c
+-        - path: ../NWatch/tunes.c
+-        - path: ../NWatch/ui.c
+-        - path: ../NWatch/watchface.c
+-        - path: ../NWatch/sound.c
+-        - path: ../NWatch/sleep.c
+-        - path: ../NWatch/diag.c
+-        - path: ../NWatch/tunemaker.c
+-        - path: ../NWatch/reset.c
+-      folders: []
+-    - name: ::CMSIS
+-      files: []
+-      folders: []
+-dependenceList: []
+-outDir: build
+-miscInfo:
+-  uid: cf3a568ff1b57beeac7c5d3c2f882085
+-targets:
+-  NWatch-DShanMCU-F103:
+-    cppPreprocessAttrs:
+-      defineList:
+-        - USE_HAL_DRIVER
+-        - STM32F103xB
+-      incList:
+-        - ../Core/Inc
+-        - ../Drivers/STM32F1xx_HAL_Driver/Inc
+-        - ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
+-        - ../Drivers/CMSIS/Device/ST/STM32F1xx/Include
+-        - ../Drivers/CMSIS/Include
+-        - ../Drivers/DShanMCU-F103
+-        - ../NWatch
+-        - .cmsis/include
+-        - RTE/_NWatch-DShanMCU-F103
+-      libList: []
+-    excludeList:
+-      - <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_spi.c
+-      - <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim.c
+-      - <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_tim_ex.c
+-      - <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_uart.c
+-      - <virtual_root>/Drivers/DShanMCU-F103/driver_color_led.c
+-      - <virtual_root>/Drivers/DShanMCU-F103/driver_uart.c
+-      - <virtual_root>/Drivers/DShanMCU-F103/driver_passive_buzzer.c
+-      - <virtual_root>/Drivers/DShanMCU-F103/gui_log_console.c
+-      - <virtual_root>/Drivers/DShanMCU-F103/driver_dht11.c
+-      - <virtual_root>/Drivers/DShanMCU-F103/driver_spiflash_w25q64.c
+-      - <virtual_root>/NWatch/alarm.c
+-      - <virtual_root>/NWatch/alarms.c
+-      - <virtual_root>/NWatch/game1.c
+-      - <virtual_root>/NWatch/game2.c
+-      - <virtual_root>/NWatch/game3.c
+-      - <virtual_root>/NWatch/games.c
+-      - <virtual_root>/NWatch/settings.c
+-      - <virtual_root>/NWatch/stopwatch.c
+-      - <virtual_root>/NWatch/timedate.c
+-      - <virtual_root>/NWatch/torch.c
+-      - <virtual_root>/NWatch/tune.c
+-      - <virtual_root>/NWatch/tunes.c
+-      - <virtual_root>/NWatch/sound.c
+-      - <virtual_root>/NWatch/sleep.c
+-      - <virtual_root>/NWatch/diag.c
+-      - <virtual_root>/NWatch/reset.c
+-    settings:
+-      debugger: cortex-debug
+-    toolchain: AC5
+-    toolchainConfigMap:
+-      AC5:
+-        archExtensions: ""
+-        cpuType: Cortex-M3
+-        floatingPointHardware: none
+-        options:
+-          version: 4
+-          afterBuildTasks: []
+-          asm-compiler:
+-            defines: []
+-          beforeBuildTasks: []
+-          c/cpp-compiler:
+-            CXX_FLAGS: --diag_suppress=1 --diag_suppress=1295
+-            C_FLAGS: --diag_suppress=1 --diag_suppress=1295
+-            c99-mode: true
+-            one-elf-section-per-function: true
+-            optimization: level-3
+-            warnings: all-warnings
+-          global:
+-            output-debug-info: enable
+-            use-microLIB: false
+-          linker:
+-            $outputTaskExcludes:
+-              - .bin
+-            output-format: elf
+-            ro-base: ""
+-            rw-base: ""
+-            xo-base: ""
+-        scatterFilePath: ""
+-        storageLayout:
+-          RAM:
+-            - id: 1
+-              isChecked: false
+-              mem:
+-                size: "0x0"
+-                startAddr: "0x0"
+-              noInit: false
+-              tag: RAM
+-            - id: 2
+-              isChecked: false
+-              mem:
+-                size: "0x0"
+-                startAddr: "0x0"
+-              noInit: false
+-              tag: RAM
+-            - id: 3
+-              isChecked: false
+-              mem:
+-                size: "0x0"
+-                startAddr: "0x0"
+-              noInit: false
+-              tag: RAM
+-            - id: 1
+-              isChecked: true
+-              mem:
+-                size: "0x5000"
+-                startAddr: "0x20000000"
+-              noInit: false
+-              tag: IRAM
+-            - id: 2
+-              isChecked: false
+-              mem:
+-                size: "0x0"
+-                startAddr: "0x0"
+-              noInit: false
+-              tag: IRAM
+-          ROM:
+-            - id: 1
+-              isChecked: false
+-              isStartup: false
+-              mem:
+-                size: "0x0"
+-                startAddr: "0x0"
+-              tag: ROM
+-            - id: 2
+-              isChecked: false
+-              isStartup: false
+-              mem:
+-                size: "0x0"
+-                startAddr: "0x0"
+-              tag: ROM
+-            - id: 3
+-              isChecked: false
+-              isStartup: false
+-              mem:
+-                size: "0x0"
+-                startAddr: "0x0"
+-              tag: ROM
+-            - id: 1
+-              isChecked: true
+-              isStartup: true
+-              mem:
+-                size: "0x10000"
+-                startAddr: "0x8000000"
+-              tag: IROM
+-            - id: 2
+-              isChecked: false
+-              isStartup: false
+-              mem:
+-                size: "0x0"
+-                startAddr: "0x0"
+-              tag: IROM
+-        useCustomScatterFile: false
+-    uploadConfigMap:
+-      JLink:
+-        baseAddr: ""
+-        bin: ""
+-        cpuInfo:
+-          cpuName: "null"
+-          vendor: "null"
+-        otherCmds: ""
+-        proType: 1
+-        speed: 8000
+-      STLink:
+-        address: "0x8000000"
+-        bin: ""
+-        elFile: None
+-        optionBytes: .eide/nwatch-dshanmcu-f103.st.option.bytes.ini
+-        otherCmds: ""
+-        proType: SWD
+-        resetMode: default
+-        runAfterProgram: true
+-        speed: 4000
+-    uploader: STLink
++version: "4.1"
++name: NWatch-DShanMCU-F103
++type: ARM
++deviceName: null
++packDir: null
++srcDirs: []
++virtualFolder:
++  name: <virtual_root>
++  files: []
++  folders:
++    - name: Application
++      files: []
++      folders:
++        - name: MDK-ARM
++          files:
++            - path: startup_stm32f103xb.s
++          folders: []
++        - name: User
++          files: []
++          folders:
++            - name: Core
++              files:
++                - path: ../Core/Src/main.c
++                - path: ../Core/Src/stm32f1xx_it.c
++                - path: ../Core/Src/stm32f1xx_hal_msp.c
++              folders: []
++    - name: Drivers
++      files: []
++      folders:
++        - name: STM32F1xx_HAL_Driver
++          files:
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_spi.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
++            - path: ../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c
++          folders: []
++        - name: CMSIS
++          files:
++            - path: ../Core/Src/system_stm32f1xx.c
++          folders: []
++        - name: DShanMCU-F103
++          files:
++            - path: ../Drivers/DShanMCU-F103/driver_color_led.c
++            - path: ../Drivers/DShanMCU-F103/driver_ir_receiver.c
++            - path: ../Drivers/DShanMCU-F103/driver_irq.c
++            - path: ../Drivers/DShanMCU-F103/driver_lcd.c
++            - path: ../Drivers/DShanMCU-F103/driver_oled.c
++            - path: ../Drivers/DShanMCU-F103/driver_systick.c
++            - path: ../Drivers/DShanMCU-F103/driver_timer.c
++            - path: ../Drivers/DShanMCU-F103/driver_uart.c
++            - path: ../Drivers/DShanMCU-F103/driver_passive_buzzer.c
++            - path: ../Drivers/DShanMCU-F103/gui_log_console.c
++            - path: ../Drivers/DShanMCU-F103/driver_dht11.c
++            - path: ../Drivers/DShanMCU-F103/driver_spiflash_w25q64.c
++          folders: []
++    - name: NWatch
++      files:
++        - path: ../NWatch/alarm.c
++        - path: ../NWatch/alarms.c
++        - path: ../NWatch/animation.c
++        - path: ../NWatch/appconfig.c
++        - path: ../NWatch/buttons.c
++        - path: ../NWatch/display.c
++        - path: ../NWatch/draw.c
++        - path: ../NWatch/game1.c
++        - path: ../NWatch/game2.c
++        - path: ../NWatch/game3.c
++        - path: ../NWatch/games.c
++        - path: ../NWatch/global.c
++        - path: ../NWatch/m_display.c
++        - path: ../NWatch/m_main.c
++        - path: ../NWatch/menu.c
++        - path: ../NWatch/millis.c
++        - path: ../NWatch/normal.c
++        - path: ../NWatch/pwrmgr.c
++        - path: ../NWatch/resources.c
++        - path: ../NWatch/settings.c
++        - path: ../NWatch/stopwatch.c
++        - path: ../NWatch/time.c
++        - path: ../NWatch/timedate.c
++        - path: ../NWatch/torch.c
++        - path: ../NWatch/tune.c
++        - path: ../NWatch/tunes.c
++        - path: ../NWatch/ui.c
++        - path: ../NWatch/watchface.c
++        - path: ../NWatch/sound.c
++        - path: ../NWatch/sleep.c
++        - path: ../NWatch/diag.c
++        - path: ../NWatch/tunemaker.c
++        - path: ../NWatch/reset.c
++      folders: []
++    - name: ::CMSIS
++      files: []
++      folders: []
++dependenceList: []
++outDir: build
++miscInfo:
++  uid: cf3a568ff1b57beeac7c5d3c2f882085
++targets:
++  NWatch-DShanMCU-F103:
++    cppPreprocessAttrs:
++      defineList:
++        - USE_HAL_DRIVER
++        - STM32F103xB
++      incList:
++        - ../Core/Inc
++        - ../Drivers/STM32F1xx_HAL_Driver/Inc
++        - ../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
++        - ../Drivers/CMSIS/Device/ST/STM32F1xx/Include
++        - ../Drivers/CMSIS/Include
++        - ../Drivers/DShanMCU-F103
++        - ../NWatch
++        - .cmsis/include
++        - RTE/_NWatch-DShanMCU-F103
++      libList: []
++    excludeList:
++      - <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_spi.c
++      - <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_uart.c
++      - <virtual_root>/Drivers/DShanMCU-F103/driver_color_led.c
++      - <virtual_root>/Drivers/DShanMCU-F103/driver_uart.c
++      - <virtual_root>/Drivers/DShanMCU-F103/driver_passive_buzzer.c
++      - <virtual_root>/Drivers/DShanMCU-F103/gui_log_console.c
++      - <virtual_root>/Drivers/DShanMCU-F103/driver_dht11.c
++      - <virtual_root>/Drivers/DShanMCU-F103/driver_spiflash_w25q64.c
++      - <virtual_root>/NWatch/alarm.c
++      - <virtual_root>/NWatch/alarms.c
++      - <virtual_root>/NWatch/game1.c
++      - <virtual_root>/NWatch/game2.c
++      - <virtual_root>/NWatch/game3.c
++      - <virtual_root>/NWatch/games.c
++      - <virtual_root>/NWatch/settings.c
++      - <virtual_root>/NWatch/stopwatch.c
++      - <virtual_root>/NWatch/timedate.c
++      - <virtual_root>/NWatch/torch.c
++      - <virtual_root>/NWatch/tune.c
++      - <virtual_root>/NWatch/tunes.c
++      - <virtual_root>/NWatch/sound.c
++      - <virtual_root>/NWatch/sleep.c
++      - <virtual_root>/NWatch/diag.c
++      - <virtual_root>/NWatch/reset.c
++    settings:
++      debugger: cortex-debug
++    toolchain: AC5
++    toolchainConfigMap:
++      AC5:
++        archExtensions: ""
++        cpuType: Cortex-M3
++        floatingPointHardware: none
++        options:
++          version: 4
++          afterBuildTasks: []
++          asm-compiler:
++            defines: []
++          beforeBuildTasks: []
++          c/cpp-compiler:
++            CXX_FLAGS: --diag_suppress=1 --diag_suppress=1295
++            C_FLAGS: --diag_suppress=1 --diag_suppress=1295
++            c99-mode: true
++            one-elf-section-per-function: true
++            optimization: level-3
++            warnings: all-warnings
++          global:
++            output-debug-info: enable
++            use-microLIB: false
++          linker:
++            $outputTaskExcludes:
++              - .bin
++            output-format: elf
++            ro-base: ""
++            rw-base: ""
++            xo-base: ""
++        scatterFilePath: ""
++        storageLayout:
++          RAM:
++            - id: 1
++              isChecked: false
++              mem:
++                size: "0x0"
++                startAddr: "0x0"
++              noInit: false
++              tag: RAM
++            - id: 2
++              isChecked: false
++              mem:
++                size: "0x0"
++                startAddr: "0x0"
++              noInit: false
++              tag: RAM
++            - id: 3
++              isChecked: false
++              mem:
++                size: "0x0"
++                startAddr: "0x0"
++              noInit: false
++              tag: RAM
++            - id: 1
++              isChecked: true
++              mem:
++                size: "0x5000"
++                startAddr: "0x20000000"
++              noInit: false
++              tag: IRAM
++            - id: 2
++              isChecked: false
++              mem:
++                size: "0x0"
++                startAddr: "0x0"
++              noInit: false
++              tag: IRAM
++          ROM:
++            - id: 1
++              isChecked: false
++              isStartup: false
++              mem:
++                size: "0x0"
++                startAddr: "0x0"
++              tag: ROM
++            - id: 2
++              isChecked: false
++              isStartup: false
++              mem:
++                size: "0x0"
++                startAddr: "0x0"
++              tag: ROM
++            - id: 3
++              isChecked: false
++              isStartup: false
++              mem:
++                size: "0x0"
++                startAddr: "0x0"
++              tag: ROM
++            - id: 1
++              isChecked: true
++              isStartup: true
++              mem:
++                size: "0x10000"
++                startAddr: "0x8000000"
++              tag: IROM
++            - id: 2
++              isChecked: false
++              isStartup: false
++              mem:
++                size: "0x0"
++                startAddr: "0x0"
++              tag: IROM
++        useCustomScatterFile: false
++    uploadConfigMap:
++      JLink:
++        baseAddr: ""
++        bin: ""
++        cpuInfo:
++          cpuName: "null"
++          vendor: "null"
++        otherCmds: ""
++        proType: 1
++        speed: 8000
++      STLink:
++        address: "0x8000000"
++        bin: ""
++        elFile: None
++        optionBytes: .eide/nwatch-dshanmcu-f103.st.option.bytes.ini
++        otherCmds: ""
++        proType: SWD
++        resetMode: default
++        runAfterProgram: true
++        speed: 4000
++    uploader: STLink
+--- before/MDK-ARM\NWatch-DShanMCU-F103.uvprojx
++++ after/MDK-ARM\NWatch-DShanMCU-F103.uvprojx
+@@ -535,7 +535,7 @@
+               <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c</FilePath>
+               <FileOption>
+                 <CommonProperty>
+-                  <IncludeInBuild>0</IncludeInBuild>
++                  <IncludeInBuild>1</IncludeInBuild>
+                 </CommonProperty>
+               </FileOption>
+             </File>
+@@ -545,7 +545,7 @@
+               <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c</FilePath>
+               <FileOption>
+                 <CommonProperty>
+-                  <IncludeInBuild>0</IncludeInBuild>
++                  <IncludeInBuild>1</IncludeInBuild>
+                 </CommonProperty>
+               </FileOption>
+             </File>
+--- before/NWatch\time.c
++++ after/NWatch\time.c
+@@ -17,9 +17,13 @@
+ 
+ timeDate_s timeDate;
+ //static timestamp_t timestamp;
+- bool update;
+-
++/* ��������ֻ����ѭ�����£��������ж�ֱ���޸� timeDate�� */
++static millis_t lastSecondMs;
++static bool clockRunning;
++
++#ifdef RTC_SRC
+ static void getRtcTime(void);
++#endif
+ 
+ void time_init()
+ {
+@@ -27,6 +31,7 @@
+ 	timeDate.date.month = (month_t)9;
+ 	timeDate.date.day		= DAY_TUE;
+ 	timeDate.date.date 	= 12;
++	timeDate.date.day = time_dow(timeDate.date.year, timeDate.date.month, timeDate.date.date);
+ 	timeDate.time.ampm = CHAR_24;
+ 	time_timeMode(&timeDate.time, appConfig.timeMode);
+ 	
+@@ -35,78 +40,26 @@
+ 
+ void time_sleep()
+ {
+-////	TCCR2B = _BV(CS22)|_BV(CS20);
+-////	while(ASSR & (_BV(OCR2BUB)|_BV(TCR2AUB)|_BV(TCR2BUB)));
+-
+-//#if RTC_SRC != RTC_SRC_INTERNAL
+-//	// Turn off square wave
+-//	rtc_sqw(RTC_SQW_OFF);
+-
+-//	alarm_s alarm;
+-
+-//	// Set next alarm
+-//	if(alarm_getNext(&alarm))
+-//	{
+-//		alarm.days = alarm_getNextDay() + 1;
+-//		rtc_setUserAlarmWake(&alarm);
+-//	}
+-//	else // No next alarm
+-//		rtc_setUserAlarmWake(NULL);
+-
+-//	// Set up hour beeps
+-//	if(appConfig.volHour)
+-//	{
+-//		alarm.min = 0;
+-//		alarm.hour = 0;
+-//		alarm.days = 0;
+-//		rtc_setSystemAlarmWake(&alarm);
+-//	}
+-//	else // Hour beep volume set to minimum, so don't bother with the system alarm
+-//		rtc_setSystemAlarmWake(NULL);
+-//#endif
+-
+-	update = false;
++    /* ��ͨ���߲�ֹͣ�����ӣ����Ѻ����ѭ�����ѹ����벹�ơ� */
++    time_update();
+ }
+ 
+ void time_shutdown()
+ {
+-//#if RTC_SRC != RTC_SRC_INTERNAL
+-//	rtc_sqw(RTC_SQW_OFF);
+-//	rtc_setUserAlarmWake(NULL);
+-//	rtc_setSystemAlarmWake(NULL);
+-//#endif
+-
+-	update = false;
++    time_update();
++    clockRunning = false;
+ }
+ 
+ 
+ rtcwake_t time_wake()
+ {
+-#if RTC_SRC != RTC_SRC_INTERNAL
+-	getRtcTime();
+-	return RTCWAKE_SYSTEM;
+-
+-	// Turn on square wave
+-	// rtc_sqw(RTC_SQW_ON);
+-
+-//	update = false;
+-
+-	// Check alarms
+-	bool userAlarm = rtc_userAlarmState();
+-	bool systemAlarm = rtc_systemAlarmState();
+-
+-	if(userAlarm && systemAlarm)
+-		return RTCWAKE_USER_SYSTEM;
+-	else if(userAlarm)
+-		return RTCWAKE_USER;
+-	else if(systemAlarm)
+-		return RTCWAKE_SYSTEM;
+-	return RTCWAKE_NONE;
+-#else
+-	///getRtcTime();
+-	return RTCWAKE_SYSTEM;
+-	///return RTCWAKE_NONE;
+-#endif
++#ifdef RTC_SRC
++    getRtcTime();
++#endif
++    if(!clockRunning)
++        lastSecondMs = millis_get();
++    clockRunning = true;
++    return RTCWAKE_SYSTEM;
+ }
+ 
+ 
+@@ -117,6 +70,7 @@
+ 	memcpy(&timeDate, newTimeDate, sizeof(timeDate_s));
+ 
+ 	timeDate.time.secs = 0;
++	lastSecondMs = millis_get();
+ 	time_timeMode(&timeDate.time, appConfig.timeMode);
+ 
+ 	///rtc_save(&timeDate);
+@@ -208,97 +162,58 @@
+ 
+ void time_update()
+ {
+-	if(!update)
+-		return;
+-	update = false;
+-#ifdef RTC_SRC 
+-	getRtcTime();
+-	
++    millis_t now = millis_get();
++    uint32_t elapsed = (millis_t)(now - lastSecondMs) / 1000U;
++    uint32_t total;
++    uint32_t daysElapsed;
++    time_s time;
++
++    if(!clockRunning || elapsed == 0U)
++        return;
++    /* �޷��Ų�ֵ�� 32 λ������ƣ���������һ�벿�֣�����ʧ�ӳٸ��¡� */
++    lastSecondMs += elapsed * 1000U;
++#ifdef RTC_SRC
++    getRtcTime();
++#else
++    time = timeDate.time;
++    time_timeMode(&time, TIMEMODE_24HR);
++    total = (uint32_t)time.hour * SECONDS_IN_HOUR +
++            (uint32_t)time.mins * SECONDS_IN_MIN + time.secs + elapsed;
++    daysElapsed = total / SECONDS_IN_DAY;
++    total %= SECONDS_IN_DAY;
++    time.hour = total / SECONDS_IN_HOUR;
++    time.mins = (total % SECONDS_IN_HOUR) / SECONDS_IN_MIN;
++    time.secs = total % SECONDS_IN_MIN;
++    time_timeMode(&time, appConfig.timeMode);
++    timeDate.time = time;
++
++    /* �·�����Ϊ 0..11�����ڽ�λ������ʹ��ͬһ���Լ���� */
++    while(daysElapsed-- != 0U)
++    {
++        if(++timeDate.date.date > time_monthDayCount(timeDate.date.month, timeDate.date.year))
++        {
++            timeDate.date.date = 1;
++            if(++timeDate.date.month >= 12)
++            {
++                timeDate.date.month = MONTH_JAN;
++                if(++timeDate.date.year == 100)
++                    timeDate.date.year = 0;
++            }
++        }
++        timeDate.date.day = (day_t)(((byte)timeDate.date.day + 1U) % 7U);
++    }
++#endif
+ #if !NWATCH_UI_ONLY
+-	if(timeDate.time.secs == 0 && timeDate.time.mins == 0)
+-		tune_play(tuneHour, VOL_HOUR, PRIO_HOUR);
+-#endif
+-#else
+-	
+-	// Slightly modified code from AVR134            
+-	if(timeDate.time.secs == 60)
+-	{
+-		timeDate.time.secs = 0;
+-		if(++timeDate.time.mins == 60)
+-		{
+-			timeDate.time.mins = 0;
+-			if(++timeDate.time.hour == 24) // What about 12 hr?
+-			{
+-				byte numDays = time_monthDayCount(timeDate.date.month, timeDate.date.year);
+-
+-				timeDate.time.hour = 0;
+-				if (++timeDate.date.date == numDays + 1)
+-				{
+-					timeDate.date.month++;
+-					timeDate.date.date = 1;
+-				}
+-
+-				if (timeDate.date.month == 13)
+-				{
+-					timeDate.date.month = (month_t)1;
+-					timeDate.date.year++;
+-					if(timeDate.date.year == 100)
+-						timeDate.date.year = 0;
+-				}
+-
+-				if(++timeDate.date.day == 7)
+-					timeDate.date.day = (day_t)0;
+-			}
+-
+-#if !NWATCH_UI_ONLY
+-			tune_play(tuneHour, VOL_HOUR, PRIO_HOUR);
+-#endif
+-		}
+-	}
+-#endif
+-
+-	debug_printf("%02hhu:%02hhu:%02hhu\n", timeDate.time.hour, timeDate.time.mins, timeDate.time.secs);
+-	//debug_printf("T: %hhuC\n",rtc_temp());
+-}
+-
++    if(timeDate.time.secs == 0 && timeDate.time.mins == 0)
++        tune_play(tuneHour, VOL_HOUR, PRIO_HOUR);
++#endif
++}
++
++#ifdef RTC_SRC
+ static void getRtcTime()
+ {
+-	
+-#ifdef RTC_SRC
+-
+-	rtc_get(&timeDate);
+-
+-#else
+-	millis_t milliseconds = millis_get();
+-
+-	timeDate.date.year 	= '0'-25;
+-	timeDate.date.month = (month_t)9;
+-	timeDate.date.day		= DAY_SAT;
+-	timeDate.date.date 	= 1;
+-	timeDate.time.hour 	= milliseconds/3600;
+-	timeDate.time.mins 	= (milliseconds%3600)/60;
+-	timeDate.time.secs 	= milliseconds%3600%60;
+-#endif
+-	
+-	
+-	timeDate.time.ampm = CHAR_24;
+-//	timestamp = time_timeDate2TimeStamp(&timeDate);
+-
+-	// Convert to correct time mode
+-	time_timeMode(&timeDate.time, appConfig.timeMode);
+-
+-	
+-}
+-
+-//#if RTC_SRC == RTC_SRC_INTERNAL
+-//ISR(TIMER2_OVF_vect)
+-//#else
+-//#ifdef __AVR_ATmega32U4__
+-//ISR(INT3_vect)
+-//#else
+-//ISR(INT0_vect)
+-//#endif
+-//#endif
+-//{
+-//	update = true;
+-//}
++    rtc_get(&timeDate);
++    timeDate.time.ampm = CHAR_24;
++    time_timeMode(&timeDate.time, appConfig.timeMode);
++}
++#endif
+--- before/NWatch\time.h
++++ after/NWatch\time.h
+@@ -1,38 +1,38 @@
+-/*
+- * Project: N|Watch
+- * Author: Zak Kemble, contact@zakkemble.co.uk
+- * Copyright: (C) 2013 by Zak Kemble
+- * License: GNU GPL v3 (see License.txt)
+- * Web: http://blog.zakkemble.co.uk/diy-digital-wristwatch/
+- */
+-
+-#ifndef TIME_H_
+-#define TIME_H_
+-#include "typedefs.h"
+-
+-typedef enum
+-{
+-	RTCWAKE_NONE,
+-	RTCWAKE_SYSTEM,
+-	RTCWAKE_USER,
+-	RTCWAKE_USER_SYSTEM
+-} rtcwake_t;
+-
+-extern timeDate_s timeDate;
+-extern bool update;
+-
+-void time_init(void);
+-void time_sleep(void);
+-void time_shutdown(void);
+-rtcwake_t time_wake(void);
+-void time_set(timeDate_s*);
+-bool time_isLeapYear(byte);
+-day_t time_dow(byte, month_t, byte);
+-byte time_monthDayCount(month_t, byte);
+-void time_update(void);
+-char* time_timeStr(void);
+-void time_timeMode(time_s*, timemode_t);
+-//timestamp_t time_getTimestamp(void);
+-//timestamp_t time_timeDate2TimeStamp(time_s*);
+-
+-#endif /* TIME_H_ */
++/*
++ * Project: N|Watch
++ * Author: Zak Kemble, contact@zakkemble.co.uk
++ * Copyright: (C) 2013 by Zak Kemble
++ * License: GNU GPL v3 (see License.txt)
++ * Web: http://blog.zakkemble.co.uk/diy-digital-wristwatch/
++ */
++
++#ifndef TIME_H_
++#define TIME_H_
++#include "typedefs.h"
++
++typedef enum
++{
++	RTCWAKE_NONE,
++	RTCWAKE_SYSTEM,
++	RTCWAKE_USER,
++	RTCWAKE_USER_SYSTEM
++} rtcwake_t;
++
++extern timeDate_s timeDate;
++
++
++void time_init(void);
++void time_sleep(void);
++void time_shutdown(void);
++rtcwake_t time_wake(void);
++void time_set(timeDate_s*);
++bool time_isLeapYear(byte);
++day_t time_dow(byte, month_t, byte);
++byte time_monthDayCount(month_t, byte);
++void time_update(void);
++char* time_timeStr(void);
++void time_timeMode(time_s*, timemode_t);
++//timestamp_t time_getTimestamp(void);
++//timestamp_t time_timeDate2TimeStamp(time_s*);
++
++#endif /* TIME_H_ */

@@ -1,0 +1,43 @@
+{
+  "compiler": "ARM Compiler 5.06 update 5 (build 528)",
+  "baseline": {
+    "ro": 29992,
+    "ram": 4816,
+    "flash": 30228
+  },
+  "timebase": {
+    "ro": 30560,
+    "ram": 4704,
+    "flash": 30808
+  },
+  "delta_flash": 580,
+  "delta_ram": -112,
+  "warnings": 9,
+  "sources": 42,
+  "changed_files": [
+    "Core/Inc/stm32f1xx_hal_conf.h",
+    "Core/Inc/stm32f1xx_it.h",
+    "Core/Src/main.c",
+    "Core/Src/stm32f1xx_it.c",
+    "Drivers/DShanMCU-F103/driver_ir_receiver.c",
+    "Drivers/DShanMCU-F103/driver_systick.c",
+    "Drivers/DShanMCU-F103/driver_systick.h",
+    "Drivers/DShanMCU-F103/driver_timer.c",
+    "Drivers/DShanMCU-F103/driver_timer.h",
+    "MDK-ARM/.eide/eide.yml",
+    "MDK-ARM/NWatch-DShanMCU-F103.uvprojx",
+    "NWatch/time.c",
+    "NWatch/time.h"
+  ],
+  "checks": [
+    "EIDE/uVision sources agree",
+    "AC5/O3/64KB/20KB unchanged",
+    "HAL_InitTick binds to TIM4 implementation",
+    "empty SysTick handler",
+    "no SysTick access in active application sources",
+    "no FreeRTOS kernel/task/heap sources",
+    "original UI source hashes unchanged",
+    "HEX checksum/address span"
+  ],
+  "hardware_tested": false
+}
