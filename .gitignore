@@ -1,33 +1,66 @@
-# dot files
-/.vscode/launch.json
-/.settings
-/.eide/log
-/.eide.usr.ctx.json
-
-# project out
-/build
-/bin
-/obj
-/out
-
-# eide template
-*.ept
-*.eide-template
-# Keil 编译输出
-Objects/
-Listings/
+# Generated STM32 / Keil / EIDE build output
+/MDK-ARM/build/
+/MDK-ARM/bin/
+/MDK-ARM/obj/
+/MDK-ARM/out/
+/MDK-ARM/Nwatch-DShanMCU-F103/
+/MDK-ARM/Objects/
+/MDK-ARM/Listings/
+/MDK-ARM/phase3_freertos/kernel-bringup/
+/Debug/
+/Release/
+/Objects/
+/Listings/
+/MDK-ARM/Debug/
+/MDK-ARM/Release/
 *.o
+*.obj
+*.ko
 *.d
 *.axf
 *.elf
+*.hex
 *.map
 *.lst
+*.crf
+*.lnp
+*.dep
+*.build_log.htm
 *.log
+*.su
+*.gch
+*.pch
+*.ilk
+*.exp
+*.idb
+*.pdb
+*.dSYM/
+compile_commands.json
+builder.params
+/MDK-ARM/phase3_freertos/disassembly.txt
 
-# Keil 个人配置
+# Keep vendor libraries and source archives: they are not local build caches.
+# In particular, Drivers/CMSIS may ship required .a/.lib files.
+
+# Per-user IDE state; retain shared project files and .vscode/tasks.json.
+.settings/
 *.uvoptx
 *.uvguix.*
+/MDK-ARM/.vscode/launch.json
+/MDK-ARM/.eide/log/
+/MDK-ARM/.eide.usr.ctx.json
+*.ept
+*.eide-template
 
-# 临时文件
+# Temporary and operating-system files
 *.bak
 *.tmp
+*.swp
+*.swo
+*~
+__pycache__/
+*.pyc
+*.pyo
+.node_repl_*
+.DS_Store
+Thumbs.db
