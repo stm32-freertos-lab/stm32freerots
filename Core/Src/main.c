@@ -162,7 +162,7 @@ static void GUI_Task(void *argument)
 #if !NWATCH_UI_ONLY
 	PassiveBuzzer_Init();
 	ColorLED_Init();
-	DHT11_Init();
+	/* DHT11_Init() 由 Sensor_Task 在任务入口调用，PA1 只归 Sensor_Task 所有。 */
 #endif
 	
 	appconfig_init();

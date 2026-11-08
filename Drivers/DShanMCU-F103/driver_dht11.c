@@ -34,6 +34,13 @@
 
 static dht11_t  g_dht11_data_t;
 
+/* 默认给裸机/测试环境使用忙等待；Sensor_Task 会提供强定义，
+ * 在任务上下文中改为 vTaskDelay，避免 20 ms 启动低电平阻塞 GUI。 */
+__weak void DHT11_DelayMs(uint32_t ms)
+{
+	mdelay((int)ms);
+}
+
 /* 控制GPIO读取DHT11的数据 
  * 1. 主机发出至少18MS的低脉冲: start信号
  * 2. start信号变为高, 20-40us之后, dht11会拉低总线维持80us
@@ -132,7 +139,8 @@ static int DHT11_PinRead(void)
 static void DHT11_Start(void)
 {
 	DHT11_PinSet(0);
-	mdelay(20);
+	/* 20 ms >= 数据手册要求的 18 ms；实际延时由 DHT11_DelayMs 决定。 */
+	DHT11_DelayMs(20U);
 	DHT11_PinCfgAsInput();
 }
 
@@ -247,29 +255,20 @@ void DHT11_Init(void)
  ***********************************************************************/
 int DHT11_Read(int *hum, int *temp)
 {
-	unsigned char hum_m, hum_n;
-	unsigned char temp_m, temp_n;
-	unsigned char check;	
-	
+	int hum_m, hum_n;
+	int temp_m, temp_n;
+	int check;
+
 	DHT11_Start();
-	
+
 	if (0 != DHT11_Wait_Ack())
-	{
-		//printf("dht11 not ack, err!\n\r");
-		return -1;
-	}
+		return DHT11_ERR_NO_ACK;
 
 	if (0 != DHT11_WaitFor_Val(1, 1000))  /* 等待ACK变为高电平, 超时时间是1000us */
-	{
-		//printf("dht11 wait for ack high err!\n\r");
-		return -1;
-	}
+		return DHT11_ERR_ACK_HIGH;
 
 	if (0 != DHT11_WaitFor_Val(0, 1000))  /* 数据阶段: 等待低电平, 超时时间是1000us */
-	{
-		//printf("dht11 wait for data low err!\n\r");
-		return -1;
-	}
+		return DHT11_ERR_DATA_LOW;
 
 	hum_m  = DHT11_ReadByte();
 	hum_n  = DHT11_ReadByte();
@@ -280,32 +279,37 @@ int DHT11_Read(int *hum, int *temp)
 	DHT11_PinCfgAsOutput();
 	DHT11_PinSet(1);
 
+	if (hum_m < 0 || hum_n < 0 || temp_m < 0 || temp_n < 0 || check < 0)
+		return DHT11_ERR_BIT_TIMEOUT;
+
 	if (hum_m + hum_n + temp_m + temp_n == check)
 	{
 		*hum  = hum_m;
 		*temp = temp_m;
-		return 0;
-	}
-	else
-	{
-		//printf("dht11 checksum err!\n\r");
-		return -1;
+		return DHT11_OK;
 	}
 
+	return DHT11_ERR_CHECKSUM;
 }
 
 void DHT11_Update(void)
 {
 	static millis_t lastUpdate = 0;
+	int hum, temp;
 
-  // Update every 10ms
+  /* DHT11 采样周期不得快于 1 s，这里取 2 s。 */
   millis_t now = millis();
-  if ((millis_t)(now - lastUpdate) >= 100)
+  if ((millis_t)(now - lastUpdate) >= 2000)
   {
     lastUpdate = now;
-		DHT11_Read(&g_dht11_data_t.hum, &g_dht11_data_t.temp);
+    /* 只有成功读取才更新，避免失败时把旧值或半更新值当成新数据。 */
+    if(DHT11_Read(&hum, &temp) == DHT11_OK)
+    {
+      g_dht11_data_t.hum = hum;
+      g_dht11_data_t.temp = temp;
+    }
   }
-}	
+}
 
 
 dht11_t *DHT11_Get_Data(void)

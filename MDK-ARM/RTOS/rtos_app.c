@@ -4,6 +4,7 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_it.h"
 #include "driver_timer.h"
+#include "sensor_task.h"
 
 volatile NWatchRtosDiagnostics g_nwatchRtos;
 volatile NWatchRtosFault g_nwatchFault;
@@ -78,6 +79,13 @@ void NWatch_RtosGuiEntered(void)
 void NWatch_RtosGuiReady(void)
 {
     g_nwatchRtos.phase = 3U;
+    updateDiagnostics();
+
+    /* GUI 初始化完成后才启动传感器任务；PA1 的 DHT11 操作只属于 Sensor_Task。 */
+    if(Sensor_Start() != pdPASS)
+        NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE, __FILE__, __LINE__);
+
+    /* 记录创建后的任务数和 Heap 余量。 */
     updateDiagnostics();
 }
 

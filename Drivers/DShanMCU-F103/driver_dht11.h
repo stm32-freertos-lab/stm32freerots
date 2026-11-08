@@ -38,6 +38,21 @@ typedef struct
 	int temp;
 }dht11_t;
 
+/* DHT11_Read() 的返回值。0 表示成功，负值表示失败阶段。 */
+enum
+{
+	DHT11_OK = 0,
+	DHT11_ERR_NO_ACK = -1,      /* 启动后没有回应 */
+	DHT11_ERR_ACK_HIGH = -2,    /* 回应低电平后没有拉高 */
+	DHT11_ERR_DATA_LOW = -3,    /* 数据阶段没有等到低电平 */
+	DHT11_ERR_BIT_TIMEOUT = -4, /* 40 bit 数据中某一位超时 */
+	DHT11_ERR_CHECKSUM = -5     /* 校验和错误 */
+};
+
+/* 启动信号的低电平延时。驱动默认使用忙等待；
+ * Sensor_Task 提供强定义，改为 vTaskDelay，避免阻塞 GUI。 */
+void DHT11_DelayMs(uint32_t ms);
+
 
 /**********************************************************************
  * 函数名称： DHT11_Init
