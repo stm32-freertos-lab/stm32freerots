@@ -10,6 +10,15 @@ typedef struct
 }sensor_data_t ;
 
 extern  QueueHandle_t g_sensorQueue ;
+#define TEMP_HISTORY_SIZE 30
+
+typedef struct
+{
+	
+	 int temp; /* 温度整数部分，单位：摄氏度。 */
+	 uint8_t Writeindex; /* 当前索引，范围 0~TEMP_HISTORY_SIZE-1。 */
+	 uint8_t Readindex; /* 读取索引，范围 0~TEMP_HISTORY_SIZE-1。 */
+}sensor_history_t ;
 
 /* 传感器任务入口，任务创建代码由用户自行编写。 */
 void Sensor_Task(void *argument);
