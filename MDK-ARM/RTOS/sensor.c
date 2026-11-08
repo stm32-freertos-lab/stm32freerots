@@ -5,12 +5,7 @@
 #include "driver_timer.h"
 #include "driver_dht11.h"
 
-/* 保存一次读取到的温湿度数据，两个成员都使用整数值。 */
-typedef struct
-{
-	int hum; /* 湿度整数部分，单位：%RH。 */
-	int temp; /* 温度整数部分，单位：摄氏度。 */
-}sensor_data_t ;
+
 
 /* 累计 DHT11 读取成功的次数，便于在调试器中观察。 */
 int count=0;

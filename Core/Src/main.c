@@ -56,7 +56,7 @@
 #include "rtos_app.h"
 
 /* USER CODE END Includes */
-
+#include "sensor.h"
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 
@@ -155,6 +155,7 @@ int main(void)
 
 static void GUI_Task(void *argument)
 {
+  sensor_data_t displayData = {0};  // 保存从队列接收到的温湿度
   (void)argument;
   NWatch_RtosGuiEntered();
 #if !NWATCH_RTOS_BRINGUP_ONLY
@@ -233,6 +234,16 @@ static void GUI_Task(void *argument)
 		
 		global_update();
 
+/* 从队列读取最新温湿度 */
+if (g_sensorQueue != NULL)
+{
+    if (xQueuePeek(g_sensorQueue, &displayData, 0) == pdPASS)
+    {
+        // 读取成功
+        // displayData.hum  为湿度
+        // displayData.temp 为温度
+    }
+}
 		if(pwrmgr_userActive())
 		{
 #if !NWATCH_UI_ONLY
