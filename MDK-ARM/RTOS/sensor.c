@@ -30,12 +30,8 @@ while(1)
 {
     count++;
 }
-else
-{
-  
-}
-        DHT11_Update();
-        vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(2000));
+ 
+ vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(2000));
     }   
 
 

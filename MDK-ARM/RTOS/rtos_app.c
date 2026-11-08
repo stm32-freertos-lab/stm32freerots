@@ -82,14 +82,9 @@ void NWatch_RtosGuiReady(void)
    
     g_nwatchRtos.phase = 3U;
     updateDiagnostics();
-if(xTaskCreate(Sensor_Task, "Sensor", 192, NULL, 1, NULL) = pdPASS)
+if(xTaskCreate(Sensor_Task, "Sensor", 192, NULL, 3, NULL) != pdPASS)
     {
-        
-    }
-    else{
-
-NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE, __FILE__, __LINE__);
-
+        NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE, __FILE__, __LINE__);
     }
 
     /* 记录创建后的任务数和 Heap 余量。 */
