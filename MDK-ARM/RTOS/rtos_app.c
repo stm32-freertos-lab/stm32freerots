@@ -83,7 +83,8 @@ void NWatch_RtosGuiReady(void)
     g_sensorQueue= xQueueCreate(1,sizeof(sensor_data_t));
         if(g_sensorQueue == NULL)
         {
-            NWatch_RtosFatal(NWATCH_FAULT_QUEUE_CREATE, __FILE__, __LINE__);
+            /* 队列分配失败，复用已有的内存分配故障码。 */
+            NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
         }
     
    

@@ -9,10 +9,15 @@
 #include "common.h"
 
 #if NWATCH_UI_ONLY
-#define OPTION_COUNT 4
+#include "sensor.h"
+
+#define OPTION_COUNT 5
 static void aboutOpen(void);
 static display_t aboutDraw(void);
 static bool aboutBack(void);
+static void tempOpen(void);
+static display_t tempDraw(void);
+static bool tempBack(void);
 static void crtDemoOpen(void);
 static display_t crtDemoDraw(void);
 static bool crtDemoBack(void);
@@ -89,6 +94,7 @@ static void itemLoader(byte num)
     setMenuOption_P(1, PSTR(STR_DISPLAY), menu_display, mDisplayOpen);
     setMenuOption_P(2, PSTR("CRT Animation"), menu_anim[1], crtDemoOpen);
     setMenuOption_P(3, PSTR("About"), menu_settings, aboutOpen);
+    setMenuOption_P(4, PSTR("Temp / Hum"), menu_default, tempOpen);
 #else
 	num = 0;
 	setMenuOption_P(num++, PSTR(STR_ALARMS), menu_alarm, mAlarmsOpen);
@@ -127,6 +133,44 @@ static display_t aboutDraw(void)
     draw_string_P(PSTR("STM32F103 / AC5"), false, 8, 42);
     draw_string_P(PSTR("PLAY: Back"), false, 29, 54);
     return DISPLAY_DONE;
+}
+
+/* 温湿度页面沿用原菜单的返回动画。 */
+static bool tempBack(void)
+{
+    beginAnimation(back);
+    return true;
+}
+
+/* 非阻塞查看最新队列数据，不取走消息，不直接操作 OLED。 */
+static display_t tempDraw(void)
+{
+    sensor_data_t data;
+    char line[24];
+
+    draw_string("TEMP / HUMIDITY", false, 11, 0);
+    if(g_sensorQueue != NULL &&
+       xQueuePeek(g_sensorQueue, &data, 0) == pdPASS)
+    {
+        /* 使用固定大小的栈缓冲区构造文字，不申请动态内存。 */
+        snprintf(line, sizeof(line), "TEMP: %d C", data.temp);
+        draw_string(line, false, 10, 20);
+        snprintf(line, sizeof(line), "HUM : %d %%", data.hum);
+        draw_string(line, false, 10, 36);
+    }
+    else
+        draw_string("Waiting DHT11", false, 15, 28);
+
+    draw_string("KEY: Back", false, 32, 56);
+    /* 由原显示框架持续刷新，进入和返回时仍使用原有动画。 */
+    return DISPLAY_DONE;
+}
+
+static void tempOpen(void)
+{
+    display_setDrawFunc(tempDraw);
+    buttons_setFuncs(tempBack, tempBack, tempBack);
+    beginAnimation2(NULL);
 }
 
 static void aboutOpen(void)
