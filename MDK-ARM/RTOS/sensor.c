@@ -22,7 +22,11 @@ void Sensor_Task(void *argument)
     s1.temp = 0;
     TickType_t lastWake = xTaskGetTickCount();   /* 记下当前 Tick */
 
-   if(DHT11_Read(&s1.hum,&s1.temp)==0)
+
+
+while(1)
+    { 
+     if(DHT11_Read(&s1.hum,&s1.temp)==0)
 {
     count++;
 }
@@ -30,9 +34,6 @@ else
 {
   
 }
-
-while(1)
-    {
         DHT11_Update();
         vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(2000));
     }   
