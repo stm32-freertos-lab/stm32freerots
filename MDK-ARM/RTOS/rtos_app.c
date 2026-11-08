@@ -10,6 +10,7 @@ volatile NWatchRtosDiagnostics g_nwatchRtos;
 volatile NWatchRtosFault g_nwatchFault;
 static TaskHandle_t guiHandle;
 
+QueueHandle_t g_sensorQueue = NULL;
 static void updateDiagnostics(void)
 {
     /* 与其他诊断同频采样，调试器无需调用内核函数。 */
@@ -76,14 +77,30 @@ void NWatch_RtosGuiEntered(void)
     configASSERT(g_nwatchRtos.taskCount >= 2U); /* 至少包含 GUI 和内核 Idle。 */
 }
 
+/* GUI 初始化完成后的入口：记录就绪状态，再创建传感器任务。 */
 void NWatch_RtosGuiReady(void)
 {
+    g_sensorQueue= xQueueCreate(1,sizeof(sensor_data_t));
+        if(g_sensorQueue == NULL)
+        {
+            NWatch_RtosFatal(NWATCH_FAULT_QUEUE_CREATE, __FILE__, __LINE__);
+        }
     
    
+    /* phase=3 表示 GUI 初始化完成；先采样一次创建前的诊断数据。 */
     g_nwatchRtos.phase = 3U;
     updateDiagnostics();
+    /* 创建 Sensor_Task，各参数含义如下：
+     * Sensor_Task：任务入口函数；"Sensor"：供调试识别的任务名称。
+     * 192：栈深度，单位为 32 位字，本工程对应 768 字节，仅指任务栈。
+     * 第一个 NULL：不向任务入口传入额外参数。
+     * 3：任务优先级，高于 GUI 的 2；创建成功后可能在本函数返回前抢占 GUI。
+     * 最后一个 NULL：不保存任务句柄；栈和任务控制块仍由内核管理。
+     * pdPASS 表示创建成功；返回其他值时进入下面的故障处理。
+     */
 if(xTaskCreate(Sensor_Task, "Sensor", 192, NULL, 3, NULL) != pdPASS)
     {
+        /* 记录任务创建失败的位置，并进入已有的故障停机流程。 */
         NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE, __FILE__, __LINE__);
     }
 
