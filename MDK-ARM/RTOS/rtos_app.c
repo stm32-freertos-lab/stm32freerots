@@ -4,7 +4,7 @@
 #include "stm32f1xx_hal.h"
 #include "stm32f1xx_it.h"
 #include "driver_timer.h"
-#include "sensor_task.h"
+#include "sensor.h"
 
 volatile NWatchRtosDiagnostics g_nwatchRtos;
 volatile NWatchRtosFault g_nwatchFault;
