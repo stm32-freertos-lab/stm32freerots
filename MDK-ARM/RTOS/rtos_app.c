@@ -99,7 +99,7 @@ void NWatch_RtosGuiReady(void)
      * 最后一个 NULL：不保存任务句柄；栈和任务控制块仍由内核管理。
      * pdPASS 表示创建成功；返回其他值时进入下面的故障处理。
      */
-if(xTaskCreate(Sensor_Task, "Sensor", 192, NULL, 3, NULL) != pdPASS)
+if(xTaskCreate(Sensor_Task, "Sensor", 192, guiHandle, 3, NULL) != pdPASS)
     {
         /* 记录任务创建失败的位置，并进入已有的故障停机流程。 */
         NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE, __FILE__, __LINE__);

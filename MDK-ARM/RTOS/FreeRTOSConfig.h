@@ -35,7 +35,7 @@ void NWatch_RtosAssert(const char *file, uint32_t line);
 #define configUSE_MUTEXES                        0
 #define configUSE_RECURSIVE_MUTEXES              0
 #define configUSE_COUNTING_SEMAPHORES            0
-#define configUSE_TASK_NOTIFICATIONS             0
+#define configUSE_TASK_NOTIFICATIONS             1
 #define configQUEUE_REGISTRY_SIZE                0
 #define configUSE_TRACE_FACILITY                 0
 #define configUSE_STATS_FORMATTING_FUNCTIONS     0

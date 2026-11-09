@@ -18,6 +18,7 @@ static sensor_history_t s2 = {0};
 /* FreeRTOS 传感器任务入口；argument 是创建任务时传入的参数，当前未使用。 */
 void Sensor_Task(void *argument)
 {
+    TaskHandle_t guiHandle = (TaskHandle_t)argument;
     DHT11_Init();
     /* s1 保存最近一次成功读取的数据，首次读取前先把温湿度置零。 */
     sensor_data_t s1 = {0};
@@ -27,6 +28,7 @@ void Sensor_Task(void *argument)
     /* 持续读取温湿度，再按 2000 ms 的固定节拍等待下一轮。 */
     while (1)
     {
+      uint8_t alarmState = 0;
         /* 通过成员地址接收结果；返回 0 表示成功，失败时不进入计数分支。 */
         uint32_t startedUs = (uint32_t)system_get_us();
         int result;
@@ -49,6 +51,10 @@ void Sensor_Task(void *argument)
             taskEXIT_CRITICAL();
             /* The queue protects itself; do not mask IR for its bookkeeping. */
             xQueueOverwrite(g_sensorQueue, &s1);
+            if(s1.temp > TEMP_ALARM_HIGH || s1.hum > HUM_ALARM_HIGH)
+            {
+                alarmState = 1;
+            }
         }
         g_nwatchRtos.sensorStackHighWaterWords = uxTaskGetStackHighWaterMark(NULL);
         vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(2000));

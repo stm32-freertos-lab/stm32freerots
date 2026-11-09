@@ -12,6 +12,30 @@
 #include "sensor.h"
 
 #define OPTION_COUNT 5
+#define TEMP_MENU_OPTION 4
+
+/* 32x32, vertical-page 1bpp: thermometer + droplet, shared with the carousel. */
+static const byte tempMenuIcon[128] = {
+    0x00, 0x00, 0x00, 0x00, 0x00, 0xF8, 0xFC, 0x0C, 0x06, 0x06, 0x06, 0x06, 0x06, 0x0C, 0xFC, 0xF8,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0xE0, 0xF0, 0xE0, 0x80, 0x00, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFC, 0xFC, 0xFC, 0x00, 0x00, 0xFF, 0xFF,
+    0x00, 0x00, 0x00, 0x80, 0xE0, 0x78, 0x1E, 0x07, 0x01, 0x00, 0x01, 0x07, 0x1E, 0x78, 0xE0, 0x80,
+    0x00, 0x00, 0x00, 0xC0, 0xC0, 0x7F, 0x7F, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x7F, 0x7F,
+    0xC0, 0xC0, 0x00, 0x1F, 0x7F, 0xE0, 0xC0, 0x9F, 0x0F, 0x00, 0x00, 0x80, 0xC0, 0xE0, 0x7F, 0x1F,
+    0x00, 0x00, 0x00, 0x07, 0x1F, 0x38, 0x60, 0x70, 0xD8, 0xDF, 0xDF, 0xDF, 0xD8, 0x70, 0x60, 0x38,
+    0x1F, 0x07, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x03, 0x03, 0x03, 0x01, 0x01, 0x00, 0x00, 0x00,
+};
+
+/* Six-pixel corner arms. Each bitmap has the draw_bitmap-required 8-row height. */
+static const byte tempMenuCorners[4][6] = {
+    {0x1F, 0x01, 0x01, 0x01, 0x01, 0x01},
+    {0x01, 0x01, 0x01, 0x01, 0x01, 0x1F},
+    {0xF8, 0x80, 0x80, 0x80, 0x80, 0x80},
+    {0x80, 0x80, 0x80, 0x80, 0x80, 0xF8}
+};
+
+static display_t mMainDraw(void);
+static display_t tempMenuDraw(void);
 static void aboutOpen(void);
 static display_t aboutDraw(void);
 static bool aboutBack(void);
@@ -66,7 +90,11 @@ void mMainOpen()
 
 static void mOpen()
 {
+#if NWATCH_UI_ONLY
+    display_setDrawFunc(mMainDraw);
+#else
 	display_setDrawFunc(menu_draw);
+#endif
 
 	buttons_setFuncs(menu_up, menu_select, menu_down);
 
@@ -94,7 +122,7 @@ static void itemLoader(byte num)
     setMenuOption_P(1, PSTR(STR_DISPLAY), menu_display, mDisplayOpen);
     setMenuOption_P(2, PSTR("CRT Animation"), menu_anim[1], crtDemoOpen);
     setMenuOption_P(3, PSTR("About"), menu_settings, aboutOpen);
-    setMenuOption_P(4, PSTR("Temp / Hum"), menu_default, tempOpen);
+    setMenuOption_P(TEMP_MENU_OPTION, PSTR("TEMP / HUM"), tempMenuIcon, tempOpen);
 #else
 	num = 0;
 	setMenuOption_P(num++, PSTR(STR_ALARMS), menu_alarm, mAlarmsOpen);
@@ -120,6 +148,37 @@ static void itemLoader(byte num)
 }
 
 #if NWATCH_UI_ONLY
+/* Let the existing carousel advance before presenting the selected entry page.
+ * All buttons, selection, horizontal easing and vertical transitions stay owned
+ * by the original menu/animation code. Other entries use menu_draw unchanged. */
+static display_t mMainDraw(void)
+{
+    display_t busy = menu_draw();
+    if(menuData.selected == TEMP_MENU_OPTION && busy == DISPLAY_DONE)
+    {
+        byte y;
+        /* Replace only this rendered frame; no flush or display-state changes. */
+        for(y = 0; y < FRAME_HEIGHT; y += 8)
+            draw_clearArea(0, y, FRAME_WIDTH);
+        return tempMenuDraw();
+    }
+    return busy;
+}
+
+static display_t tempMenuDraw(void)
+{
+    draw_string_P(PSTR(STR_MAINMENU), false, 19, 2);
+    draw_string("<", false, 15, 28);
+    draw_string(">", false, 108, 28);
+    draw_bitmap(48, 16, tempMenuIcon, 32, 32, NOINVERT, 0);
+    draw_bitmap(44, 12, tempMenuCorners[0], 6, 8, NOINVERT, 0);
+    draw_bitmap(78, 12, tempMenuCorners[1], 6, 8, NOINVERT, 0);
+    draw_bitmap(44, 44, tempMenuCorners[2], 6, 8, NOINVERT, 0);
+    draw_bitmap(78, 44, tempMenuCorners[3], 6, 8, NOINVERT, 0);
+    draw_string("TEMP / HUM", false, 30, 55);
+    return DISPLAY_DONE;
+}
+
 static bool aboutBack(void)
 {
     beginAnimation(back);
