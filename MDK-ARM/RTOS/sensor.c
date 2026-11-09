@@ -29,10 +29,11 @@ void Sensor_Task(void *argument)
             xQueueOverwrite(g_sensorQueue, &s1);
             if (s2.count < TEMP_HISTORY_SIZE)
                 s2.count++; /* 本次读取成功，累计次数加一。 */
-            taskENTER_CRITICAL();
+            
         }
         vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(2000));
     }
+   taskEXIT_CRITICAL();
 }
 
 int *History_Get(int *out, uint8_t *validCount)
@@ -44,9 +45,8 @@ int *History_Get(int *out, uint8_t *validCount)
     }
 
     else
-    {
+    {   taskENTER_CRITICAL();
         *validCount = s2.count;
-        taskENTER_CRITICAL();
         for (int i = 0; i < s2.count; i++)
         {
             int History_count = (s2.Writeindex + TEMP_HISTORY_SIZE - s2.count + i) % TEMP_HISTORY_SIZE;

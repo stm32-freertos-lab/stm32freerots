@@ -15,12 +15,12 @@ extern QueueHandle_t g_sensorQueue;
 typedef struct
 {
     uint8_t Writeindex; /* 当前索引，范围 0~TEMP_HISTORY_SIZE-1。 */
-    uint8_t count;      /* 读取索引，范围 0~TEMP_HISTORY_SIZE-1。 */
+    uint8_t count;     /* 有效温度数量，范围 0~TEMP_HISTORY_SIZE */
     int History_Temp[TEMP_HISTORY_SIZE];
 } sensor_history_t;
 
 /* 传感器任务入口，任务创建代码由用户自行编写。 */
 void Sensor_Task(void *argument);
-int *History_Get(int *out);
+int *History_Get(int *out, uint8_t *validCount);
 
 #endif /* SENSOR_H */

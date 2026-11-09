@@ -142,27 +142,186 @@ static bool tempBack(void)
     return true;
 }
 
-/* 非阻塞查看最新队列数据，不取走消息，不直接操作 OLED。 */
+/* Page-local primitives use the existing vertical-page 1bpp framebuffer. */
+typedef struct
+{
+    uint8_t *pixels;
+    int offsetY;
+} temp_canvas_t;
+
+static void tempPixel(const temp_canvas_t *canvas, int x, int y)
+{
+    if(x < 0 || x >= FRAME_WIDTH || y < 0 || y >= FRAME_HEIGHT)
+        return;
+    y += canvas->offsetY;
+    if(y < 0 || y >= FRAME_HEIGHT)
+        return;
+    canvas->pixels[x + (y / 8) * FRAME_WIDTH] |= (uint8_t)(1U << (y % 8));
+}
+
+static void tempLine(const temp_canvas_t *canvas, int x0, int y0, int x1, int y1)
+{
+    int dx = abs(x1 - x0);
+    int dy = -abs(y1 - y0);
+    int sx = x0 < x1 ? 1 : -1;
+    int sy = y0 < y1 ? 1 : -1;
+    int error = dx + dy;
+    int twiceError;
+
+    for(;;)
+    {
+        tempPixel(canvas, x0, y0);
+        if(x0 == x1 && y0 == y1)
+            break;
+        twiceError = 2 * error;
+        if(twiceError >= dy)
+        {
+            error += dy;
+            x0 += sx;
+        }
+        if(twiceError <= dx)
+        {
+            error += dx;
+            y0 += sy;
+        }
+    }
+}
+
+static void tempRect(const temp_canvas_t *canvas, int x, int y,
+                     int width, int height, bool filled)
+{
+    int row;
+    if(width <= 0 || height <= 0)
+        return;
+    for(row = 0; row < height; ++row)
+    {
+        if(filled || row == 0 || row == height - 1)
+            tempLine(canvas, x, y + row, x + width - 1, y + row);
+        else
+        {
+            tempPixel(canvas, x, y + row);
+            tempPixel(canvas, x + width - 1, y + row);
+        }
+    }
+}
+
+static void tempDrawTemperature(const temp_canvas_t *canvas, bool hasData, int temperature)
+{
+    char number[16];
+    char unit[] = {CHAR_DEGREES, 'C', '\0'};
+    int length;
+    int width;
+    int x;
+    int i;
+
+    if(hasData)
+        snprintf(number, sizeof(number), "%d", temperature);
+    else
+        strcpy(number, "--");
+    length = (int)strlen(number);
+    width = length * (MIDFONT_WIDTH + 2) - 2 + 3 + 12;
+
+    /* Keep unexpected, oversized integer values safely inside the display. */
+    if(width > FRAME_WIDTH)
+    {
+        snprintf(number, sizeof(number), "%d%cC", temperature, CHAR_DEGREES);
+        x = (FRAME_WIDTH - ((int)strlen(number) * 7 - 2)) / 2;
+        draw_string(number, false, (byte)x, 16);
+        return;
+    }
+
+    x = (FRAME_WIDTH - width) / 2;
+    for(i = 0; i < length; ++i)
+    {
+        if(number[i] >= '0' && number[i] <= '9')
+            draw_bitmap((byte)x, 8, midFont[number[i] - '0'],
+                        MIDFONT_WIDTH, MIDFONT_HEIGHT, NOINVERT, 0);
+        else
+            tempRect(canvas, x, 18, MIDFONT_WIDTH, 3, true);
+        x += MIDFONT_WIDTH + 2;
+    }
+    draw_string(unit, false, (byte)(x + 1), 8);
+}
+
+static void tempDrawHistory(const temp_canvas_t *canvas, const int *history, uint8_t validCount)
+{
+    int minimum;
+    int maximum;
+    int x;
+    int y;
+    int previousX = 0;
+    int previousY = 0;
+    uint8_t i;
+
+    if(validCount < 2 || validCount > TEMP_HISTORY_SIZE)
+        return;
+    minimum = maximum = history[0];
+    for(i = 1; i < validCount; ++i)
+    {
+        if(history[i] < minimum)
+            minimum = history[i];
+        if(history[i] > maximum)
+            maximum = history[i];
+    }
+
+    /* History_Get already returns oldest to newest; read only valid entries. */
+    for(i = 0; i < validCount; ++i)
+    {
+        x = (int)i * (FRAME_WIDTH - 1) / (validCount - 1);
+        if(maximum == minimum)
+            y = 48;
+        else
+            y = 54 - (history[i] - minimum) * 11 / (maximum - minimum);
+        if(i != 0)
+            tempLine(canvas, previousX, previousY, x, y);
+        previousX = x;
+        previousY = y;
+    }
+}
+
 static display_t tempDraw(void)
 {
-    sensor_data_t data;
-    char line[24];
+    sensor_data_t data = {0};
+    int tempHistory[TEMP_HISTORY_SIZE];
+    uint8_t validCount = 0;
+    uint32_t xres, yres, bpp;
+    temp_canvas_t canvas;
+    char humidity[16];
+    bool hasData;
+    int hum;
+    int offset;
 
-    draw_string("TEMP / HUMIDITY", false, 11, 0);
-    if(g_sensorQueue != NULL &&
-       xQueuePeek(g_sensorQueue, &data, 0) == pdPASS)
+    canvas.pixels = (uint8_t *)LCD_GetFrameBuffer(&xres, &yres, &bpp);
+    if(canvas.pixels == NULL || xres != FRAME_WIDTH || yres != FRAME_HEIGHT || bpp != 1)
+        return DISPLAY_DONE;
+    offset = animation_offsetY();
+    canvas.offsetY = offset > 127 ? offset - 256 : offset;
+    hasData = g_sensorQueue != NULL && xQueuePeek(g_sensorQueue, &data, 0) == pdPASS;
+
+    draw_string("DHT11", false, 0, 0);
+    draw_string(hasData ? "OK" : "WAIT", false, hasData ? 116 : 102, 0);
+    tempDrawTemperature(&canvas, hasData, data.temp);
+
+    draw_string("HUM", false, 0, 34);
+    tempRect(&canvas, 27, 33, 68, 9, false);
+    if(hasData)
     {
-        /* 使用固定大小的栈缓冲区构造文字，不申请动态内存。 */
-        snprintf(line, sizeof(line), "TEMP: %d C", data.temp);
-        draw_string(line, false, 10, 20);
-        snprintf(line, sizeof(line), "HUM : %d %%", data.hum);
-        draw_string(line, false, 10, 36);
+        hum = data.hum;
+        if(hum < 0)
+            hum = 0;
+        if(hum > 100)
+            hum = 100;
+        tempRect(&canvas, 28, 34, (hum * 66 + 50) / 100, 7, true);
+        snprintf(humidity, sizeof(humidity), "%d%%", data.hum);
     }
     else
-        draw_string("Waiting DHT11", false, 15, 28);
+        strcpy(humidity, "--%");
+    draw_string(humidity, false, (byte)(FRAME_WIDTH - ((int)strlen(humidity) * 7 - 2)), 34);
 
-    draw_string("KEY: Back", false, 32, 56);
-    /* 由原显示框架持续刷新，进入和返回时仍使用原有动画。 */
+    if(History_Get(tempHistory, &validCount) != NULL)
+        tempDrawHistory(&canvas, tempHistory, validCount);
+
+    draw_string("KEY: BACK", false, 33, 56);
     return DISPLAY_DONE;
 }
 
