@@ -51,6 +51,40 @@ typedef struct {
     uint32_t systickControl;
     uint32_t schedulerState;     /* 2=taskSCHEDULER_RUNNING，每秒更新。 */
     int32_t taskCreateResult;     /* 1=pdPASS；失败时由故障钩子记录。 */
+    /* Key-lag diagnostics: counters are cumulative; durations are microseconds.
+     * Maxima include preemption. Inspect while running, then halt briefly.
+     * ISR-owned IR counters never invoke FreeRTOS or print output. */
+    uint32_t guiLoopLastUs;
+    uint32_t guiLoopMaxUs;
+    uint32_t buttonsPollCount;
+    uint32_t buttonsPollMaxGapUs;
+    uint32_t buttonActionCount;
+    uint32_t irIrqCount;
+    uint32_t irFrameCount;
+    uint32_t irRepeatCount;
+    uint32_t irParseErrors;
+    uint32_t irDroppedFrames;
+    uint32_t irBufferHighWaterFrames;
+    uint32_t irReadCount;
+    uint32_t irLastCode;
+    uint32_t sensorReadCount;
+    uint32_t sensorReadActive;
+    uint32_t sensorReadLastUs;
+    uint32_t sensorReadMaxUs;
+    int32_t sensorReadResult;
+    uint32_t sensorStackHighWaterWords;
+    uint32_t historyCopyMaxUs;
+    uint32_t guiDrawLastUs;
+    uint32_t guiDrawMaxUs;
+    uint32_t oledFlushCount;
+    uint32_t oledFlushActive;
+    uint32_t oledFlushLastUs;
+    uint32_t oledFlushMaxUs;
+    uint32_t oledTransferStage; /* 0=idle, 1=command, 2=pixel data */
+    uint32_t oledErrorCount;
+    uint32_t oledTimeoutCount;
+    uint32_t oledErrorStatus;   /* HAL status of most recent failure */
+    uint32_t oledErrorCode;     /* HAL I2C error flags of that failure */
 } NWatchRtosDiagnostics;
 
 typedef struct {

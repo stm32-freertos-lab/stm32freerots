@@ -32,6 +32,8 @@
 #include <string.h>
 
 #include "stm32f1xx_hal.h"
+#include "driver_timer.h"
+#include "rtos_app.h"
 
 static uint8_t oledBuffer[FRAME_BUFFER_SIZE];
 
@@ -128,6 +130,21 @@ typedef enum
 extern I2C_HandleTypeDef hi2c1;
 static I2C_HandleTypeDef *g_pHI2COLED = &hi2c1;
 
+static int OLED_RecordResult(HAL_StatusTypeDef status)
+{
+    g_nwatchRtos.oledTransferStage = 0U;
+    if(status != HAL_OK)
+    {
+        uint32_t error = HAL_I2C_GetError(g_pHI2COLED);
+        ++g_nwatchRtos.oledErrorCount;
+        g_nwatchRtos.oledErrorStatus = (uint32_t)status;
+        g_nwatchRtos.oledErrorCode = error;
+        if(status == HAL_TIMEOUT || (error & HAL_I2C_ERROR_TIMEOUT) != 0U)
+            ++g_nwatchRtos.oledTimeoutCount;
+    }
+    return (int)status;
+}
+
 /*
  *  函数名：OLED_WriteCmd
  *  功能描述：I2C发送命令给OLED
@@ -142,7 +159,9 @@ static int OLED_WriteCmd(uint8_t cmd)
     tmpbuf[0] = 0;
     tmpbuf[1] = cmd;
     
-    return HAL_I2C_Master_Transmit(g_pHI2COLED, OELD_I2C_ADDR, tmpbuf, 2, OLED_TIMEOUT);
+    g_nwatchRtos.oledTransferStage = 1U;
+    return OLED_RecordResult(HAL_I2C_Master_Transmit(g_pHI2COLED, OELD_I2C_ADDR,
+                                                    tmpbuf, 2, OLED_TIMEOUT));
 }
 
 /*
@@ -159,7 +178,9 @@ static int OLED_WriteData(uint8_t data)
     tmpbuf[0] = 0x40;
     tmpbuf[1] = data;
     
-    return HAL_I2C_Master_Transmit(g_pHI2COLED, OELD_I2C_ADDR, tmpbuf, 2, OLED_TIMEOUT);
+    g_nwatchRtos.oledTransferStage = 1U;
+    return OLED_RecordResult(HAL_I2C_Master_Transmit(g_pHI2COLED, OELD_I2C_ADDR,
+                                                    tmpbuf, 2, OLED_TIMEOUT));
 }
 
 /*
@@ -172,7 +193,9 @@ static int OLED_WriteData(uint8_t data)
  */
 static int OLED_WriteNBytes(uint8_t *buf, uint16_t length)
 {
-    return HAL_I2C_Mem_Write(g_pHI2COLED, OELD_I2C_ADDR, 0x40, 1, buf, length, OLED_TIMEOUT);
+    g_nwatchRtos.oledTransferStage = 2U;
+    return OLED_RecordResult(HAL_I2C_Mem_Write(g_pHI2COLED, OELD_I2C_ADDR,
+                                              0x40, 1, buf, length, OLED_TIMEOUT));
 }
 
 /************** 1. 基础命令功能函数 **************/
@@ -709,16 +732,23 @@ void * OLED_GetFrameBuffer(uint32_t *pXres, uint32_t *pYres, uint32_t *pBpp)
  ***********************************************************************/
 void OLED_Flush(void)
 {
-      uint8_t i;
-      for(i = 0; i < 8; i++)
-      {
-         OLED_WriteCmd(0xb0+i); //设置行起始地址
-         OLED_WriteCmd(0x00);   //设置低列起始地址
-         OLED_WriteCmd(0x10);   //设置高列起始地址
-         //for(n=0;n<128;n++)
-         //  OLED_WriteData(oledBuffer[128*i+n]);
-         OLED_WriteNBytes(&oledBuffer[128*i], 128);
+    uint8_t i;
+    uint32_t startedUs = (uint32_t)system_get_us();
+    g_nwatchRtos.oledFlushActive = 1U;
+    for(i = 0; i < 8; i++)
+    {
+        /* A failed transfer aborts this frame; retry from page zero next frame. */
+        if(OLED_WriteCmd(0xb0+i) != HAL_OK ||
+           OLED_WriteCmd(0x00) != HAL_OK ||
+           OLED_WriteCmd(0x10) != HAL_OK ||
+           OLED_WriteNBytes(&oledBuffer[128*i], 128) != HAL_OK)
+            break;
     }
+    g_nwatchRtos.oledFlushLastUs = (uint32_t)system_get_us() - startedUs;
+    if(g_nwatchRtos.oledFlushLastUs > g_nwatchRtos.oledFlushMaxUs)
+        g_nwatchRtos.oledFlushMaxUs = g_nwatchRtos.oledFlushLastUs;
+    ++g_nwatchRtos.oledFlushCount;
+    g_nwatchRtos.oledFlushActive = 0U;
 }
 
 /**********************************************************************

@@ -7,6 +7,8 @@
 */
 
 #include "common.h"
+#include "rtos_app.h"
+#include "driver_timer.h"
 
 #define BTN_IS_PRESSED	1
 #define BTN_NOT_PRESSED	1
@@ -47,11 +49,18 @@ void buttons_init(void)
 void buttons_update()
 {
   static millis_t lastUpdate;
+  static uint32_t lastPollUs;
 
   // Update every 10ms
   millis_t now = millis();
   if ((millis_t)(now - lastUpdate) >= 10)
   {
+    uint32_t nowUs = (uint32_t)system_get_us();
+    if(g_nwatchRtos.buttonsPollCount != 0U &&
+       nowUs - lastPollUs > g_nwatchRtos.buttonsPollMaxGapUs)
+      g_nwatchRtos.buttonsPollMaxGapUs = nowUs - lastPollUs;
+    lastPollUs = nowUs;
+    ++g_nwatchRtos.buttonsPollCount;
     lastUpdate = now;
     processButtons();
   }
@@ -146,6 +155,7 @@ static void processButton(s_button* button, BOOL isPressed)
       // Run function
       if (!button->funcDone && button->onPress != NULL && button->onPress())
       {
+        ++g_nwatchRtos.buttonActionCount;
         button->funcDone = true;
 				
 #if !NWATCH_UI_ONLY

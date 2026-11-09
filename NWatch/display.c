@@ -9,6 +9,8 @@
 #include "common.h"
 
 #include "driver_lcd.h"
+#include "driver_timer.h"
+#include "rtos_app.h"
 
 // Frame rate when stuff is happening
 // If this is too low then animations will be jerky
@@ -79,6 +81,7 @@ void display_update()
 		return;
 	}
 	lastDraw = now;
+    uint32_t drawStartedUs = (uint32_t)system_get_us();
 
 	//debugPin_draw(HIGH);
 
@@ -116,6 +119,9 @@ void display_update()
 
 	}
 	// End drawing, send to OLED
+    g_nwatchRtos.guiDrawLastUs = (uint32_t)system_get_us() - drawStartedUs;
+    if(g_nwatchRtos.guiDrawLastUs > g_nwatchRtos.guiDrawMaxUs)
+        g_nwatchRtos.guiDrawMaxUs = g_nwatchRtos.guiDrawLastUs;
 	draw_end();
 
 //	debugPin_draw(LOW);

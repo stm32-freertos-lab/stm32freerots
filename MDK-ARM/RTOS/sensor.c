@@ -4,6 +4,14 @@
 #include "driver_timer.h"
 #include "stm32f1xx_hal.h"
 #include "task.h"
+#include "rtos_app.h"
+/* Override the driver's weak busy-wait hook in task context.
+ * The existing 20 ms start pulse still exceeds the DHT11 18 ms minimum. */
+void DHT11_DelayMs(uint32_t ms)
+{
+    vTaskDelay(pdMS_TO_TICKS(ms));
+}
+
 static sensor_history_t s2 = {0};
 /* 累计 DHT11 读取成功的次数，便于在调试器中观察。 */
 
@@ -20,20 +28,32 @@ void Sensor_Task(void *argument)
     while (1)
     {
         /* 通过成员地址接收结果；返回 0 表示成功，失败时不进入计数分支。 */
-        if (DHT11_Read(&s1.hum, &s1.temp) == 0)
+        uint32_t startedUs = (uint32_t)system_get_us();
+        int result;
+        g_nwatchRtos.sensorReadActive = 1U;
+        result = DHT11_Read(&s1.hum, &s1.temp);
+        g_nwatchRtos.sensorReadLastUs = (uint32_t)system_get_us() - startedUs;
+        if(g_nwatchRtos.sensorReadLastUs > g_nwatchRtos.sensorReadMaxUs)
+            g_nwatchRtos.sensorReadMaxUs = g_nwatchRtos.sensorReadLastUs;
+        g_nwatchRtos.sensorReadResult = result;
+        ++g_nwatchRtos.sensorReadCount;
+        g_nwatchRtos.sensorReadActive = 0U;
+        if (result == 0)
         {
             taskENTER_CRITICAL();
             s2.History_Temp[s2.Writeindex] = s1.temp;
             s2.Writeindex = (s2.Writeindex + 1) % TEMP_HISTORY_SIZE;
 
-            xQueueOverwrite(g_sensorQueue, &s1);
             if (s2.count < TEMP_HISTORY_SIZE)
                 s2.count++; /* 本次读取成功，累计次数加一。 */
-            
+            taskEXIT_CRITICAL();
+            /* The queue protects itself; do not mask IR for its bookkeeping. */
+            xQueueOverwrite(g_sensorQueue, &s1);
         }
+        g_nwatchRtos.sensorStackHighWaterWords = uxTaskGetStackHighWaterMark(NULL);
         vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(2000));
     }
-   taskEXIT_CRITICAL();
+
 }
 
 int *History_Get(int *out, uint8_t *validCount)
@@ -45,7 +65,10 @@ int *History_Get(int *out, uint8_t *validCount)
     }
 
     else
-    {   taskENTER_CRITICAL();
+    {
+        uint32_t startedUs = (uint32_t)system_get_us();
+        uint32_t elapsedUs;
+        taskENTER_CRITICAL();
         *validCount = s2.count;
         for (int i = 0; i < s2.count; i++)
         {
@@ -53,6 +76,9 @@ int *History_Get(int *out, uint8_t *validCount)
             out[i] = s2.History_Temp[History_count];
         }
         taskEXIT_CRITICAL();
+        elapsedUs = (uint32_t)system_get_us() - startedUs;
+        if(elapsedUs > g_nwatchRtos.historyCopyMaxUs)
+            g_nwatchRtos.historyCopyMaxUs = elapsedUs;
         return out;
     }
 }

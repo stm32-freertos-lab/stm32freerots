@@ -34,6 +34,7 @@
 #include "driver_timer.h"
 #include "stm32f1xx_hal.h"
 #include "tim.h"
+#include "rtos_app.h"
 
 /* 环形缓冲区: 用来保存解析出来的按键,可以防止丢失 */
 #define BUF_LEN 128
@@ -63,59 +64,26 @@ static int isKeysBufEmpty(void)
 	return (g_KeysBuf_R == g_KeysBuf_W);
 }
 
-/**********************************************************************
- * 函数名称： isKeysBufFull
- * 功能描述： 环形缓冲区是否满
- * 输入参数： 无
- * 输出参数： 无
- * 返 回 值： 1-满, 0-未满
- * 修改日期：      版本号     修改人	      修改内容
- * -----------------------------------------------
- * 2023/08/04	     V1.0	  韦东山	      创建
- ***********************************************************************/
-static int isKeysBufFull(void)
+/* Publish a complete device/key pair, or drop the entire incoming frame.
+ * EXTI is the only producer; GUI is the only consumer. No RTOS API in ISR. */
+static void PutFrameToBuf(unsigned char dev, unsigned char key)
 {
-	return (g_KeysBuf_R == NEXT_POS(g_KeysBuf_W));
-}
-
-/**********************************************************************
- * 函数名称： PutKeyToBuf
- * 功能描述： 把按键数据写入环形缓冲区
- * 输入参数： 无
- * 输出参数： 无
- * 返 回 值： 无
- * 修改日期：      版本号     修改人	      修改内容
- * -----------------------------------------------
- * 2023/08/04	     V1.0	  韦东山	      创建
- ***********************************************************************/
-static void PutKeyToBuf(unsigned char key)
-{
-	if (!isKeysBufFull())
-	{
-		g_KeysBuf[g_KeysBuf_W] = key;
-		g_KeysBuf_W = NEXT_POS(g_KeysBuf_W);
-	}
-}
-
-/**********************************************************************
- * 函数名称： GetKeyFromBuf
- * 功能描述： 从环形缓冲区读取按键数据
- * 输入参数： 无
- * 输出参数： 无
- * 返 回 值： 0xff - 读不到数据, 其他值-按键值(device或key)
- * 修改日期：      版本号     修改人	      修改内容
- * -----------------------------------------------
- * 2023/08/04	     V1.0	  韦东山	      创建
- ***********************************************************************/
-static unsigned char GetKeyFromBuf(void)
-{
-	unsigned char key = 0xff;
-	if (!isKeysBufEmpty())
-	{
-		key = g_KeysBuf[g_KeysBuf_R];
-		g_KeysBuf_R = NEXT_POS(g_KeysBuf_R);
-	}
-	return key;
+    int writePos = g_KeysBuf_W;
+    int dataPos = NEXT_POS(writePos);
+    int nextWrite = NEXT_POS(dataPos);
+    uint32_t usedFrames;
+    if(dataPos == g_KeysBuf_R || nextWrite == g_KeysBuf_R)
+    {
+        ++g_nwatchRtos.irDroppedFrames;
+        return;
+    }
+    g_KeysBuf[writePos] = dev;
+    g_KeysBuf[dataPos] = key;
+    __DMB();
+    g_KeysBuf_W = nextWrite;
+    usedFrames = (uint32_t)((nextWrite - g_KeysBuf_R + BUF_LEN) % BUF_LEN) / 2U;
+    if(usedFrames > g_nwatchRtos.irBufferHighWaterFrames)
+        g_nwatchRtos.irBufferHighWaterFrames = usedFrames;
 }
 
 /**********************************************************************
@@ -184,8 +152,8 @@ static int IRReceiver_IRQTimes_Parse(void)
         return -1;
 	}
 
-	PutKeyToBuf(datas[0]);
-	PutKeyToBuf(datas[2]);
+    ++g_nwatchRtos.irFrameCount;
+    PutFrameToBuf(datas[0], datas[2]);
     return 0;
 }
 
@@ -238,6 +206,7 @@ void IRReceiver_IRQ_Callback(void)
 
         
 	/* 1. 记录中断发生的时刻 */	
+    ++g_nwatchRtos.irIrqCount;
 	now = system_get_us();
     time = (uint32_t)now;
     
@@ -267,14 +236,15 @@ void IRReceiver_IRQ_Callback(void)
 		if (isRepeatedKey())
 		{
 			/* device: 0, val: 0, 表示重复码 */
-			PutKeyToBuf(0);
-			PutKeyToBuf(0);
+            ++g_nwatchRtos.irRepeatCount;
+            PutFrameToBuf(0, 0);
 			g_IRReceiverIRQ_Cnt = 0;
 		}
 	}
 	if (g_IRReceiverIRQ_Cnt == 68)
 	{
-		IRReceiver_IRQTimes_Parse();
+        if(IRReceiver_IRQTimes_Parse() != 0)
+            ++g_nwatchRtos.irParseErrors;
 		g_IRReceiverIRQ_Cnt = 0;
 	}
 }
@@ -314,11 +284,18 @@ void IRReceiver_Init(void)
  ***********************************************************************/
 int IRReceiver_Read(uint8_t *pDev, uint8_t *pData)
 {
-    if (isKeysBufEmpty())
+    int readPos = g_KeysBuf_R;
+    int dataPos = NEXT_POS(readPos);
+    if(isKeysBufEmpty() || dataPos == g_KeysBuf_W)
         return -1;
-    
-    *pDev  = GetKeyFromBuf();
-    *pData = GetKeyFromBuf();
+
+    __DMB();
+    *pDev = g_KeysBuf[readPos];
+    *pData = g_KeysBuf[dataPos];
+    __DMB();
+    g_KeysBuf_R = NEXT_POS(dataPos);
+    ++g_nwatchRtos.irReadCount;
+    g_nwatchRtos.irLastCode = *pData;
     return 0;
 }
 

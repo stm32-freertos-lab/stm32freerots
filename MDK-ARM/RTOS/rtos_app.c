@@ -112,7 +112,16 @@ if(xTaskCreate(Sensor_Task, "Sensor", 192, NULL, 3, NULL) != pdPASS)
 void NWatch_RtosPoll(void)
 {
     static TickType_t lastSample;
+    static uint32_t lastPollUs;
     TickType_t now = xTaskGetTickCount();
+    uint32_t nowUs = (uint32_t)system_get_us();
+    if(g_nwatchRtos.guiIterations != 0U)
+    {
+        g_nwatchRtos.guiLoopLastUs = nowUs - lastPollUs;
+        if(g_nwatchRtos.guiLoopLastUs > g_nwatchRtos.guiLoopMaxUs)
+            g_nwatchRtos.guiLoopMaxUs = g_nwatchRtos.guiLoopLastUs;
+    }
+    lastPollUs = nowUs;
     ++g_nwatchRtos.guiIterations;
     /* 每秒采样一次栈水位和堆余量，避免干扰 OLED 帧率。 */
     if((TickType_t)(now - lastSample) >= pdMS_TO_TICKS(1000U))
