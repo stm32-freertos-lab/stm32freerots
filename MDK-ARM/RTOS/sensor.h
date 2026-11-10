@@ -4,7 +4,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
-#define TEMP_ALARM_HIGH 30
+#define TEMP_ALARM_HIGH 20
 #define HUM_ALARM_HIGH  70
 
 typedef struct

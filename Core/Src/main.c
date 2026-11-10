@@ -226,9 +226,9 @@ uint32_t notifyValue = 0;
 			///battery_update();
 			buttons_update();
 		}
-			
+				buzzer_update();
 #if !NWATCH_UI_ONLY
-		buzzer_update();
+	
 		
 		led_update();
 #endif

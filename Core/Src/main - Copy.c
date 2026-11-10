@@ -129,7 +129,7 @@ int main(void)
 	time_init();
 	///rtc_init();
 	global_init();
-	alarm_init();             //ÒÀ¾ÉÎÞ·¨´¢´æÄÖÖÓ£¬Ã¿´ÎÖØÆôÒÔºóÐèÒª×Ô¶¨Òå
+	alarm_init();             //ï¿½ï¿½ï¿½ï¿½ï¿½Þ·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½Ã¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ôºï¿½ï¿½ï¿½Òªï¿½Ô¶ï¿½ï¿½ï¿½
   buttons_init();
   global_init();
 	pwrmgr_init();
@@ -176,7 +176,7 @@ int main(void)
 			 display_update();
 		}
 
-		pwrmgr_update();     //¿ªÆôÍ£»úÄ£Ê½
+		pwrmgr_update();     //ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½Ä£Ê½
 
   }
   /* USER CODE END 3 */
@@ -477,7 +477,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin Output Level */
+  /*Confi
+  
+  re GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_9, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : PA1 */
