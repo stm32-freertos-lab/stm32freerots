@@ -7,7 +7,7 @@
 #include "rtos_app.h"
 /* Override the driver's weak busy-wait hook in task context.
  * The existing 20 ms start pulse still exceeds the DHT11 18 ms minimum. */
-uint32_t confirmValue = 0;
+
 
 void DHT11_DelayMs(uint32_t ms)
 {
@@ -20,6 +20,7 @@ static sensor_history_t s2 = {0};
 /* FreeRTOS 传感器任务入口；argument 是创建任务时传入的参数，当前未使用。 */
 void Sensor_Task(void *argument)
 {
+    uint32_t confirmValue = 0;
     TaskHandle_t guiHandle = (TaskHandle_t)argument;
     DHT11_Init();
     /* s1 保存最近一次成功读取的数据，首次读取前先把温湿度置零。 */
