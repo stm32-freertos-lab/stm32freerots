@@ -26,11 +26,11 @@ void Sensor_Task(void *argument)
     sensor_data_t s1 = {0};
     /* 循环前建立周期基准；后续由 vTaskDelayUntil 自动推进 lastWake。 */
     TickType_t lastWake = xTaskGetTickCount(); /* 记下当前 Tick */
-
+  uint8_t alarmState = 0;
     /* 持续读取温湿度，再按 2000 ms 的固定节拍等待下一轮。 */
     while (1)
     {
-      uint8_t alarmState = 0;
+    
         /* 通过成员地址接收结果；返回 0 表示成功，失败时不进入计数分支。 */
         uint32_t startedUs = (uint32_t)system_get_us();
         int result;
@@ -53,12 +53,12 @@ void Sensor_Task(void *argument)
             taskEXIT_CRITICAL();
             /* The queue protects itself; do not mask IR for its bookkeeping. */
             xQueueOverwrite(g_sensorQueue, &s1);
-            if(s1.temp > TEMP_ALARM_HIGH || s1.hum > HUM_ALARM_HIGH)
+           if((s1.temp > TEMP_ALARM_HIGH || s1.hum > HUM_ALARM_HIGH) && alarmState == 0U)
             {
                 alarmState = 1;
                 xTaskNotify(guiHandle, alarmState, eSetValueWithOverwrite);
             }
-            if(xTaskNotifyWait(0, 0xFFFFFFFFUL, &confirmValue, portMAX_DELAY) == pdTRUE)
+            if(xTaskNotifyWait(0, 0xFFFFFFFFUL, &confirmValue, 0) == pdTRUE)
 {
     if(confirmValue == 2U)
     {
