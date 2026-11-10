@@ -55,6 +55,8 @@
 #include "task.h"
 #include "rtos_app.h"
 
+#include "tune.h"
+#include "tunes.h"
 /* USER CODE END Includes */
 #include "sensor.h"
 /* Private typedef -----------------------------------------------------------*/
@@ -159,12 +161,12 @@ static void GUI_Task(void *argument)
   (void)argument;
   NWatch_RtosGuiEntered();
 #if !NWATCH_RTOS_BRINGUP_ONLY
-
-#if !NWATCH_UI_ONLY
-	PassiveBuzzer_Init();
+  PassiveBuzzer_Init();
+if(!NWATCH_UI_ONLY) 
+	
 	ColorLED_Init();
 	/* DHT11_Init() 由 Sensor_Task 在任务入口调用，PA1 只归 Sensor_Task 所有。 */
-#endif
+}
 	
 	appconfig_init();
 	LCD_Init();
@@ -244,6 +246,7 @@ if(xTaskNotifyWait(0, 0xFFFFFFFFUL, &notifyValue, 0)== pdTRUE)
   {
       notifyValue = 0; 
       xTaskNotify(sensorHandle, 2U, eSetValueWithOverwrite);
+       tune_play(tuneAlarm, VOL_ALARM, PRIO_ALARM);
   }
 
 }
