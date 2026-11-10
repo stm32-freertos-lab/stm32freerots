@@ -115,7 +115,7 @@ static void mSelect()
 
 static void itemLoader(byte num)
 {
-	/* ËùÓÐ¿É¼ûÈë¿Ú¶¼ÓÐÓÐÐ§¶¯×÷£¬ÑØÓÃÔ­²Ëµ¥ºÍ·µ»Ø¶¯»­¡£ */
+	/* ï¿½ï¿½ï¿½Ð¿É¼ï¿½ï¿½ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½Ëµï¿½ï¿½Í·ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½ï¿½ï¿½ */
 #if NWATCH_UI_ONLY
     UNUSED(num);
     setMenuOption_P(0, PSTR("Cube Rotation"), menu_tunemaker, tunemakerOpen);
@@ -188,13 +188,14 @@ static bool aboutBack(void)
 static display_t aboutDraw(void)
 {
     draw_bitmap(48, 0, menu_settings, 32, 32, NOINVERT, 0);
-    draw_string_P(PSTR("NWatch GUI"), false, 29, 32);
+    draw_string_P(PSTR("NWatch 
+        "), false, 29, 32);
     draw_string_P(PSTR("STM32F103 / AC5"), false, 8, 42);
     draw_string_P(PSTR("PLAY: Back"), false, 29, 54);
     return DISPLAY_DONE;
 }
 
-/* ÎÂÊª¶ÈÒ³ÃæÑØÓÃÔ­²Ëµ¥µÄ·µ»Ø¶¯»­¡£ */
+/* ï¿½ï¿½Êªï¿½ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô­ï¿½Ëµï¿½ï¿½Ä·ï¿½ï¿½Ø¶ï¿½ï¿½ï¿½ï¿½ï¿½ */
 static bool tempBack(void)
 {
     beginAnimation(back);
@@ -398,7 +399,7 @@ static void aboutOpen(void)
     beginAnimation2(NULL);
 }
 
-/* CRT ÑÝÊ¾ÑØÓÃÔ­ÕÚÕÖ¶¯»­£¬¹Ø±Õºó¶¨Ê±Õ¹¿ª£¬°´¼ü¿É·µ»Ø¡£ */
+/* CRT ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ô­ï¿½ï¿½ï¿½Ö¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø±Õºï¿½Ê±Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É·ï¿½ï¿½Ø¡ï¿½ */
 static bool crtDemoBack(void)
 {
     crtDemoActive = false;

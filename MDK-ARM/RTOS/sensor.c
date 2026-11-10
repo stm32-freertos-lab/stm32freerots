@@ -7,6 +7,8 @@
 #include "rtos_app.h"
 /* Override the driver's weak busy-wait hook in task context.
  * The existing 20 ms start pulse still exceeds the DHT11 18 ms minimum. */
+uint32_t confirmValue = 0;
+
 void DHT11_DelayMs(uint32_t ms)
 {
     vTaskDelay(pdMS_TO_TICKS(ms));
@@ -56,6 +58,14 @@ void Sensor_Task(void *argument)
                 alarmState = 1;
                 xTaskNotify(guiHandle, alarmState, eSetValueWithOverwrite);
             }
+            if(xTaskNotifyWait(0, 0xFFFFFFFFUL, &confirmValue, portMAX_DELAY) == pdTRUE)
+{
+    if(confirmValue == 2U)
+    {
+        alarmState = 0;
+        confirmValue = 0;
+    }
+}
         }
         g_nwatchRtos.sensorStackHighWaterWords = uxTaskGetStackHighWaterMark(NULL);
         vTaskDelayUntil(&lastWake, pdMS_TO_TICKS(2000));

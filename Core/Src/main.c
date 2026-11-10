@@ -212,6 +212,8 @@ static void GUI_Task(void *argument)
   NWatch_RtosGuiReady();
 #endif
 uint32_t notifyValue = 0;
+
+
   for(;;)
   {
 #if !NWATCH_RTOS_BRINGUP_ONLY
@@ -236,11 +238,12 @@ uint32_t notifyValue = 0;
 		global_update();
 
 /* 从队列读取最新温湿度 */
-if(xTaskNotifyWait(0, 0, &notifyValue, 0)== pdTRUE)
+if(xTaskNotifyWait(0, 0xFFFFFFFFUL, &notifyValue, 0)== pdTRUE)
 {
   if(notifyValue==1)
   {
       notifyValue = 0; 
+      xTaskNotify(sensorHandle, 2U, eSetValueWithOverwrite);
   }
 
 }
