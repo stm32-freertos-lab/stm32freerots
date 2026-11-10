@@ -240,7 +240,7 @@ if(xTaskNotifyWait(0, 0, &notifyValue, 0)== pdTRUE)
 {
   if(notifyValue==1)
   {
-    
+      notifyValue = 0; 
   }
 
 }

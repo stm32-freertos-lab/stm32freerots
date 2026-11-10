@@ -54,6 +54,7 @@ void Sensor_Task(void *argument)
             if(s1.temp > TEMP_ALARM_HIGH || s1.hum > HUM_ALARM_HIGH)
             {
                 alarmState = 1;
+                xTaskNotify(guiHandle, alarmState, eSetValueWithOverwrite);
             }
         }
         g_nwatchRtos.sensorStackHighWaterWords = uxTaskGetStackHighWaterMark(NULL);
