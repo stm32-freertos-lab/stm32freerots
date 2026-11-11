@@ -28,7 +28,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-extern UART_HandleTypeDef huart1;
+
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -140,10 +140,6 @@ void DebugMon_Handler(void)
 /**
   * @brief This function handles EXTI line[15:10] interrupts.
   */
- void USART1_IRQHandler(void)
-{
-    HAL_UART_IRQHandler(&huart1);
-}
 void EXTI15_10_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI15_10_IRQn 0 */

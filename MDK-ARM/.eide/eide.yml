@@ -64,6 +64,7 @@ virtualFolder:
             - path: ../Drivers/DShanMCU-F103/gui_log_console.c
             - path: ../Drivers/DShanMCU-F103/driver_dht11.c
             - path: ../Drivers/DShanMCU-F103/driver_spiflash_w25q64.c
+            - path: ../Drivers/DShanMCU-F103/driver_rgb.c
           folders: []
     - name: NWatch
       files:

@@ -59,10 +59,10 @@
 #include "tunes.h"
 /* USER CODE END Includes */
 #include "sensor.h"
+#include "driver_rgb.h"
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-static uint8_t uartRxByte = 0;
-volatile uint8_t g_uartLastByte = 0;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -79,26 +79,15 @@ volatile uint8_t g_uartLastByte = 0;
 I2C_HandleTypeDef hi2c1;
 /* TIM1_CH1 drives the buzzer in UI-only mode too. */
 TIM_HandleTypeDef htim1;
-UART_HandleTypeDef huart1;
+TIM_HandleTypeDef htim2;
 
 #if !NWATCH_UI_ONLY
 SPI_HandleTypeDef hspi1;
-
-TIM_HandleTypeDef htim2;
+UART_HandleTypeDef huart1;
 #endif
 
 /* USER CODE BEGIN PV */
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-    if (huart->Instance == USART1)
-    {
-          g_uartLastByte = uartRxByte;D
 
-
-          HAL_UART_Receive_IT(&huart1, &uartRxByte, 1);
-
-    }
-}
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -106,9 +95,9 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_TIM1_Init(void);
-static void MX_USART1_UART_Init(void);
-#if !NWATCH_UI_ONLY
 static void MX_TIM2_Init(void);
+#if !NWATCH_UI_ONLY
+static void MX_USART1_UART_Init(void);
 static void MX_SPI1_Init(void);
 #endif
 /* USER CODE BEGIN PFP */
@@ -153,13 +142,32 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USART1_UART_Init();
   MX_I2C1_Init();
   /* Enable TIM1 and configure PA8 before starting the scheduler. */
   MX_TIM1_Init();
-  HAL_UART_Receive_IT(&huart1, &uartRxByte, 1);
-#if !NWATCH_UI_ONLY
   MX_TIM2_Init();
+
+   if (RGB_Init() != HAL_OK)  // 启动三路 PWM
+   {
+       Error_Handler();
+   }
+
+   /* 红灯 */
+   RGB_SetRGB(64, 0, 0);
+   HAL_Delay(1000);
+
+   /* 绿灯 */
+   RGB_SetRGB(0, 64, 0);
+   HAL_Delay(1000);
+
+   /* 蓝灯 */
+   RGB_SetRGB(0, 0, 64);
+   HAL_Delay(1000);
+
+   /* 熄灭 */
+   RGB_SetRGB(0, 0, 0);
+#if !NWATCH_UI_ONLY
+  MX_USART1_UART_Init();
   MX_SPI1_Init();
 #endif
   /* USER CODE BEGIN 2 */
@@ -474,7 +482,6 @@ static void MX_TIM1_Init(void)
   * @param None
   * @retval None
   */
-#if !NWATCH_UI_ONLY
 static void MX_TIM2_Init(void)
 {
 
@@ -536,13 +543,13 @@ static void MX_TIM2_Init(void)
   HAL_TIM_MspPostInit(&htim2);
 
 }
-#endif
 
 /**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
   */
+#if !NWATCH_UI_ONLY
 static void MX_USART1_UART_Init(void)
 {
 
@@ -570,6 +577,7 @@ static void MX_USART1_UART_Init(void)
   /* USER CODE END USART1_Init 2 */
 
 }
+#endif
 
 /**
   * @brief GPIO Initialization Function
