@@ -92,7 +92,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     if (huart->Instance == USART1)
     {
-          g_uartLastByte = uartRxByte;
+          g_uartLastByte = uartRxByte;D
 
 
           HAL_UART_Receive_IT(&huart1, &uartRxByte, 1);
