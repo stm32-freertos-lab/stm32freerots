@@ -368,6 +368,11 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   if(huart->Instance==USART1)
   {
+    /* USART1 中断优先级配置 */
+HAL_NVIC_SetPriority(USART1_IRQn, 6, 0);
+
+/* 使能 USART1 中断 */
+HAL_NVIC_EnableIRQ(USART1_IRQn);
   /* USER CODE BEGIN USART1_MspInit 0 */
 
   /* USER CODE END USART1_MspInit 0 */
