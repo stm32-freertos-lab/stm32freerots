@@ -188,8 +188,7 @@ static bool aboutBack(void)
 static display_t aboutDraw(void)
 {
     draw_bitmap(48, 0, menu_settings, 32, 32, NOINVERT, 0);
-    draw_string_P(PSTR("NWatch 
-        "), false, 29, 32);
+    draw_string_P(PSTR("NWatch GUI"), false, 29, 32);
     draw_string_P(PSTR("STM32F103 / AC5"), false, 8, 42);
     draw_string_P(PSTR("PLAY: Back"), false, 29, 54);
     return DISPLAY_DONE;

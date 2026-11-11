@@ -630,7 +630,7 @@
               <FilePath>..\Drivers\DShanMCU-F103\driver_passive_buzzer.c</FilePath>
               <FileOption>
                 <CommonProperty>
-                  <IncludeInBuild>0</IncludeInBuild>
+                  <IncludeInBuild>1</IncludeInBuild>
                 </CommonProperty>
               </FileOption>
             </File>
@@ -845,7 +845,7 @@
               <FilePath>..\NWatch\tune.c</FilePath>
               <FileOption>
                 <CommonProperty>
-                  <IncludeInBuild>0</IncludeInBuild>
+                  <IncludeInBuild>1</IncludeInBuild>
                 </CommonProperty>
               </FileOption>
             </File>
@@ -855,7 +855,7 @@
               <FilePath>..\NWatch\tunes.c</FilePath>
               <FileOption>
                 <CommonProperty>
-                  <IncludeInBuild>0</IncludeInBuild>
+                  <IncludeInBuild>1</IncludeInBuild>
                 </CommonProperty>
               </FileOption>
             </File>

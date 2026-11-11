@@ -2,6 +2,7 @@
 #define NWATCH_RTOS_APP_H
 
 #include <stdint.h>
+#include "FreeRTOS.h"
 #include "task.h"
 extern TaskHandle_t sensorHandle;
 /* 仅用于分步构建验证；正式 GUI 镜像必须为 0。 */

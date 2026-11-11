@@ -143,10 +143,8 @@ targets:
       libList: []
     excludeList:
       - <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_spi.c
-      - <virtual_root>/Drivers/STM32F1xx_HAL_Driver/stm32f1xx_hal_uart.c
       - <virtual_root>/Drivers/DShanMCU-F103/driver_color_led.c
       - <virtual_root>/Drivers/DShanMCU-F103/driver_uart.c
-      - <virtual_root>/Drivers/DShanMCU-F103/driver_passive_buzzer.c
       - <virtual_root>/Drivers/DShanMCU-F103/gui_log_console.c
       - <virtual_root>/Drivers/DShanMCU-F103/driver_spiflash_w25q64.c
       - <virtual_root>/NWatch/alarm.c
@@ -159,8 +157,6 @@ targets:
       - <virtual_root>/NWatch/stopwatch.c
       - <virtual_root>/NWatch/timedate.c
       - <virtual_root>/NWatch/torch.c
-      - <virtual_root>/NWatch/tune.c
-      - <virtual_root>/NWatch/tunes.c
       - <virtual_root>/NWatch/sound.c
       - <virtual_root>/NWatch/sleep.c
       - <virtual_root>/NWatch/diag.c

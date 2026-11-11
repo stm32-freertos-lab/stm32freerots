@@ -76,14 +76,14 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
+/* TIM1_CH1 drives the buzzer in UI-only mode too. */
+TIM_HandleTypeDef htim1;
+UART_HandleTypeDef huart1;
 
 #if !NWATCH_UI_ONLY
 SPI_HandleTypeDef hspi1;
 
-TIM_HandleTypeDef htim1;
 TIM_HandleTypeDef htim2;
-
-UART_HandleTypeDef huart1;
 #endif
 
 /* USER CODE BEGIN PV */
@@ -94,10 +94,10 @@ UART_HandleTypeDef huart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
-#if !NWATCH_UI_ONLY
 static void MX_TIM1_Init(void);
-static void MX_TIM2_Init(void);
 static void MX_USART1_UART_Init(void);
+#if !NWATCH_UI_ONLY
+static void MX_TIM2_Init(void);
 static void MX_SPI1_Init(void);
 #endif
 /* USER CODE BEGIN PFP */
@@ -142,11 +142,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_I2C1_Init();
-#if !NWATCH_UI_ONLY
-  MX_TIM1_Init();
-  MX_TIM2_Init();
   MX_USART1_UART_Init();
+  MX_I2C1_Init();
+  /* Enable TIM1 and configure PA8 before starting the scheduler. */
+  MX_TIM1_Init();
+#if !NWATCH_UI_ONLY
+  MX_TIM2_Init();
   MX_SPI1_Init();
 #endif
   /* USER CODE BEGIN 2 */
@@ -157,16 +158,16 @@ int main(void)
 
 static void GUI_Task(void *argument)
 {
+  uint32_t notifyValue = 0;
   sensor_data_t displayData = {0};  // 保存从队列接收到的温湿度
   (void)argument;
   NWatch_RtosGuiEntered();
 #if !NWATCH_RTOS_BRINGUP_ONLY
   PassiveBuzzer_Init();
-if(!NWATCH_UI_ONLY) 
-	
+#if !NWATCH_UI_ONLY
 	ColorLED_Init();
+#endif
 	/* DHT11_Init() 由 Sensor_Task 在任务入口调用，PA1 只归 Sensor_Task 所有。 */
-}
 	
 	appconfig_init();
 	LCD_Init();
@@ -213,8 +214,6 @@ if(!NWATCH_UI_ONLY)
 	
   NWatch_RtosGuiReady();
 #endif
-uint32_t notifyValue = 0;
-
 
   for(;;)
   {
@@ -226,7 +225,7 @@ uint32_t notifyValue = 0;
 			///battery_update();
 			buttons_update();
 		}
-				buzzer_update();
+		buzzer_update();
 #if !NWATCH_UI_ONLY
 	
 		
@@ -397,7 +396,6 @@ static void MX_SPI1_Init(void)
   * @param None
   * @retval None
   */
-#if !NWATCH_UI_ONLY
 static void MX_TIM1_Init(void)
 {
 
@@ -457,7 +455,6 @@ static void MX_TIM1_Init(void)
   HAL_TIM_MspPostInit(&htim1);
 
 }
-#endif
 
 /**
   * @brief TIM2 Initialization Function
@@ -533,7 +530,6 @@ static void MX_TIM2_Init(void)
   * @param None
   * @retval None
   */
-#if !NWATCH_UI_ONLY
 static void MX_USART1_UART_Init(void)
 {
 
@@ -561,7 +557,6 @@ static void MX_USART1_UART_Init(void)
   /* USER CODE END USART1_Init 2 */
 
 }
-#endif
 
 /**
   * @brief GPIO Initialization Function
