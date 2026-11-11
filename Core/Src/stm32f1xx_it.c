@@ -28,7 +28,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
-
+extern UART_HandleTypeDef huart1;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -147,7 +147,10 @@ void EXTI15_10_IRQHandler(void)
   /* USER CODE END EXTI15_10_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_10);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
-
+void USART1_IRQHandler(void)
+{
+    HAL_UART_IRQHandler(&huart1);
+}
   /* USER CODE END EXTI15_10_IRQn 1 */
 }
 

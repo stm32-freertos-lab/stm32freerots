@@ -61,7 +61,8 @@
 #include "sensor.h"
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+static uint8_t uartRxByte = 0;
+volatile uint8_t g_uartLastByte = 0;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -87,7 +88,17 @@ TIM_HandleTypeDef htim2;
 #endif
 
 /* USER CODE BEGIN PV */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    if (huart->Instance == USART1)
+    {
+          g_uartLastByte = uartRxByte;
 
+
+          HAL_UART_Receive_IT(&huart1, &uartRxByte, 1);
+
+    }
+}
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -146,6 +157,7 @@ int main(void)
   MX_I2C1_Init();
   /* Enable TIM1 and configure PA8 before starting the scheduler. */
   MX_TIM1_Init();
+  HAL_UART_Receive_IT(&huart1, &uartRxByte, 1);
 #if !NWATCH_UI_ONLY
   MX_TIM2_Init();
   MX_SPI1_Init();
@@ -153,6 +165,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   /* 所有 NWatch 初始化/绘图归 GUI 任务；调度失败时不回退到裸机循环。 */
   NWatch_RtosStart(GUI_Task);
+
   /* USER CODE END 2 */
 }
 
