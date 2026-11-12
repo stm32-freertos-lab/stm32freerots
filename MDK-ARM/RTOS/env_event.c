@@ -1,12 +1,19 @@
-
+/* 显式包含 GPIO、内核和微秒计时接口，避免依赖间接声明。 */
+#include "stm32f1xx_hal.h"
+#include "FreeRTOS.h"
+#include "task.h"
 #include "event_groups.h"
+#include "driver_timer.h"
+#include "env_event.h"
+
+/* 事件组句柄只在此处定义，其他文件通过头文件引用。 */
 EventGroupHandle_t g_envEventGroup = NULL;
 void Env_Task(void *argument)
 {
     (void)argument;
 
     while (1)
-{
+    {
         GPIO_PinState lightState =
             HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11);
 
@@ -32,19 +39,11 @@ void Env_Task(void *argument)
             xEventGroupClearBits(g_envEventGroup, ENV_OBSTACLE_BIT);
         }
 
+        /* 仅更新光敏和避障事件，暂不接入超声波或 OLED 示例。 */
         vTaskDelay(pdMS_TO_TICKS(100));
     }
-
-    EventBits_t bits = xEventGroupGetBits(g_envEventGroup);
-    if (bits & ENV_DARK_BIT)
-    {
-        // OLED 显示 DARK
-    }
-    else
-    {
-        // OLED 显示 LIGHT
-    }
 }
+
 bool Ultrasonic_ReadDistance(float *distanceCm)
 {
     uint32_t start;

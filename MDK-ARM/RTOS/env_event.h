@@ -1,6 +1,7 @@
 #ifndef ENV_EVENT_H
 #define ENV_EVENT_H
 
+#include <stdbool.h> /* 为测距接口提供 bool 类型。 */
 #include "FreeRTOS.h"
 #include "event_groups.h"
 

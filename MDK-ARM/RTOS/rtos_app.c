@@ -5,6 +5,7 @@
 #include "stm32f1xx_it.h"
 #include "driver_timer.h"
 #include "sensor.h"
+#include "env_event.h" /* 引用环境事件组句柄和任务声明。 */
 
 volatile NWatchRtosDiagnostics g_nwatchRtos;
 volatile NWatchRtosFault g_nwatchFault;
@@ -81,38 +82,37 @@ void NWatch_RtosGuiEntered(void)
 /* GUI 初始化完成后的入口：记录就绪状态，再创建传感器任务。 */
 void NWatch_RtosGuiReady(void)
 {
-    g_sensorQueue= xQueueCreate(1,sizeof(sensor_data_t));
+    g_sensorQueue = xQueueCreate(1, sizeof(sensor_data_t));
+    /* 在环境任务创建前分配事件组，初始事件位均为 0。 */
     g_envEventGroup = xEventGroupCreate();
-        if(g_sensorQueue == NULL)
-        {
-            /* 队列分配失败，复用已有的内存分配故障码。 */
-            NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
-        }
-        g_rgbSemaphore = xSemaphoreCreateBinary();
+    if(g_sensorQueue == NULL)
+    {
+        /* 队列分配失败，复用已有的内存分配故障码。 */
+        NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
+    }
+    g_rgbSemaphore = xSemaphoreCreateBinary();
 
-if (g_rgbSemaphore == NULL)
-{
-    NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
-}
-if (xTaskCreate(RGB_Task, "RGB", 192,
-                NULL, 1, NULL) != pdPASS)
-{
-    NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE,
-                     __FILE__, __LINE__);
-}
+    if (g_rgbSemaphore == NULL)
+    {
+        NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
+    }
+    if (xTaskCreate(RGB_Task, "RGB", 192,
+                    NULL, 1, NULL) != pdPASS)
+    {
+        NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE,
+                         __FILE__, __LINE__);
+    }
 
+    /* 保留原有失败处理，仅在事件组有效时创建环境任务。 */
+    if (g_envEventGroup == NULL)
+    {
+        NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
+    }
+    if (xTaskCreate(Env_Task, "Environment", 192, NULL, 1, NULL) != pdPASS)
+    {
+        NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE, __FILE__, __LINE__);
+    }
 
-if (g_envEventGroup == NULL)
-{
-    NWatch_RtosFatal( NWATCH_FAULT_MALLOC, __FILE__,__LINE__);
-}
-if (xTaskCreate(Env_Task, "Environment", 192,NULL, 1, NULL) != pdPASS)
-{
-    NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE,  __FILE__, __LINE__);
-}
-
-    
-   
     /* phase=3 表示 GUI 初始化完成；先采样一次创建前的诊断数据。 */
     g_nwatchRtos.phase = 3U;
     updateDiagnostics();

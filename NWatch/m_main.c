@@ -10,9 +10,12 @@
 
 #if NWATCH_UI_ONLY
 #include "sensor.h"
+#include "env_event.h" /* 环境页面只读取事件组，不参与传感器采集。 */
 
-#define OPTION_COUNT 5
+/* 保留原菜单顺序，在温湿度页后追加环境监测入口。 */
+#define OPTION_COUNT 6
 #define TEMP_MENU_OPTION 4
+#define ENV_MENU_OPTION 5
 
 /* 32x32, vertical-page 1bpp: thermometer + droplet, shared with the carousel. */
 static const byte tempMenuIcon[128] = {
@@ -34,6 +37,29 @@ static const byte tempMenuCorners[4][6] = {
     {0x80, 0x80, 0x80, 0x80, 0x80, 0xF8}
 };
 
+/* 32×32 菜单图标：四行状态的监测屏，沿用原轮播位图格式。 */
+static const byte envMenuIcon[128] = {
+    0x00, 0x00, 0xFC, 0x04, 0x04, 0x64, 0x64, 0x64, 0x04, 0x04, 0x04, 0x24, 0x24, 0x24, 0x24, 0x24,
+    0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x04, 0x04, 0x04, 0xFC, 0x00, 0x00,
+    0x00, 0x00, 0xFF, 0x00, 0x00, 0x8C, 0x8C, 0x8C, 0x00, 0x00, 0x00, 0x84, 0x84, 0x84, 0x84, 0x84,
+    0x84, 0x84, 0x84, 0x84, 0x84, 0x84, 0x84, 0x84, 0x84, 0x84, 0x00, 0x00, 0x00, 0xFF, 0x00, 0x00,
+    0x00, 0x00, 0xFF, 0x80, 0x80, 0xB1, 0xB1, 0xB1, 0x80, 0x80, 0x80, 0x90, 0x90, 0x90, 0x90, 0x90,
+    0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x80, 0x80, 0x80, 0xFF, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x10, 0x10, 0x10, 0x10, 0x10, 0x1F, 0x1F,
+    0x1F, 0x1F, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+};
+
+/* 8×8 单色列位图：光线、障碍物、测距声波、系统警示。 */
+static const byte envStatusIcons[4][8] = {
+    {0x08, 0x22, 0x1C, 0x5D, 0x1C, 0x22, 0x08, 0x00},
+    {0x08, 0x08, 0x08, 0x2A, 0x1C, 0x00, 0x7F, 0x00},
+    {0x1C, 0x41, 0x22, 0x1C, 0x41, 0x22, 0x1C, 0x00},
+    {0x7E, 0x81, 0x81, 0xAD, 0xAD, 0x81, 0x81, 0x7E}
+};
+
+static void envOpen(void);
+static display_t envDraw(void);
+static bool envBack(void);
 static display_t mMainDraw(void);
 static display_t tempMenuDraw(void);
 static void aboutOpen(void);
@@ -123,6 +149,7 @@ static void itemLoader(byte num)
     setMenuOption_P(2, PSTR("CRT Animation"), menu_anim[1], crtDemoOpen);
     setMenuOption_P(3, PSTR("About"), menu_settings, aboutOpen);
     setMenuOption_P(TEMP_MENU_OPTION, PSTR("TEMP / HUM"), tempMenuIcon, tempOpen);
+    setMenuOption_P(ENV_MENU_OPTION, PSTR("ENV MONITOR"), envMenuIcon, envOpen);
 #else
 	num = 0;
 	setMenuOption_P(num++, PSTR(STR_ALARMS), menu_alarm, mAlarmsOpen);
@@ -388,6 +415,55 @@ static void tempOpen(void)
 {
     display_setDrawFunc(tempDraw);
     buttons_setFuncs(tempBack, tempBack, tempBack);
+    beginAnimation2(NULL);
+}
+
+/* 返回主菜单时沿用原来的退场动画及选中项恢复机制。 */
+static bool envBack(void)
+{
+    beginAnimation(back);
+    return true;
+}
+
+static display_t envDraw(void)
+{
+    /* 句柄未就绪时仅在本帧显示错误，不写入事件组。 */
+    EventBits_t bits = ENV_SENSOR_ERROR_BIT;
+    const char *status[4];
+    byte row;
+
+    /* 每帧读取一次快照，不等待、不清位，四行状态保持一致。 */
+    if(g_envEventGroup != NULL)
+        bits = xEventGroupGetBits(g_envEventGroup);
+
+    status[0] = (bits & ENV_DARK_BIT) ? "DARK" : "LIGHT";
+    status[1] = (bits & ENV_OBSTACLE_BIT) ? "DETECTED" : "CLEAR";
+    if(bits & ENV_SENSOR_ERROR_BIT)
+    {
+        status[2] = "ERROR";
+        status[3] = "ERROR";
+    }
+    else
+    {
+        status[2] = (bits & ENV_NEAR_BIT) ? "NEAR" : "FAR";
+        status[3] = "OK";
+    }
+
+    draw_string("ENV MONITOR", false, 26, 0);
+    for(row = 0; row < 4; ++row)
+    {
+        /* 四行间距 12 像素，末行止于 y=59；位图自动跟随页面动画。 */
+        byte y = 16 + row * 12;
+        draw_bitmap(8, y, envStatusIcons[row], 8, 8, NOINVERT, 0);
+        draw_string_P(status[row], false, 28, y);
+    }
+    return DISPLAY_DONE;
+}
+
+static void envOpen(void)
+{
+    display_setDrawFunc(envDraw);
+    buttons_setFuncs(envBack, envBack, envBack);
     beginAnimation2(NULL);
 }
 
