@@ -9,7 +9,7 @@
 volatile NWatchRtosDiagnostics g_nwatchRtos;
 volatile NWatchRtosFault g_nwatchFault;
 static TaskHandle_t guiHandle;
-
+SemaphoreHandle_t g_rgbSemaphore = NULL;
 QueueHandle_t g_sensorQueue = NULL;
 TaskHandle_t sensorHandle = NULL;
 static void updateDiagnostics(void)
@@ -87,6 +87,18 @@ void NWatch_RtosGuiReady(void)
             /* 队列分配失败，复用已有的内存分配故障码。 */
             NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
         }
+        g_rgbSemaphore = xSemaphoreCreateBinary();
+
+if (g_rgbSemaphore == NULL)
+{
+    NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
+}
+if (xTaskCreate(RGB_Task, "RGB", 192,
+                NULL, 1, NULL) != pdPASS)
+{
+    NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE,
+                     __FILE__, __LINE__);
+}
     
    
     /* phase=3 表示 GUI 初始化完成；先采样一次创建前的诊断数据。 */

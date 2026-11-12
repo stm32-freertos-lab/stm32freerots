@@ -5,6 +5,7 @@
 #include "stm32f1xx_hal.h"
 #include "task.h"
 #include "rtos_app.h"
+#include "driver_rgb.h"
 /* Override the driver's weak busy-wait hook in task context.
  * The existing 20 ms start pulse still exceeds the DHT11 18 ms minimum. */
 
@@ -54,6 +55,7 @@ void Sensor_Task(void *argument)
             taskEXIT_CRITICAL();
             /* The queue protects itself; do not mask IR for its bookkeeping. */
             xQueueOverwrite(g_sensorQueue, &s1);
+            xSemaphoreGive(g_rgbSemaphore);
            if((s1.temp > TEMP_ALARM_HIGH || s1.hum > HUM_ALARM_HIGH) && alarmState == 0U)
             {
                 alarmState = 1;
@@ -98,5 +100,38 @@ int *History_Get(int *out, uint8_t *validCount)
         if(elapsedUs > g_nwatchRtos.historyCopyMaxUs)
             g_nwatchRtos.historyCopyMaxUs = elapsedUs;
         return out;
+    }
+}
+void RGB_Task(void *argument)
+{
+    sensor_data_t rgbData;
+    uint8_t alarmActive = 0U;
+    (void)argument;
+
+    while(1)
+    {
+        /* 最多等待 10 ms，等待新数据期间也要推进闪烁相位。 */
+        if(xSemaphoreTake(g_rgbSemaphore, pdMS_TO_TICKS(10U)) == pdTRUE &&
+           xQueuePeek(g_sensorQueue, &rgbData, 0) == pdTRUE)
+        {
+            uint8_t nextAlarmActive =
+                rgbData.temp > TEMP_ALARM_HIGH || rgbData.hum > HUM_ALARM_HIGH;
+
+            /* 仅在报警状态变化时切换模式，避免每次采样重置闪烁相位。 */
+            if(nextAlarmActive != alarmActive)
+            {
+                alarmActive = nextAlarmActive;
+                if(alarmActive)
+                {
+                    RGB_SetRGB(64U, 0U, 0U);
+                    RGB_SetMode(RGB_MODE_BLINK, 500U);
+                }
+                else
+                {
+                    RGB_Off();
+                }
+            }
+        }
+        RGB_Update();
     }
 }

@@ -4,8 +4,8 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
-#define TEMP_ALARM_HIGH 30
-#define HUM_ALARM_HIGH  70
+#define TEMP_ALARM_HIGH 20
+#define HUM_ALARM_HIGH  40
 
 typedef struct
 {
@@ -25,6 +25,7 @@ typedef struct
 
 /* 传感器任务入口，任务创建代码由用户自行编写。 */
 void Sensor_Task(void *argument);
+void RGB_Task(void *argument);
 int *History_Get(int *out, uint8_t *validCount);
 
 #endif /* SENSOR_H */
