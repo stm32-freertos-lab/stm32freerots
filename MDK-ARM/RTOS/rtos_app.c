@@ -82,6 +82,7 @@ void NWatch_RtosGuiEntered(void)
 void NWatch_RtosGuiReady(void)
 {
     g_sensorQueue= xQueueCreate(1,sizeof(sensor_data_t));
+    g_envEventGroup = xEventGroupCreate();
         if(g_sensorQueue == NULL)
         {
             /* 队列分配失败，复用已有的内存分配故障码。 */
@@ -99,6 +100,17 @@ if (xTaskCreate(RGB_Task, "RGB", 192,
     NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE,
                      __FILE__, __LINE__);
 }
+
+
+if (g_envEventGroup == NULL)
+{
+    NWatch_RtosFatal( NWATCH_FAULT_MALLOC, __FILE__,__LINE__);
+}
+if (xTaskCreate(Env_Task, "Environment", 192,NULL, 1, NULL) != pdPASS)
+{
+    NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE,  __FILE__, __LINE__);
+}
+
     
    
     /* phase=3 表示 GUI 初始化完成；先采样一次创建前的诊断数据。 */

@@ -1,16 +1,16 @@
 /* USER CODE BEGIN Header */
 // SPDX-License-Identifier: GPL-3.0-only
 /*
- * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com> 
+ * Copyright (c) 2008-2023 100askTeam : Dongshan WEI <weidongshan@qq.com>
  * Discourse:  https://forums.100ask.net
  */
- 
+
 /*  Copyright (C) 2008-2023 深圳百问网科技有限公司
  *  All rights reserved
  *
  * 免责声明: 百问网编写的文档, 仅供学员学习使用, 可以转发或引用(请保留作者信息),禁止用于商业用途！
  * 免责声明: 百问网编写的程序, 可以用于商业用途, 但百问网不承担任何后果！
- * 
+ *
  * 文件名称：driver_color_led.c
  * 本程序遵循GPL V3协议, 请遵循协议
  * 百问网学习平台   : https://www.100ask.net
@@ -21,7 +21,7 @@
  * 联系我们(E-mail): weidongshan@qq.com
  *
  *          版权所有，盗版必究。
- *  
+ *
  * 修改历史     版本号           作者        修改内容
  *-----------------------------------------------------
  * 2023.08.04      v01         百问科技      创建文件
@@ -29,21 +29,21 @@
  */
 
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2023 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2023 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -111,9 +111,9 @@ static void GUI_Task(void *argument);
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
+ * @brief  The application entry point.
+ * @retval int
+ */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -134,9 +134,8 @@ int main(void)
 
   /* USER CODE BEGIN SysInit */
   /* TIM3 在最终 72MHz 时钟下启动，先于红外 EXTI 和 OLED 初始化。 */
-  if(MicroTimer_Init() != HAL_OK)
+  if (MicroTimer_Init() != HAL_OK)
     Error_Handler();
-
 
   /* USER CODE END SysInit */
 
@@ -147,25 +146,25 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
 
-   if (RGB_Init() != HAL_OK)  // 启动三路 PWM
-   {
-       Error_Handler();
-   }
+  if (RGB_Init() != HAL_OK) // 启动三路 PWM
+  {
+    Error_Handler();
+  }
 
-   /* 红灯 */
-   RGB_SetRGB(64, 0, 0);
-   HAL_Delay(1000);
+  /* 红灯 */
+  RGB_SetRGB(64, 0, 0);
+  HAL_Delay(1000);
 
-   /* 绿灯 */
-   RGB_SetRGB(0, 64, 0);
-   HAL_Delay(1000);
+  /* 绿灯 */
+  RGB_SetRGB(0, 64, 0);
+  HAL_Delay(1000);
 
-   /* 蓝灯 */
-   RGB_SetRGB(0, 0, 64);
-   HAL_Delay(1000);
+  /* 蓝灯 */
+  RGB_SetRGB(0, 0, 64);
+  HAL_Delay(1000);
 
-   /* 熄灭 */
-   RGB_Off();
+  /* 熄灭 */
+  RGB_Off();
 #if !NWATCH_UI_ONLY
   MX_USART1_UART_Init();
   MX_SPI1_Init();
@@ -180,117 +179,115 @@ int main(void)
 static void GUI_Task(void *argument)
 {
   uint32_t notifyValue = 0;
-  sensor_data_t displayData = {0};  // 保存从队列接收到的温湿度
+  sensor_data_t displayData = {0}; // 保存从队列接收到的温湿度
   (void)argument;
   NWatch_RtosGuiEntered();
 #if !NWATCH_RTOS_BRINGUP_ONLY
   PassiveBuzzer_Init();
 #if !NWATCH_UI_ONLY
-	ColorLED_Init();
+  ColorLED_Init();
 #endif
-	/* DHT11_Init() 由 Sensor_Task 在任务入口调用，PA1 只归 Sensor_Task 所有。 */
-	
-	appconfig_init();
-	LCD_Init();
+  /* DHT11_Init() 由 Sensor_Task 在任务入口调用，PA1 只归 Sensor_Task 所有。 */
+
+  appconfig_init();
+  LCD_Init();
   LCD_Clear();
-	
-	draw_init();
-	
+
+  draw_init();
+
 #if !NWATCH_UI_ONLY
-	console_log(50,"Init_OLED: OK");
-	console_log(100,"--- welcome !---");
-	console_log(50,"  _   _    _    ");
-	console_log(50," | | | |  |_|   ");
-	console_log(50," | |_| |   _    ");
-	console_log(50," |  _  |  | |   ");
-	console_log(50," | | | |  | |   ");
-	console_log(50," |_| |_|  |_|   ");
-	console_log(50,"                ");
-	console_log(100,"-www.100ask.net-");
-	
+  console_log(50, "Init_OLED: OK");
+  console_log(100, "--- welcome !---");
+  console_log(50, "  _   _    _    ");
+  console_log(50, " | | | |  |_|   ");
+  console_log(50, " | |_| |   _    ");
+  console_log(50, " |  _  |  | |   ");
+  console_log(50, " | | | |  | |   ");
+  console_log(50, " |_| |_|  |_|   ");
+  console_log(50, "                ");
+  console_log(100, "-www.100ask.net-");
+
 #endif
 
-	time_init();
-	///rtc_init();
-	global_init();
+  time_init();
+  /// rtc_init();
+  global_init();
 #if !NWATCH_UI_ONLY
-	alarm_init();             //�����޷��������ӣ�ÿ�������Ժ���Ҫ�Զ���
+  alarm_init(); // �����޷��������ӣ�ÿ�������Ժ���Ҫ�Զ���
 #endif
   buttons_init();
   global_init();
-	pwrmgr_init();
-	
+  pwrmgr_init();
+
 #if !NWATCH_UI_ONLY
-	console_log(50, "Init_MPU: OK!");
-	console_log(500,"Loading...");
-	
+  console_log(50, "Init_MPU: OK!");
+  console_log(500, "Loading...");
+
 #endif
 
-	LCD_Clear();
-	LCD_ClearFrameBuffer();
-	
-	// Set watchface
-	display_set(watchface_normal);
-	display_load();
-	
+  LCD_Clear();
+  LCD_ClearFrameBuffer();
+
+  // Set watchface
+  display_set(watchface_normal);
+  display_load();
+
   NWatch_RtosGuiReady();
 #endif
 
-  for(;;)
+  for (;;)
   {
 #if !NWATCH_RTOS_BRINGUP_ONLY
 
-		time_update();
-		if(pwrmgr_userActive())
-		{
-			///battery_update();
-			buttons_update();
-		}
-		buzzer_update();
-#if !NWATCH_UI_ONLY
-	
-		
-		led_update();
-#endif
-		
-#if COMPILE_STOPWATCH
-		stopwatch_update();
-#endif
-		
-		global_update();
-
-/* 从队列读取最新温湿度 */
-if(xTaskNotifyWait(0, 0xFFFFFFFFUL, &notifyValue, 0)== pdTRUE)
-{
-  if(notifyValue==1)
-  {
-      notifyValue = 0; 
-      xTaskNotify(sensorHandle, 2U, eSetValueWithOverwrite);
-       tune_play(tuneAlarm, VOL_ALARM, PRIO_ALARM);
-  }
-
-}
-if (g_sensorQueue != NULL)
-{
-    if (xQueuePeek(g_sensorQueue, &displayData, 0) == pdPASS)
+    time_update();
+    if (pwrmgr_userActive())
     {
+      /// battery_update();
+      buttons_update();
+    }
+    buzzer_update();
+#if !NWATCH_UI_ONLY
+
+    led_update();
+#endif
+
+#if COMPILE_STOPWATCH
+    stopwatch_update();
+#endif
+
+    global_update();
+
+    /* 从队列读取最新温湿度 */
+    if (xTaskNotifyWait(0, 0xFFFFFFFFUL, &notifyValue, 0) == pdTRUE)
+    {
+      if (notifyValue == 1)
+      {
+        notifyValue = 0;
+        xTaskNotify(sensorHandle, 2U, eSetValueWithOverwrite);
+        tune_play(tuneAlarm, VOL_ALARM, PRIO_ALARM);
+      }
+    }
+    if (g_sensorQueue != NULL)
+    {
+      if (xQueuePeek(g_sensorQueue, &displayData, 0) == pdPASS)
+      {
         // 读取成功
         // displayData.hum  为湿度
         // displayData.temp 为温度
+      }
     }
-}
-		if(pwrmgr_userActive())
-		{
+    if (pwrmgr_userActive())
+    {
 #if !NWATCH_UI_ONLY
-			 alarm_update();
+      alarm_update();
 #endif
 #if NWATCH_UI_ONLY
-			 mMainUpdate();
+      mMainUpdate();
 #endif
-			 display_update();
-		}
+      display_update();
+    }
 
-		pwrmgr_update();     //����ͣ��ģʽ
+    pwrmgr_update(); // ����ͣ��ģʽ
 
 #endif
     NWatch_RtosPoll();
@@ -300,17 +297,17 @@ if (g_sensorQueue != NULL)
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+ * @brief System Clock Configuration
+ * @retval None
+ */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
+   * in the RCC_OscInitTypeDef structure.
+   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
@@ -324,9 +321,8 @@ void SystemClock_Config(void)
   }
 
   /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+   */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -339,10 +335,10 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief I2C1 Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief I2C1 Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_I2C1_Init(void)
 {
 
@@ -369,14 +365,13 @@ static void MX_I2C1_Init(void)
   /* USER CODE BEGIN I2C1_Init 2 */
 
   /* USER CODE END I2C1_Init 2 */
-
 }
 
 /**
-  * @brief SPI1 Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief SPI1 Initialization Function
+ * @param None
+ * @retval None
+ */
 #if !NWATCH_UI_ONLY
 static void MX_SPI1_Init(void)
 {
@@ -408,15 +403,14 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
-
 }
 #endif
 
 /**
-  * @brief TIM1 Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief TIM1 Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_TIM1_Init(void)
 {
 
@@ -474,14 +468,13 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 2 */
   HAL_TIM_MspPostInit(&htim1);
-
 }
 
 /**
-  * @brief TIM2 Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief TIM2 Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_TIM2_Init(void)
 {
 
@@ -523,7 +516,7 @@ static void MX_TIM2_Init(void)
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 0;
-sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
   {
@@ -541,14 +534,13 @@ sConfigOC.OCPolarity = TIM_OCPOLARITY_LOW;
 
   /* USER CODE END TIM2_Init 2 */
   HAL_TIM_MspPostInit(&htim2);
-
 }
 
 /**
-  * @brief USART1 Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief USART1 Initialization Function
+ * @param None
+ * @retval None
+ */
 #if !NWATCH_UI_ONLY
 static void MX_USART1_UART_Init(void)
 {
@@ -575,20 +567,19 @@ static void MX_USART1_UART_Init(void)
   /* USER CODE BEGIN USART1_Init 2 */
 
   /* USER CODE END USART1_Init 2 */
-
 }
 #endif
 
 /**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
+ * @brief GPIO Initialization Function
+ * @param None
+ * @retval None
+ */
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-/* USER CODE BEGIN MX_GPIO_Init_1 */
-/* USER CODE END MX_GPIO_Init_1 */
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOD_CLK_ENABLE();
@@ -627,12 +618,26 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
-/* USER CODE BEGIN MX_GPIO_Init_2 */
-/* USER CODE END MX_GPIO_Init_2 */
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
@@ -640,22 +645,22 @@ static void MX_GPIO_Init(void)
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
 void Error_Handler(void)
 {
   NWatch_RtosFatal(NWATCH_FAULT_HAL, __FILE__, __LINE__);
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
