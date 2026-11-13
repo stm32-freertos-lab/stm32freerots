@@ -13,6 +13,7 @@ static TaskHandle_t guiHandle;
 SemaphoreHandle_t g_rgbSemaphore = NULL;
 QueueHandle_t g_sensorQueue = NULL;
 TaskHandle_t sensorHandle = NULL;
+TaskHandle_t rgbHandle = NULL;
 static void updateDiagnostics(void)
 {
     /* 与其他诊断同频采样，调试器无需调用内核函数。 */
@@ -97,7 +98,7 @@ void NWatch_RtosGuiReady(void)
         NWatch_RtosFatal(NWATCH_FAULT_MALLOC, __FILE__, __LINE__);
     }
     if (xTaskCreate(RGB_Task, "RGB", 192,
-                    NULL, 1, NULL) != pdPASS)
+                    NULL, 1, &rgbHandle) != pdPASS)
     {
         NWatch_RtosFatal(NWATCH_FAULT_TASK_CREATE,
                          __FILE__, __LINE__);

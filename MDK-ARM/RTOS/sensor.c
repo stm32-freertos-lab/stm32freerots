@@ -55,7 +55,8 @@ void Sensor_Task(void *argument)
             taskEXIT_CRITICAL();
             /* The queue protects itself; do not mask IR for its bookkeeping. */
             xQueueOverwrite(g_sensorQueue, &s1);
-            xSemaphoreGive(g_rgbSemaphore);
+
+            xTaskNotifyGive(rgbHandle);
            if((s1.temp > TEMP_ALARM_HIGH || s1.hum > HUM_ALARM_HIGH) && alarmState == 0U)
             {
                 alarmState = 1;
@@ -111,7 +112,7 @@ void RGB_Task(void *argument)
     while(1)
     {
         /* 最多等待 10 ms，等待新数据期间也要推进闪烁相位。 */
-        if(xSemaphoreTake(g_rgbSemaphore, pdMS_TO_TICKS(10U)) == pdTRUE &&
+        if(ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(10U))== pdTRUE &&
            xQueuePeek(g_sensorQueue, &rgbData, 0) == pdTRUE)
         {
             uint8_t nextAlarmActive =
