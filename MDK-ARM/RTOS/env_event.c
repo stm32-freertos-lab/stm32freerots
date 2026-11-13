@@ -17,7 +17,8 @@ void Env_Task(void *argument)
         GPIO_PinState lightState =
             HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_11);
 
-        if (lightState == GPIO_PIN_RESET)
+        /* 本模块亮时 DO 为低电平，暗时 DO 为高电平。 */
+        if (lightState == GPIO_PIN_SET)
         {
             // 环境过暗
             xEventGroupSetBits(g_envEventGroup, ENV_DARK_BIT);

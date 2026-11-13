@@ -22,7 +22,7 @@ void NWatch_RtosAssert(const char *file, uint32_t line);
 #define configMINIMAL_STACK_SIZE                128U
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
 #define configSUPPORT_STATIC_ALLOCATION         0
-#define configTOTAL_HEAP_SIZE                    (6U * 1024U)
+#define configTOTAL_HEAP_SIZE                    (10U * 1024U)
 #define configAPPLICATION_ALLOCATED_HEAP         0
 #define configUSE_MALLOC_FAILED_HOOK             1
 #define configCHECK_FOR_STACK_OVERFLOW           2
