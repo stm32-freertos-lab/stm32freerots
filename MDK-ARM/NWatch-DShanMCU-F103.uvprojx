@@ -928,6 +928,11 @@
             <FilePath>.\ThirdParty\FreeRTOS-Kernel\tasks.c</FilePath>
           </File>
           <File>
+            <FileName>timers.c</FileName>
+            <FileType>1</FileType>
+            <FilePath>.\ThirdParty\FreeRTOS-Kernel\timers.c</FilePath>
+          </File>
+          <File>
             <FileName>queue.c</FileName>
             <FileType>1</FileType>
             <FilePath>.\ThirdParty\FreeRTOS-Kernel\queue.c</FilePath>

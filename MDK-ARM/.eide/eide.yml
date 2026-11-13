@@ -108,6 +108,7 @@ virtualFolder:
     - name: FreeRTOS-Kernel
       files:
         - path: ThirdParty/FreeRTOS-Kernel/tasks.c
+        - path: ThirdParty/FreeRTOS-Kernel/timers.c
         - path: ThirdParty/FreeRTOS-Kernel/queue.c
         - path: ThirdParty/FreeRTOS-Kernel/list.c
         # 事件组 API 需要链接对应的内核实现。

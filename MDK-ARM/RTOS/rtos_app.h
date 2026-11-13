@@ -4,9 +4,7 @@
 #include <stdint.h>
 #include "FreeRTOS.h"
 #include "task.h"
-#include "semphr.h"
 
-extern SemaphoreHandle_t g_rgbSemaphore;
 extern TaskHandle_t rgbHandle;
 extern TaskHandle_t sensorHandle;
 /* 仅用于分步构建验证；正式 GUI 镜像必须为 0。 */

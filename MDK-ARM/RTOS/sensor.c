@@ -10,7 +10,7 @@
  * The existing 20 ms start pulse still exceeds the DHT11 18 ms minimum. */
 
 
-void DHT11_DelayMs(uint32_t ms)
+void DHT11_DelayMs(uint32_t ms) /* 使用任务延时，让 DHT11 毫秒等待期间让出 CPU。 */
 {
     vTaskDelay(pdMS_TO_TICKS(ms));
 }
@@ -19,7 +19,7 @@ static sensor_history_t s2 = {0};
 /* 累计 DHT11 读取成功的次数，便于在调试器中观察。 */
 
 /* FreeRTOS 传感器任务入口；argument 是创建任务时传入的参数，当前未使用。 */
-void Sensor_Task(void *argument)
+void Sensor_Task(void *argument) /* 周期采集温湿度，发布数据并通知 RGB 和 GUI。 */
 {
     uint32_t confirmValue = 0;
     TaskHandle_t guiHandle = (TaskHandle_t)argument;
@@ -56,7 +56,7 @@ void Sensor_Task(void *argument)
             /* The queue protects itself; do not mask IR for its bookkeeping. */
             xQueueOverwrite(g_sensorQueue, &s1);
 
-            xTaskNotifyGive(rgbHandle);
+            xTaskNotifyGive(rgbHandle); /* 第 0 号通知槽：提醒 RGB 读取最新温湿度。 */
            if((s1.temp > TEMP_ALARM_HIGH || s1.hum > HUM_ALARM_HIGH) && alarmState == 0U)
             {
                 alarmState = 1;
@@ -77,7 +77,7 @@ void Sensor_Task(void *argument)
 
 }
 
-int *History_Get(int *out, uint8_t *validCount)
+int *History_Get(int *out, uint8_t *validCount) /* 在临界区复制温度历史，返回有效记录数和输出数组。 */
 {
 
     if (out == NULL || validCount == NULL)
@@ -103,16 +103,17 @@ int *History_Get(int *out, uint8_t *validCount)
         return out;
     }
 }
-void RGB_Task(void *argument)
+void RGB_Task(void *argument) /* 接收温湿度和定时器通知，统一管理 RGB 输出。 */
 {
     sensor_data_t rgbData;
     uint8_t alarmActive = 0U;
+    uint8_t rgbTimerOn = 0U; /* 新增独立的定时亮灭状态，不复用或更名原有变量。 */
     (void)argument;
 
     while(1)
     {
         /* 最多等待 10 ms，等待新数据期间也要推进闪烁相位。 */
-        if(ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(10U))== pdTRUE &&
+        if(ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(10U))>0 && /* 第 0 号槽：取出新数据通知并清零计数。 */
            xQueuePeek(g_sensorQueue, &rgbData, 0) == pdTRUE)
         {
             uint8_t nextAlarmActive =
@@ -122,7 +123,8 @@ void RGB_Task(void *argument)
             if(nextAlarmActive != alarmActive)
             {
                 alarmActive = nextAlarmActive;
-                if(alarmActive)
+                rgbTimerOn = 0U; /* 报警状态改变时重置普通亮灭相位，恢复正常后从灭灯开始。 */              
+                  if(alarmActive)
                 {
                     RGB_SetRGB(64U, 0U, 0U);
                     RGB_SetMode(RGB_MODE_BLINK, 500U);
@@ -131,6 +133,17 @@ void RGB_Task(void *argument)
                 {
                     RGB_Off();
                 }
+            }
+        }
+        if (ulTaskNotifyTakeIndexed(1U, pdTRUE, 0) > 0) /* 第 1 号槽：非阻塞接收定时到期通知。 */
+        {
+            if (alarmActive == 0U) /* 保留温湿度报警优先权，报警期间不覆盖红灯闪烁。 */
+            {
+                rgbTimerOn = !rgbTimerOn;
+                if (rgbTimerOn != 0U)
+                    RGB_SetRGB(64U, 0U, 0U); /* 定时切换为红色常亮。 */
+                else
+                    RGB_Off(); /* 下一次定时通知切换为熄灭。 */
             }
         }
         RGB_Update();
