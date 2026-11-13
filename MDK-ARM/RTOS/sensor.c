@@ -116,8 +116,7 @@ void RGB_Task(void *argument) /* 接收温湿度和定时器通知，统一管�
         if(ulTaskNotifyTake(pdTRUE, pdMS_TO_TICKS(10U))>0 && /* 第 0 号槽：取出新数据通知并清零计数。 */
            xQueuePeek(g_sensorQueue, &rgbData, 0) == pdTRUE)
         {
-            uint8_t nextAlarmActive =
-                rgbData.temp > TEMP_ALARM_HIGH || rgbData.hum > HUM_ALARM_HIGH;
+            uint8_t nextAlarmActive =rgbData.temp > TEMP_ALARM_HIGH || rgbData.hum > HUM_ALARM_HIGH;
 
             /* 仅在报警状态变化时切换模式，避免每次采样重置闪烁相位。 */
             if(nextAlarmActive != alarmActive)
@@ -136,10 +135,10 @@ void RGB_Task(void *argument) /* 接收温湿度和定时器通知，统一管�
             }
         }
         if (ulTaskNotifyTakeIndexed(1U, pdTRUE, 0) > 0) /* 第 1 号槽：非阻塞接收定时到期通知。 */
-        {
+        { 
             if (alarmActive == 0U) /* 保留温湿度报警优先权，报警期间不覆盖红灯闪烁。 */
             {
-                rgbTimerOn = !rgbTimerOn;
+                rgbTime/rOn = !rgbTimerOn;
                 if (rgbTimerOn != 0U)
                     RGB_SetRGB(64U, 0U, 0U); /* 定时切换为红色常亮。 */
                 else
