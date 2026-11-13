@@ -138,7 +138,7 @@ void RGB_Task(void *argument) /* 接收温湿度和定时器通知，统一管�
         { 
             if (alarmActive == 0U) /* 保留温湿度报警优先权，报警期间不覆盖红灯闪烁。 */
             {
-                rgbTime/rOn = !rgbTimerOn;
+                rgbTimerOn = !rgbTimerOn;
                 if (rgbTimerOn != 0U)
                     RGB_SetRGB(64U, 0U, 0U); /* 定时切换为红色常亮。 */
                 else
